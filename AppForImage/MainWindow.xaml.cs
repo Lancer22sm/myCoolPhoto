@@ -29,11 +29,11 @@ namespace AppForImage
     {
         ControllerConvert _controllerConvert = new ();
         static string[] args = Environment.GetCommandLineArgs();
-        string filepath = args[1];
+        static string filepath = args[1];
         bool isCache = false;
         static string pathCache = "C:/Users/Lancer/source/repos/AppForImage/AppForImage/Resources/myImage.jpg";
         Mat myMat = new Mat();
-        Mat src = Cv2.ImRead(pathCache);
+        Mat src = Cv2.ImRead(filepath);
         BitmapImage bi = new BitmapImage();
         Mat[] savedImage = new Mat[10];
         int i = 0;
