@@ -27,6 +27,7 @@ namespace AppForImage
     /// </summary>
     public partial class MainWindow : System.Windows.Window
     {
+        ControllerConvert _controllerConvert = new ();
         static string[] args = Environment.GetCommandLineArgs();
         string filepath = args[1];
         bool isCache = false;
@@ -36,6 +37,8 @@ namespace AppForImage
         Mat myMat = new Mat();
         Mat src = Cv2.ImRead(pathCache);
         BitmapImage bi = new BitmapImage();
+        Mat[] savedImage = new Mat[10];
+        int i = 0;
 
 
         public MainWindow()
@@ -55,8 +58,6 @@ namespace AppForImage
             //вывод картинки
             myImageBackground.Source = bi;
         }
-
-
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             if (isCache)
@@ -71,34 +72,16 @@ namespace AppForImage
             }
 
         }
-
-        public BitmapImage MatToBitmap(Mat matimg)
+        private void MatBlur(int stroke, int column)
         {
-            BitmapImage bmp = new BitmapImage();
-            bmp.BeginInit();
-            bmp.StreamSource = new MemoryStream(MatToByteArray(matimg));
-            bmp.EndInit();
-            return bmp;
-        }
-
-        public byte[] MatToByteArray(Mat mat)
-        {
-            List<byte> lstbyte = new List<byte>();
-            byte[] btArr = lstbyte.ToArray();
-            int[] param = new int[2] { 1, 80 };
-            Cv2.ImEncode(".jpg", mat, out btArr, param);
-            return btArr;
-        }
-
-            private void MatBlur(int stroke, int column)
-        {
+            savedImage[i] = src;
+            if (i <= 10)
+            {
+                i++;
+            }
             Cv2.Blur(src, myMat, new OpenCvSharp.Size(stroke, column));
             src = myMat;
-            bi = MatToBitmap(myMat);
-            //myMat.SaveImage(pathCache);
-            //bi.BeginInit();
-            //bi.UriSource = new Uri(pathCache, UriKind.RelativeOrAbsolute);
-            //bi.EndInit();
+            bi = _controllerConvert.MatToBitmap(myMat);
             myImageBackground.Source = bi;
         }
 
@@ -116,6 +99,20 @@ namespace AppForImage
         {
             strokeAdd = Convert.ToInt32(mySlider.Value);
             columnAdd = Convert.ToInt32(mySlider.Value);
+        }
+
+        private void myWindow_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Z && e.KeyboardDevice.Modifiers == ModifierKeys.Control)
+            {
+                // код при нажатии Ctrl+Z
+                if(i > 0)
+                {
+                    i--;
+                }
+                src = savedImage[i];
+                myImageBackground.Source = _controllerConvert.MatToBitmap(src);
+            }
         }
     }
 }

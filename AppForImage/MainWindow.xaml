@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AppForImage"
         mc:Ignorable="d"
-        Title="AnimePhoto" Height="450" Width="800" Background="#FF969696" Icon="/Generalpng.png">
+        Title="AnimePhoto" Height="450" Width="800" Background="#FF969696" Icon="/Generalpng.png" PreviewKeyDown="myWindow_PreviewKeyDown">
     <Grid x:Name="myGeneralBackground" Background="#FF969696">
         <Viewbox Stretch="Uniform">
             <Image x:Name="myImageBackground" Width="{Binding ElementName=window, Path=Width}" Height="{Binding ElementName=window, Path=Height}" HorizontalAlignment="Left" Margin="20,20,20,20" VerticalAlignment="Top" Stretch="Fill"/>
