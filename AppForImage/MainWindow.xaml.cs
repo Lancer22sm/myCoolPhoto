@@ -31,8 +31,6 @@ namespace AppForImage
         static string[] args = Environment.GetCommandLineArgs();
         string filepath = args[1];
         bool isCache = false;
-        int strokeAdd = 0;
-        int columnAdd = 0;
         static string pathCache = "C:/Users/Lancer/source/repos/AppForImage/AppForImage/Resources/myImage.jpg";
         Mat myMat = new Mat();
         Mat src = Cv2.ImRead(pathCache);
@@ -60,27 +58,14 @@ namespace AppForImage
         }
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            if (isCache)
-            {
-                MatBlur(strokeAdd, columnAdd);
-            } else
-            {
-                Bitmap myImage = new Bitmap(filepath);
-                myImage.Save(pathCache);
-                MatBlur(strokeAdd, columnAdd);
-                isCache = true;
-            }
-
+            //Bitmap myImage = new Bitmap(filepath);
+            Bitmap myImage = _controllerConvert.BitmapImage2Bitmap(bi);
+            myImage.Save(pathCache);
         }
         private void MatBlur(int stroke, int column)
         {
-            savedImage[i] = src;
-            if (i <= 10)
-            {
-                i++;
-            }
             Cv2.Blur(src, myMat, new OpenCvSharp.Size(stroke, column));
-            bi = _controllerConvert.MatToBitmap(myMat);
+            bi = _controllerConvert.MatToBitmapJpg(myMat);
             myImageBackground.Source = bi;
         }
 
@@ -96,8 +81,10 @@ namespace AppForImage
 
         private void mySlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            strokeAdd = Convert.ToInt32(mySlider.Value);
-            columnAdd = Convert.ToInt32(mySlider.Value);
+            int strokeAdd = Convert.ToInt32(mySlider.Value);
+            int columnAdd = Convert.ToInt32(mySlider.Value);
+            MatBlur(strokeAdd, columnAdd);
+
         }
 
         private void myWindow_PreviewKeyDown(object sender, KeyEventArgs e)
@@ -105,11 +92,6 @@ namespace AppForImage
             if (e.Key == Key.Z && e.KeyboardDevice.Modifiers == ModifierKeys.Control)
             {
                 // код при нажатии Ctrl+Z
-                if(i > 0)
-                {
-                    i--;
-                }
-                myImageBackground.Source = _controllerConvert.MatToBitmap(savedImage[i]);
             }
         }
     }
