@@ -80,7 +80,6 @@ namespace AppForImage
                 i++;
             }
             Cv2.Blur(src, myMat, new OpenCvSharp.Size(stroke, column));
-            src = myMat;
             bi = _controllerConvert.MatToBitmap(myMat);
             myImageBackground.Source = bi;
         }
@@ -110,8 +109,7 @@ namespace AppForImage
                 {
                     i--;
                 }
-                src = savedImage[i];
-                myImageBackground.Source = _controllerConvert.MatToBitmap(src);
+                myImageBackground.Source = _controllerConvert.MatToBitmap(savedImage[i]);
             }
         }
     }
