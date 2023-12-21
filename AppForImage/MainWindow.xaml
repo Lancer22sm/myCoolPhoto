@@ -6,11 +6,35 @@
         xmlns:local="clr-namespace:AppForImage"
         mc:Ignorable="d"
         Title="AnimePhoto" Height="450" Width="800" Background="#FF969696" Icon="/Generalpng.png" PreviewKeyDown="myWindow_PreviewKeyDown">
+    <Window.Resources>
+        <Style TargetType="Button">
+            <Setter Property="Background" Value="MediumPurple"/>
+            <Setter Property="Opacity" Value="0.2"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border CornerRadius="10" Background="{TemplateBinding Background}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="HoverButtonStyle" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="DarkCyan"/>
+                    <Setter Property="Opacity" Value="0.6"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
     <Grid x:Name="myGeneralBackground" Background="#FF969696">
         <Viewbox Stretch="Uniform">
             <Image x:Name="myImageBackground" Width="{Binding ElementName=window, Path=Width}" Height="{Binding ElementName=window, Path=Height}" HorizontalAlignment="Left" Margin="20,20,20,20" VerticalAlignment="Top" Stretch="Fill"/>
         </Viewbox>
-        <Button x:Name="myButtonBlur" Content="Сохранить" HorizontalAlignment="Left" Margin="5,0,0,5" VerticalAlignment="Bottom" RenderTransformOrigin="-3.786,0.741" Height="30" Width="90" Background="#FF674E4E" BorderBrush="{x:Null}" Foreground="#FFF6FF49" Click="Button_Click" FontSize="16" Opacity="0.2" MouseEnter="Button_MouseEnter" MouseLeave="myButtonBlur_MouseLeave"/>
+        <Button x:Name="myButtonBlur" Content="Сохранить" Style="{StaticResource HoverButtonStyle}" HorizontalAlignment="Left" Margin="5,0,0,5" VerticalAlignment="Bottom" RenderTransformOrigin="-3.786,0.741" Height="30" Width="90" Click="Button_Click" FontSize="16"/>
         <Slider x:Name="mySlider" Width="120" Margin="0,0,5,5" Height="20" VerticalAlignment="Bottom" HorizontalAlignment="Right" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="{x:Null}" ValueChanged="mySlider_ValueChanged" Minimum="1" Maximum="100" SmallChange="1" Value="1" MouseEnter="mySlider_MouseEnter"/>
 
     </Grid>

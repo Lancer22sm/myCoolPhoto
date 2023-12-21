@@ -35,14 +35,14 @@ namespace AppForImage
         static string pathCache = "C:/Users/Lancer/source/repos/AppForImage/AppForImage/Resources/myImage.jpg";
         Mat myMat = new Mat();
         Mat src = Cv2.ImRead(filepath);
-        BitmapImage bi = new BitmapImage();
-        Stack<Mat> stack = new Stack<Mat>();
+        BitmapImage bi = ImageDownload();
+        Stack<Mat> stackChanges = new Stack<Mat>();
 
 
         public MainWindow()
         {
             InitializeComponent();
-            ImageDownload();
+            UseImage();
         }
 
         static string FindMyImageFormat()
@@ -51,32 +51,25 @@ namespace AppForImage
             return "." + findImageForm[findImageForm.Length-1];
         }
 
-        void ImageDownload()
+        void UseImage()
         {
-            
-            BitmapImage bi = new BitmapImage();
-            bi.BeginInit();
-            bi.UriSource = new Uri(filepath, UriKind.RelativeOrAbsolute);
-            bi.EndInit();
-
-            //вывод картинки
             myImageBackground.Source = bi;
+        }
+
+        static BitmapImage ImageDownload()
+        {
+            BitmapImage downloadImage = new();
+            downloadImage.BeginInit();
+            downloadImage.UriSource = new Uri(filepath, UriKind.RelativeOrAbsolute);
+            downloadImage.EndInit();
+
+            return downloadImage;
         }
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             //Bitmap myImage = new Bitmap(filepath);
             Bitmap myImage = _controllerConvert.BitmapImage2Bitmap(bi);
             myImage.Save(pathCache);
-        }
-
-        private void Button_MouseEnter(object sender, MouseEventArgs e)
-        {
-            myButtonBlur.Opacity += 50;
-        }
-
-        private void myButtonBlur_MouseLeave(object sender, MouseEventArgs e)
-        {
-            myButtonBlur.Opacity -= 50;
         }
 
         private void mySlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
@@ -91,9 +84,9 @@ namespace AppForImage
             if (e.Key == Key.Z && e.KeyboardDevice.Modifiers == ModifierKeys.Control)
             {
                 // код при нажатии Ctrl+Z
-                if(stack.Count > 0)
+                if(stackChanges.Count > 0)
                 {
-                    Mat backMat = stack.Pop();
+                    Mat backMat = stackChanges.Pop();
                     bi = _controllerConvert.MatToBitmap(backMat, imageFormat);
                     myImageBackground.Source = bi;
                 }
@@ -103,7 +96,7 @@ namespace AppForImage
         {
             Mat copiesMat = new Mat();
             myMat.CopyTo(copiesMat);
-            stack.Push(copiesMat);
+            stackChanges.Push(copiesMat);
         }
     }
 }
