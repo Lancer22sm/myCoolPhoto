@@ -27,12 +27,13 @@ namespace AppForImage
     /// </summary>
     public partial class MainWindow : System.Windows.Window
     {
+        TypesOfEffects _typesOfEffects = new();
         ControllerConvert _controllerConvert = new ();
         UseEffects _useEffects = new();
         static string[] args = Environment.GetCommandLineArgs();
         static string filepath = args[1];
         static string imageFormat = FindMyImageFormat();
-        static string pathCache = "C:/Users/Lancer/source/repos/AppForImage/AppForImage/Resources/myImage.jpg";
+        //static string pathCache = "C:/Users/Lancer/source/repos/AppForImage/AppForImage/Resources/myImage.jpg";
         Mat myMat = new Mat();
         Mat src = Cv2.ImRead(filepath);
         BitmapImage bi = ImageDownload();
@@ -65,11 +66,14 @@ namespace AppForImage
 
             return downloadImage;
         }
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void ButtonEffects_Click(object sender, RoutedEventArgs e)
         {
-            //Bitmap myImage = new Bitmap(filepath);
+            /*
+            сохранение файла 
             Bitmap myImage = _controllerConvert.BitmapImage2Bitmap(bi);
             myImage.Save(pathCache);
+            */
+            _typesOfEffects.Show();
         }
 
         private void mySlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
