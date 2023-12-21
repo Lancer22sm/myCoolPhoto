@@ -28,6 +28,7 @@ namespace AppForImage
     public partial class MainWindow : System.Windows.Window
     {
         ControllerConvert _controllerConvert = new ();
+        UseEffects _useEffects = new();
         static string[] args = Environment.GetCommandLineArgs();
         static string filepath = args[1];
         static string imageFormat = FindMyImageFormat();
@@ -67,12 +68,6 @@ namespace AppForImage
             Bitmap myImage = _controllerConvert.BitmapImage2Bitmap(bi);
             myImage.Save(pathCache);
         }
-        private void MatBlur(int valueBlur)
-        {
-            Cv2.Blur(src, myMat, new OpenCvSharp.Size(valueBlur, valueBlur));
-            bi = _controllerConvert.MatToBitmap(myMat, imageFormat);
-            myImageBackground.Source = bi;
-        }
 
         private void Button_MouseEnter(object sender, MouseEventArgs e)
         {
@@ -87,7 +82,7 @@ namespace AppForImage
         private void mySlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             int valueBlur = Convert.ToInt32(mySlider.Value);
-            MatBlur(valueBlur);
+            myImageBackground.Source = _useEffects.MatBlur(valueBlur, src, myMat, imageFormat);
 
         }
 
@@ -104,7 +99,6 @@ namespace AppForImage
                 }
             }
         }
-
         private void mySlider_MouseEnter(object sender, MouseEventArgs e)
         {
             Mat copiesMat = new Mat();
