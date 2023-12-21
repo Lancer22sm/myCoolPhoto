@@ -30,6 +30,7 @@ namespace AppForImage
         ControllerConvert _controllerConvert = new ();
         static string[] args = Environment.GetCommandLineArgs();
         static string filepath = args[1];
+        string imageFormat;
         bool isCache = false;
         static string pathCache = "C:/Users/Lancer/source/repos/AppForImage/AppForImage/Resources/myImage.jpg";
         Mat myMat = new Mat();
@@ -43,6 +44,13 @@ namespace AppForImage
         {
             InitializeComponent();
             ImageDownload();
+            myImageFormat();
+        }
+
+        void myImageFormat()
+        {
+            string[] findImageForm = filepath.Split('.');
+            imageFormat = "." + findImageForm[findImageForm.Length-1];
         }
 
         void ImageDownload()
@@ -65,7 +73,7 @@ namespace AppForImage
         private void MatBlur(int stroke, int column)
         {
             Cv2.Blur(src, myMat, new OpenCvSharp.Size(stroke, column));
-            bi = _controllerConvert.MatToBitmapJpg(myMat);
+            bi = _controllerConvert.MatToBitmap(myMat, imageFormat);
             myImageBackground.Source = bi;
         }
 
