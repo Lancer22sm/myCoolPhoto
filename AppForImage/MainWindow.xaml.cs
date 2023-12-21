@@ -30,7 +30,7 @@ namespace AppForImage
         ControllerConvert _controllerConvert = new ();
         static string[] args = Environment.GetCommandLineArgs();
         static string filepath = args[1];
-        string imageFormat;
+        static string imageFormat = FindMyImageFormat();
         bool isCache = false;
         static string pathCache = "C:/Users/Lancer/source/repos/AppForImage/AppForImage/Resources/myImage.jpg";
         Mat myMat = new Mat();
@@ -44,13 +44,12 @@ namespace AppForImage
         {
             InitializeComponent();
             ImageDownload();
-            myImageFormat();
         }
 
-        void myImageFormat()
+        static string FindMyImageFormat()
         {
             string[] findImageForm = filepath.Split('.');
-            imageFormat = "." + findImageForm[findImageForm.Length-1];
+            return "." + findImageForm[findImageForm.Length-1];
         }
 
         void ImageDownload()
