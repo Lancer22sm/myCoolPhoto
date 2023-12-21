@@ -31,13 +31,11 @@ namespace AppForImage
         static string[] args = Environment.GetCommandLineArgs();
         static string filepath = args[1];
         static string imageFormat = FindMyImageFormat();
-        bool isCache = false;
         static string pathCache = "C:/Users/Lancer/source/repos/AppForImage/AppForImage/Resources/myImage.jpg";
         Mat myMat = new Mat();
         Mat src = Cv2.ImRead(filepath);
         BitmapImage bi = new BitmapImage();
-        Mat[] savedImage = new Mat[10];
-        int i = 0;
+        Stack<Mat> stack = new Stack<Mat>();
 
 
         public MainWindow()
@@ -69,9 +67,9 @@ namespace AppForImage
             Bitmap myImage = _controllerConvert.BitmapImage2Bitmap(bi);
             myImage.Save(pathCache);
         }
-        private void MatBlur(int stroke, int column)
+        private void MatBlur(int valueBlur)
         {
-            Cv2.Blur(src, myMat, new OpenCvSharp.Size(stroke, column));
+            Cv2.Blur(src, myMat, new OpenCvSharp.Size(valueBlur, valueBlur));
             bi = _controllerConvert.MatToBitmap(myMat, imageFormat);
             myImageBackground.Source = bi;
         }
@@ -88,9 +86,8 @@ namespace AppForImage
 
         private void mySlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            int strokeAdd = Convert.ToInt32(mySlider.Value);
-            int columnAdd = Convert.ToInt32(mySlider.Value);
-            MatBlur(strokeAdd, columnAdd);
+            int valueBlur = Convert.ToInt32(mySlider.Value);
+            MatBlur(valueBlur);
 
         }
 
@@ -99,7 +96,20 @@ namespace AppForImage
             if (e.Key == Key.Z && e.KeyboardDevice.Modifiers == ModifierKeys.Control)
             {
                 // код при нажатии Ctrl+Z
+                if(stack.Count > 0)
+                {
+                    Mat backMat = stack.Pop();
+                    bi = _controllerConvert.MatToBitmap(backMat, imageFormat);
+                    myImageBackground.Source = bi;
+                }
             }
+        }
+
+        private void mySlider_MouseEnter(object sender, MouseEventArgs e)
+        {
+            Mat copiesMat = new Mat();
+            myMat.CopyTo(copiesMat);
+            stack.Push(copiesMat);
         }
     }
 }
