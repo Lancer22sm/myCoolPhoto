@@ -19,10 +19,19 @@ namespace AppForImage
     /// </summary>
     public partial class TypesOfEffects : Window
     {
-        EffectBlur _effectBlur = new();
-        public TypesOfEffects()
+        private EffectBlur _effectBlur;
+        private ControllerImage _controller;
+        public TypesOfEffects(ControllerImage controller, EffectBlur effectblur)
         {
+            _controller = controller;
+            _effectBlur = effectblur;
+            _effectBlur.MyeventBlurValueChanged += OnValueChange;
             InitializeComponent();
+        }
+
+        private void OnValueChange(double value)
+        {
+            _controller.MatBlur(Convert.ToInt32(value));
         }
 
         private void ButtonBlur_Click(object sender, RoutedEventArgs e)

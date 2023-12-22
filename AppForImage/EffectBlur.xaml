@@ -109,7 +109,7 @@
         <Button x:Name="myButtonClose" Content="___" Style="{StaticResource HoverButtonStyle}" HorizontalAlignment="Right" Margin="0,5,5,0" VerticalAlignment="Top" RenderTransformOrigin="-3.786,0.741" Height="15" Width="30" Click="ButtonClose_Click" FontWeight="Bold" FontSize="8"/>
         <StackPanel x:Name="myStackPanel" Margin="0,20,0,0" Width="{Binding ElementName=window, Path=Width}" Height="{Binding ElementName=window, Path=Height}">
             <Label HorizontalAlignment="Center" FontWeight="Bold">Blur</Label>
-            <Slider x:Name="mySliderBlur" MaxWidth="{Binding ElementName=myStackPanel, Path=Width}" MaxHeight="{Binding ElementName=myStackPanel, Path=Height}" Style="{StaticResource Horizontal_Slider}" HorizontalAlignment="Center" MinHeight="20" Margin="0,0,0,0" VerticalAlignment="Top" MinWidth="100" RenderTransformOrigin="1,0" ValueChanged="mySliderBlur_ValueChanged"/>
+            <Slider x:Name="mySliderBlur" MaxWidth="{Binding ElementName=myStackPanel, Path=Width}" MaxHeight="{Binding ElementName=myStackPanel, Path=Height}" Style="{StaticResource Horizontal_Slider}" HorizontalAlignment="Center" MinHeight="20" Margin="0,0,0,0" VerticalAlignment="Top" MinWidth="100" RenderTransformOrigin="1,0" Minimum="1" Maximum="100" Interval="1" ValueChanged="mySliderBlur_ValueChanged"/>
         </StackPanel>
     </Grid>
 </Window>

@@ -9,17 +9,24 @@ namespace AppForImage
     /// </summary>
     public partial class MainWindow : Window
     {
-        TypesOfEffects _typesOfEffects = new();
-        EffectBlur _blur = new();
-        ControllerImage _controller = new();
+        private readonly TypesOfEffects _typesOfEffects;
+        private readonly EffectBlur _effectsBlur = new();
+        private readonly ControllerImage _controller = new();
         public MainWindow()
         {
             InitializeComponent();
+            _typesOfEffects = new(_controller, _effectsBlur);
+            myImageBackground.Source = _controller.ImageDownload();
+            _controller.UseMatBlur += ChangesImage;
         }
 
         private void ButtonEffects_Click(object sender, RoutedEventArgs e)
         {
             _typesOfEffects.Show();
+        }
+        private void ChangesImage()
+        {
+            myImageBackground.Source = _controller.GetMyImage();
         }
 
         private void myWindow_PreviewKeyDown(object sender, KeyEventArgs e)
@@ -27,17 +34,13 @@ namespace AppForImage
             if (e.Key == Key.Z && e.KeyboardDevice.Modifiers == ModifierKeys.Control)
             {
                 // код при нажатии Ctrl+Z
-                _controller.GetStack();
+                myImageBackground.Source = _controller.GetStack();
             }
-        }
-        private void mySlider_MouseEnter(object sender, MouseEventArgs e)
-        {
-            _controller.PushStack();
         }
 
         private void myWindow_Closed(object sender, EventArgs e)
         {
-            _blur.Close();
+            _effectsBlur.Close();
             _typesOfEffects.Close();
         }
     }

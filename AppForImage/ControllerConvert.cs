@@ -11,7 +11,7 @@ using System.Windows.Media.Imaging;
 
 namespace AppForImage
 {
-    internal class ControllerConvert
+    public class ControllerConvert
     {
         public BitmapImage MatToBitmap(Mat matimg, string imageFormat)
         {
@@ -21,7 +21,7 @@ namespace AppForImage
             bmp.EndInit();
             return bmp;
         }
-        private byte[] MatToByteArray(Mat mat, string imageFormat)
+        public byte[] MatToByteArray(Mat mat, string imageFormat)
         {
             int[] param = new int[2] { 1, 80 };
             Cv2.ImEncode(imageFormat, mat, out byte[] btArr, param);

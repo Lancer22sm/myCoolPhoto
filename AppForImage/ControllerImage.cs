@@ -1,65 +1,62 @@
 ﻿using OpenCvSharp;
 using System;
 using System.Collections.Generic;
+using System.Windows;
 using System.Windows.Media.Imaging;
 
 namespace AppForImage
 {
-    internal class ControllerImage
+    public class ControllerImage
     {
-        private readonly MainWindow _mainWindow = new();
-        private readonly ModelImage _modelImage = new();
-        private readonly ControllerConvert _controllerConvert = new();
+        ModelImage _modelImage = new();
+        ControllerConvert _controllerConvert = new();
         static string[] args = Environment.GetCommandLineArgs();
-        public static string filepath = args[1];
+        static string filepath = args[1];
         Mat myMat = new Mat();
         Mat src = Cv2.ImRead(filepath);
-        BitmapImage bi = ImageDownload();
         Stack<Mat> stackChanges = new Stack<Mat>();
         static string imageFormat = FindMyImageFormat();
+        public event Action UseMatBlur;
 
         public ControllerImage()
         {
             _modelImage.AddNaturalImage(src);
-            _mainWindow.myImageBackground.Source = bi;
         }
-
+        public BitmapImage GetMyImage()
+        {
+            return _controllerConvert.MatToBitmap(_modelImage.GetChangeImage(), imageFormat);
+        }
         static string FindMyImageFormat()
         {
             string[] findImageForm = filepath.Split('.');
             return "." + findImageForm[findImageForm.Length - 1];
         }
-        static BitmapImage ImageDownload()
+        public BitmapImage ImageDownload()
         {
-            BitmapImage downloadImage = new();
-            downloadImage.BeginInit();
-            //downloadImage.UriSource = new Uri(filepath, UriKind.RelativeOrAbsolute);
-            downloadImage.UriSource = new Uri("C:/Users/Lancer/source/repos/AppForImage/AppForImage/Resources/myImage.jpg", UriKind.RelativeOrAbsolute);
-            downloadImage.EndInit();
+            return _controllerConvert.MatToBitmap(_modelImage.GetNaturalImage(), imageFormat);
+        }
+        public void MatBlur(int valueBlur)
+        {
 
-            return downloadImage;
+            Cv2.Blur(src, myMat, new OpenCvSharp.Size(valueBlur, valueBlur));
+            Mat copiesMat = new();
+            myMat.CopyTo(copiesMat);
+            PushStack(copiesMat);
+            UseMatBlur?.Invoke();
         }
-        public BitmapImage MatBlur(int valueBlur)
-        {
-            Cv2.Blur(src, myMat, new Size(valueBlur, valueBlur));
-            return _controllerConvert.MatToBitmap(myMat, imageFormat);
-        }
-        public void GetStack()
+        public BitmapImage GetStack()
         {
             if(stackChanges.Count > 0)
             {
                 Mat backMat = stackChanges.Pop();
                 _modelImage.ChangeImage(backMat);
-                _mainWindow.myImageBackground.Source = _controllerConvert.MatToBitmap(_modelImage.GetChangeImage(), imageFormat);
             }
+            return _controllerConvert.MatToBitmap(_modelImage.GetChangeImage(), imageFormat);
         }
-        public void PushStack()
+        public void PushStack(Mat copies)
         {
-            Mat copiesMat = new Mat();
-            myMat.CopyTo(copiesMat);
-            _modelImage.ChangeImage(copiesMat);
+            _modelImage.ChangeImage(copies);
             stackChanges.Push(_modelImage.GetChangeImage());
         }
-
     }
 }

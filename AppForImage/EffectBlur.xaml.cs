@@ -19,7 +19,7 @@ namespace AppForImage
     /// </summary>
     public partial class EffectBlur : Window
     {
-        ControllerImage _controller = new();
+        public event Action<double> MyeventBlurValueChanged;
         public EffectBlur()
         {
             InitializeComponent();
@@ -32,8 +32,7 @@ namespace AppForImage
 
         private void mySliderBlur_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            int valueBlur = Convert.ToInt32(mySliderBlur.Value);
-            _controller.MatBlur(valueBlur);
+            MyeventBlurValueChanged?.Invoke(mySliderBlur.Value);
         }
     }
 }
