@@ -15,24 +15,25 @@ using System.Windows.Shapes;
 namespace AppForImage
 {
     /// <summary>
-    /// Логика взаимодействия для TypersOfEffects.xaml
+    /// Логика взаимодействия для EffectBlur.xaml
     /// </summary>
-    public partial class TypesOfEffects : Window
+    public partial class EffectBlur : Window
     {
-        EffectBlur _effectBlur = new();
-        public TypesOfEffects()
+        ControllerImage _controller = new();
+        public EffectBlur()
         {
             InitializeComponent();
-        }
-
-        private void ButtonBlur_Click(object sender, RoutedEventArgs e)
-        {
-            _effectBlur.Show();
         }
 
         private void ButtonClose_Click(object sender, RoutedEventArgs e)
         {
             Hide();
+        }
+
+        private void mySliderBlur_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            int valueBlur = Convert.ToInt32(mySliderBlur.Value);
+            _controller.MatBlur(valueBlur);
         }
     }
 }
