@@ -17,11 +17,11 @@ namespace AppForImage
     /// <summary>
     /// Логика взаимодействия для TypersOfEffects.xaml
     /// </summary>
-    public partial class TypesOfEffects : Window
+    public partial class WindowTypesOfEffects : Window
     {
         private WindowEffectBlur _windowEffectBlur;
         private ControllerImage _controller;
-        public TypesOfEffects(ControllerImage controller, WindowEffectBlur effectblur)
+        public WindowTypesOfEffects(ControllerImage controller, WindowEffectBlur effectblur)
         {
             _controller = controller;
             _windowEffectBlur = effectblur;
@@ -48,6 +48,14 @@ namespace AppForImage
         private void ButtonClose_Click(object sender, RoutedEventArgs e)
         {
             Hide();
+        }
+
+        private void myGeneralBackground_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ChangedButton == MouseButton.Left)
+            {
+                DragMove();
+            }
         }
     }
 }

@@ -9,13 +9,13 @@ namespace AppForImage
     /// </summary>
     public partial class MainWindow : Window
     {
-        private readonly TypesOfEffects _typesOfEffects;
-        private readonly WindowEffectBlur _effectsBlur = new();
+        private readonly WindowTypesOfEffects _typesOfEffects;
+        private readonly WindowEffectBlur _windowEffectsBlur = new();
         private readonly ControllerImage _controller = new();
         public MainWindow()
         {
             InitializeComponent();
-            _typesOfEffects = new(_controller, _effectsBlur);
+            _typesOfEffects = new(_controller, _windowEffectsBlur);
             myImageBackground.Source = _controller.ImageDownload();
             _controller.UseMatBlur += ChangesImage;
         }
@@ -40,7 +40,7 @@ namespace AppForImage
 
         private void myWindow_Closed(object sender, EventArgs e)
         {
-            _effectsBlur.Close();
+            _windowEffectsBlur.Close();
             _typesOfEffects.Close();
         }
     }
