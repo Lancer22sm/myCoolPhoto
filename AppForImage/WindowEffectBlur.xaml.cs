@@ -17,10 +17,12 @@ namespace AppForImage
     /// <summary>
     /// Логика взаимодействия для EffectBlur.xaml
     /// </summary>
-    public partial class EffectBlur : Window
+    public partial class WindowEffectBlur : Window
     {
         public event Action<double> MyeventBlurValueChanged;
-        public EffectBlur()
+        public event Action MyEventSavedImage;
+        private bool isSaved = true;
+        public WindowEffectBlur()
         {
             InitializeComponent();
         }
@@ -33,6 +35,20 @@ namespace AppForImage
         private void mySliderBlur_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             MyeventBlurValueChanged?.Invoke(mySliderBlur.Value);
+        }
+
+        private void mySliderBlur_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (isSaved)
+            {
+                MyEventSavedImage?.Invoke();
+                isSaved = false;
+            }
+        }
+
+        private void mySliderBlur_PreviewMouseUp(object sender, MouseButtonEventArgs e)
+        {
+            isSaved = true;
         }
     }
 }

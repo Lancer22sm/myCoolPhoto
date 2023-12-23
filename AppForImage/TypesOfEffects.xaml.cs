@@ -19,13 +19,14 @@ namespace AppForImage
     /// </summary>
     public partial class TypesOfEffects : Window
     {
-        private EffectBlur _effectBlur;
+        private WindowEffectBlur _windowEffectBlur;
         private ControllerImage _controller;
-        public TypesOfEffects(ControllerImage controller, EffectBlur effectblur)
+        public TypesOfEffects(ControllerImage controller, WindowEffectBlur effectblur)
         {
             _controller = controller;
-            _effectBlur = effectblur;
-            _effectBlur.MyeventBlurValueChanged += OnValueChange;
+            _windowEffectBlur = effectblur;
+            _windowEffectBlur.MyeventBlurValueChanged += OnValueChange;
+            _windowEffectBlur.MyEventSavedImage += OnSavedImage;
             InitializeComponent();
         }
 
@@ -33,10 +34,15 @@ namespace AppForImage
         {
             _controller.MatBlur(Convert.ToInt32(value));
         }
+        private void OnSavedImage()
+        {
+            _controller.ChangeImageForEffects(_controller.GetMyChangedImage());
+            _controller.PushStack();
+        }
 
         private void ButtonBlur_Click(object sender, RoutedEventArgs e)
         {
-            _effectBlur.Show();
+            _windowEffectBlur.Show();
         }
 
         private void ButtonClose_Click(object sender, RoutedEventArgs e)

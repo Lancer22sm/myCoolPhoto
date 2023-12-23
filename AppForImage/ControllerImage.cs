@@ -21,10 +21,19 @@ namespace AppForImage
         public ControllerImage()
         {
             _modelImage.AddNaturalImage(src);
+            _modelImage.ChangeImage(src);
+        }
+        public Mat GetMyChangedImage()
+        {
+            return _modelImage.GetChangedImage();
+        }
+        public void ChangeImageForEffects(Mat changedImage)
+        {
+            _modelImage.ChangeImage(changedImage);
         }
         public BitmapImage GetMyImage()
         {
-            return _controllerConvert.MatToBitmap(_modelImage.GetChangeImage(), imageFormat);
+            return _controllerConvert.MatToBitmap(_modelImage.GetChangedImage(), imageFormat);
         }
         static string FindMyImageFormat()
         {
@@ -41,7 +50,7 @@ namespace AppForImage
             Cv2.Blur(src, myMat, new OpenCvSharp.Size(valueBlur, valueBlur));
             Mat copiesMat = new();
             myMat.CopyTo(copiesMat);
-            PushStack(copiesMat);
+            _modelImage.ChangeImage(copiesMat);
             UseMatBlur?.Invoke();
         }
         public BitmapImage GetStack()
@@ -51,12 +60,11 @@ namespace AppForImage
                 Mat backMat = stackChanges.Pop();
                 _modelImage.ChangeImage(backMat);
             }
-            return _controllerConvert.MatToBitmap(_modelImage.GetChangeImage(), imageFormat);
+            return _controllerConvert.MatToBitmap(_modelImage.GetChangedImage(), imageFormat);
         }
-        public void PushStack(Mat copies)
+        public void PushStack()
         {
-            _modelImage.ChangeImage(copies);
-            stackChanges.Push(_modelImage.GetChangeImage());
+            stackChanges.Push(_modelImage.GetChangedImage());
         }
     }
 }

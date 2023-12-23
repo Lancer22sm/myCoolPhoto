@@ -25,7 +25,7 @@ namespace AppForImage
         {
             changeImage = changedImage;
         }
-        public Mat GetChangeImage()
+        public Mat GetChangedImage()
         {
             return changeImage;
         }

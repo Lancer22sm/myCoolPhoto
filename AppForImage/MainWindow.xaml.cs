@@ -10,7 +10,7 @@ namespace AppForImage
     public partial class MainWindow : Window
     {
         private readonly TypesOfEffects _typesOfEffects;
-        private readonly EffectBlur _effectsBlur = new();
+        private readonly WindowEffectBlur _effectsBlur = new();
         private readonly ControllerImage _controller = new();
         public MainWindow()
         {
