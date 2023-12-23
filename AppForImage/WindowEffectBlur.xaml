@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AppForImage"
         mc:Ignorable="d"
-        Title="EffectBlur" Height="350" WindowStyle="None" Width="150" Background="#FF969696">
+        Title="EffectBlur" Height="350" WindowStyle="None" Width="150">
     <Window.Resources>
         <Style TargetType="Button">
             <Setter Property="Background" Value="MediumPurple"/>
@@ -105,12 +105,24 @@
             </Style.Triggers>
         </Style>
     </Window.Resources>
-    <Grid Background="#FF969696" MouseDown="Grid_MouseDown">
+    <Window.Background>
+        <RadialGradientBrush SpreadMethod="Pad" RadiusX="0.9" RadiusY="0.9" GradientOrigin="0.5,0.5" Center="0.5,0.5">
+            <GradientStop Color="Black" Offset="0"/>
+            <GradientStop Color="#FF5B5B5B" Offset="1"/>
+        </RadialGradientBrush>
+    </Window.Background>
+    <Grid MouseDown="Grid_MouseDown">
+        <Grid.Background>
+            <RadialGradientBrush SpreadMethod="Pad" RadiusX="0.9" RadiusY="0.9" GradientOrigin="0.5,0.5" Center="0.5,0.5">
+                <GradientStop Color="Black" Offset="0"/>
+                <GradientStop Color="#FF5B5B5B" Offset="1"/>
+            </RadialGradientBrush>
+        </Grid.Background>
         <Button x:Name="myButtonClose" Content="___" Style="{StaticResource HoverButtonStyle}" HorizontalAlignment="Right" Margin="0,5,5,0" VerticalAlignment="Top" RenderTransformOrigin="-3.786,0.741" Height="15" Width="30" Click="ButtonClose_Click" FontWeight="Bold" FontSize="8"/>
         <StackPanel x:Name="myStackPanel" Margin="0,20,0,0" Width="{Binding ElementName=window, Path=Width}" Height="{Binding ElementName=window, Path=Height}">
-            <Label HorizontalAlignment="Center" FontWeight="Bold">Blur</Label>
+            <Label HorizontalAlignment="Center" FontWeight="Bold" Foreground="#FFDADADA">Blur</Label>
             <Slider x:Name="mySliderBlur" Width="{Binding ElementName=myStackPanel, Path=Width}" Height="{Binding ElementName=myStackPanel, Path=Height}" Style="{StaticResource Horizontal_Slider}" HorizontalAlignment="Center" MinHeight="20" Margin="0,0,0,0" VerticalAlignment="Top" MinWidth="100" RenderTransformOrigin="1,0" Minimum="1" Maximum="100" Interval="1" ValueChanged="mySliderBlur_ValueChanged" PreviewMouseDown="mySliderBlur_PreviewMouseDown" PreviewMouseUp="mySliderBlur_PreviewMouseUp"/>
-            <Label HorizontalAlignment="Center" FontWeight="Bold">MedianBlur</Label>
+            <Label HorizontalAlignment="Center" FontWeight="Bold" Foreground="#FFDADADA">MedianBlur</Label>
             <Slider x:Name="mySliderMedianBlur" Width="{Binding ElementName=myStackPanel, Path=Width}" Height="{Binding ElementName=myStackPanel, Path=Height}" Style="{StaticResource Horizontal_Slider}" HorizontalAlignment="Center" MinHeight="20" Margin="0,0,0,0" VerticalAlignment="Top" MinWidth="100" RenderTransformOrigin="1,0" Minimum="1" Maximum="100" Interval="1" ValueChanged="mySliderMedianBlur_ValueChanged" PreviewMouseDown="mySliderMedianBlur_PreviewMouseDown" PreviewMouseUp="mySliderMedianBlur_PreviewMouseUp"/>
 
         </StackPanel>

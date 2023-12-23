@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AppForImage"
         mc:Ignorable="d"
-        Title="4K Photo" Height="450" Width="800" Background="#FF969696" Icon="/Generalpng.png" PreviewKeyDown="myWindow_PreviewKeyDown" Closed="myWindow_Closed">
+        Title="4K Photo" Height="450" Width="800" Icon="/Generalpng.png" PreviewKeyDown="myWindow_PreviewKeyDown" Closed="myWindow_Closed">
     <Window.Resources>
         <Style TargetType="Button">
             <Setter Property="Background" Value="MediumPurple"/>
@@ -30,11 +30,23 @@
             </Style.Triggers>
         </Style>
     </Window.Resources>
-    <Grid x:Name="myGeneralBackground" Background="#FF969696">
+    <Window.Background>
+        <RadialGradientBrush SpreadMethod="Pad" RadiusX="0.9" RadiusY="0.9" GradientOrigin="0.5,0.5" Center="0.5,0.5">
+            <GradientStop Color="Black" Offset="0"/>
+            <GradientStop Color="#FF5B5B5B" Offset="1"/>
+        </RadialGradientBrush>
+    </Window.Background>
+    <Grid x:Name="myGeneralBackground">
+        <Grid.Background>
+            <RadialGradientBrush SpreadMethod="Pad" RadiusX="0.9" RadiusY="0.9" GradientOrigin="0.5,0.5" Center="0.5,0.5">
+                <GradientStop Color="Black" Offset="0"/>
+                <GradientStop Color="#FF5B5B5B" Offset="1"/>
+            </RadialGradientBrush>
+        </Grid.Background>
         <Viewbox Stretch="Uniform">
             <Image x:Name="myImageBackground" Width="{Binding ElementName=window, Path=Width}" Height="{Binding ElementName=window, Path=Height}" HorizontalAlignment="Left" Margin="20,20,20,20" VerticalAlignment="Top" Stretch="Fill"/>
         </Viewbox>
-        <Button x:Name="myButtonEffects" Content="Эффекты" Style="{StaticResource HoverButtonStyle}" HorizontalAlignment="Left" Margin="5,0,0,5" VerticalAlignment="Bottom" RenderTransformOrigin="-3.786,0.741" Height="30" Width="90" Click="ButtonEffects_Click" FontSize="16" FontWeight="Bold"/>
+        <Button x:Name="myButtonEffects" Content="Эффекты" Style="{StaticResource HoverButtonStyle}" HorizontalAlignment="Left" Margin="5,0,0,5" VerticalAlignment="Bottom" RenderTransformOrigin="-3.786,0.741" Height="30" Width="90" Click="ButtonEffects_Click" FontSize="16" FontWeight="Bold" Foreground="#FFDADADA"/>
 
     </Grid>
 </Window>
