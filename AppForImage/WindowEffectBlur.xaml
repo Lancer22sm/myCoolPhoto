@@ -9,7 +9,7 @@
     <Window.Resources>
         <Style TargetType="Button">
             <Setter Property="Background" Value="MediumPurple"/>
-            <Setter Property="Opacity" Value="0.2"/>
+            <Setter Property="Opacity" Value="0.5"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
@@ -25,7 +25,7 @@
             <Style.Triggers>
                 <Trigger Property="IsMouseOver" Value="True">
                     <Setter Property="Background" Value="DarkCyan"/>
-                    <Setter Property="Opacity" Value="0.7"/>
+                    <Setter Property="Opacity" Value="0.9"/>
                 </Trigger>
             </Style.Triggers>
         </Style>
@@ -118,12 +118,12 @@
                 <GradientStop Color="#FF5B5B5B" Offset="1"/>
             </RadialGradientBrush>
         </Grid.Background>
-        <Button x:Name="myButtonClose" Content="___" Style="{StaticResource HoverButtonStyle}" HorizontalAlignment="Right" Margin="0,5,5,0" VerticalAlignment="Top" RenderTransformOrigin="-3.786,0.741" Height="15" Width="30" Click="ButtonClose_Click" FontWeight="Bold" FontSize="8"/>
+        <Button x:Name="myButtonClose" Content="___" Style="{StaticResource HoverButtonStyle}" HorizontalAlignment="Right" Margin="0,5,5,0" VerticalAlignment="Top" RenderTransformOrigin="-3.786,0.741" Height="15" Width="30" Click="ButtonClose_Click" FontWeight="Bold" FontSize="8" Foreground="#FFDADADA"/>
         <StackPanel x:Name="myStackPanel" Margin="0,20,0,0" Width="{Binding ElementName=window, Path=Width}" Height="{Binding ElementName=window, Path=Height}">
             <Label HorizontalAlignment="Center" FontWeight="Bold" Foreground="#FFDADADA">Blur</Label>
-            <Slider x:Name="mySliderBlur" Width="{Binding ElementName=myStackPanel, Path=Width}" Height="{Binding ElementName=myStackPanel, Path=Height}" Style="{StaticResource Horizontal_Slider}" HorizontalAlignment="Center" MinHeight="20" Margin="0,0,0,0" VerticalAlignment="Top" MinWidth="100" RenderTransformOrigin="1,0" Minimum="1" Maximum="100" Interval="1" ValueChanged="mySliderBlur_ValueChanged" PreviewMouseDown="mySliderBlur_PreviewMouseDown" PreviewMouseUp="mySliderBlur_PreviewMouseUp"/>
+            <Slider x:Name="mySliderBlur" Width="{Binding ElementName=myStackPanel, Path=Width}" Height="{Binding ElementName=myStackPanel, Path=Height}" Style="{StaticResource Horizontal_Slider}" HorizontalAlignment="Center" MinHeight="20" Margin="0,0,0,0" VerticalAlignment="Top" MinWidth="100" RenderTransformOrigin="1,0" Minimum="1" Maximum="100" ValueChanged="mySliderBlur_ValueChanged" PreviewMouseDown="mySliderBlur_PreviewMouseDown" PreviewMouseUp="mySliderBlur_PreviewMouseUp"/>
             <Label HorizontalAlignment="Center" FontWeight="Bold" Foreground="#FFDADADA">MedianBlur</Label>
-            <Slider x:Name="mySliderMedianBlur" Width="{Binding ElementName=myStackPanel, Path=Width}" Height="{Binding ElementName=myStackPanel, Path=Height}" Style="{StaticResource Horizontal_Slider}" HorizontalAlignment="Center" MinHeight="20" Margin="0,0,0,0" VerticalAlignment="Top" MinWidth="100" RenderTransformOrigin="1,0" Minimum="1" Maximum="100" Interval="1" ValueChanged="mySliderMedianBlur_ValueChanged" PreviewMouseDown="mySliderMedianBlur_PreviewMouseDown" PreviewMouseUp="mySliderMedianBlur_PreviewMouseUp"/>
+            <Slider x:Name="mySliderMedianBlur" Width="{Binding ElementName=myStackPanel, Path=Width}" Height="{Binding ElementName=myStackPanel, Path=Height}" Style="{StaticResource Horizontal_Slider}" HorizontalAlignment="Center" MinHeight="20" Margin="0,0,0,0" VerticalAlignment="Top" MinWidth="100" RenderTransformOrigin="1,0" Minimum="1" Maximum="100" ValueChanged="mySliderMedianBlur_ValueChanged" PreviewMouseDown="mySliderMedianBlur_PreviewMouseDown" PreviewMouseUp="mySliderMedianBlur_PreviewMouseUp"/>
 
         </StackPanel>
     </Grid>

@@ -10,8 +10,10 @@ namespace AppForImage
     {
         ModelImage _modelImage = new();
         ControllerConvert _controllerConvert = new();
+        UseEffectBlur _useEffectBlur;
         static string[] args = Environment.GetCommandLineArgs();
         static string filepath = args[1];
+        //static string filepath = "C:/Users/Lancer/Pictures/GameCenter/Warface/Warface_sample.jpg";
         Mat src = Cv2.ImRead(filepath);
         Stack<Mat> stackChanges = new Stack<Mat>();
         static string imageFormat = FindMyImageFormat();
@@ -21,6 +23,7 @@ namespace AppForImage
         {
             _modelImage.AddNaturalImage(src);
             _modelImage.ChangeImage(src);
+            _useEffectBlur = new(src);
         }
         public Mat GetMyChangedImage()
         {
@@ -29,6 +32,7 @@ namespace AppForImage
         public void ChangeImageForEffects(Mat changedImage)
         {
             _modelImage.ChangeImage(changedImage);
+            _useEffectBlur.ChangeSrcForEffect(_modelImage.GetChangedImage());
         }
         public BitmapImage GetMyImage()
         {
@@ -45,21 +49,13 @@ namespace AppForImage
         }
         public void MatBlur(int valueBlur)
         {
-            Mat source = _modelImage.GetChangedImage().Clone();
-            Mat newMat = new Mat();
-            Cv2.Blur(source, newMat, new OpenCvSharp.Size(valueBlur, valueBlur));
-            Mat copiesMat = new();
-            newMat.CopyTo(copiesMat);
+            Mat copiesMat = _useEffectBlur.GeneralEffect(valueBlur);
             _modelImage.ChangeImage(copiesMat);
             UseMatBlur?.Invoke();
         }
         public void MedianBlur(int valueBlur)
         {
-            Mat source = _modelImage.GetChangedImage().Clone();
-            Mat newMat = new Mat();
-            Cv2.MedianBlur(source, newMat, valueBlur);
-            Mat copiesMat = new();
-            newMat.CopyTo(copiesMat);
+            Mat copiesMat = _useEffectBlur.MedianBlur(valueBlur);
             _modelImage.ChangeImage(copiesMat);
             UseMatBlur?.Invoke();
         }

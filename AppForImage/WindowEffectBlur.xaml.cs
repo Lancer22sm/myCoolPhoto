@@ -53,7 +53,7 @@ namespace AppForImage
         }
         private void mySliderMedianBlur_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            MyeventBlurValueChanged?.Invoke(mySliderMedianBlur.Value);
+            MyeventMedianBlurValueChanged?.Invoke(mySliderMedianBlur.Value);
         }
 
         private void mySliderMedianBlur_PreviewMouseDown(object sender, MouseButtonEventArgs e)

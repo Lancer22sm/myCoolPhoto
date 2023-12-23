@@ -37,7 +37,12 @@ namespace AppForImage
         }
         private void OnValueMedianBlurChange(double value)
         {
-            _controller.MedianBlur(Convert.ToInt32(value));
+            int ticks = Convert.ToInt32(value);
+            if(ticks % 2 == 0)
+            {
+                ticks++;
+            }
+            _controller.MedianBlur(ticks);
         }
         private void OnSavedImage()
         {
