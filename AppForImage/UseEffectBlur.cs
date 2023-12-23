@@ -22,6 +22,23 @@ namespace AppForImage
             sourceImage = src;
         }
 
+        public Mat BoxFilter(int valueBlur)
+        {
+            Cv2.BoxFilter(sourceImage, UsebleImage, UsebleImage.Depth(), new OpenCvSharp.Size(valueBlur, valueBlur));
+            Mat copiesMat = new();
+            UsebleImage.CopyTo(copiesMat);
+            return copiesMat;
+        }
+
+        public Mat BilateralFilter(int valueBlur)
+        {
+            double valuePixels = Convert.ToDouble(valueBlur);
+            Cv2.BilateralFilter(sourceImage, UsebleImage, valueBlur, valuePixels, valuePixels);
+            Mat copiesMat = new();
+            UsebleImage.CopyTo(copiesMat);
+            return copiesMat;
+        }
+
         public Mat GeneralEffect(int valueBlur)
         {
             Cv2.Blur(sourceImage, UsebleImage, new OpenCvSharp.Size(valueBlur, valueBlur));

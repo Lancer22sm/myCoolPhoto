@@ -19,8 +19,10 @@ namespace AppForImage
     /// </summary>
     public partial class WindowEffectBlur : Window
     {
-        public event Action<double> MyeventBlurValueChanged;
-        public event Action<double> MyeventMedianBlurValueChanged;
+        public event Action<double> MyEventBlurValueChanged;
+        public event Action<double> MyEventMedianBlurValueChanged;
+        public event Action<double> MyEventBoxFilterValueChanged;
+        public event Action<double> MyEventBilateralFilterValueChanged;
         public event Action MyEventSavedImage;
         private bool isSaved = true;
         public WindowEffectBlur()
@@ -35,7 +37,7 @@ namespace AppForImage
 
         private void mySliderBlur_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            MyeventBlurValueChanged?.Invoke(mySliderBlur.Value);
+            MyEventBlurValueChanged?.Invoke(mySliderBlur.Value);
         }
 
         private void mySliderBlur_PreviewMouseDown(object sender, MouseButtonEventArgs e)
@@ -53,7 +55,7 @@ namespace AppForImage
         }
         private void mySliderMedianBlur_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            MyeventMedianBlurValueChanged?.Invoke(mySliderMedianBlur.Value);
+            MyEventMedianBlurValueChanged?.Invoke(mySliderMedianBlur.Value);
         }
 
         private void mySliderMedianBlur_PreviewMouseDown(object sender, MouseButtonEventArgs e)
@@ -76,6 +78,40 @@ namespace AppForImage
             {
                 DragMove();
             }
+        }
+
+        private void mySliderBoxFilter_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            MyEventBoxFilterValueChanged?.Invoke(mySliderBoxFilter.Value);
+        }
+
+        private void mySliderBoxFilter_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (isSaved)
+            {
+                MyEventSavedImage?.Invoke();
+                isSaved = false;
+            }
+        }
+
+        private void mySliderBoxFilter_PreviewMouseUp(object sender, MouseButtonEventArgs e)
+        {
+            isSaved = true;
+        }
+
+        private void mySliderBilateralFilter_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (isSaved)
+            {
+                MyEventSavedImage?.Invoke();
+                isSaved = false;
+            }
+        }
+
+        private void mySliderBilateralFilter_PreviewMouseUp(object sender, MouseButtonEventArgs e)
+        {
+            isSaved = true;
+            MyEventBilateralFilterValueChanged?.Invoke(mySliderBilateralFilter.Value);
         }
     }
 }

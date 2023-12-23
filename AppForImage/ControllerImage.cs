@@ -53,6 +53,18 @@ namespace AppForImage
             _modelImage.ChangeImage(copiesMat);
             UseMatBlur?.Invoke();
         }
+        public void BilateralFilter(int valueBlur)
+        {
+            Mat copiesMat = _useEffectBlur.BilateralFilter(valueBlur);
+            _modelImage.ChangeImage(copiesMat);
+            UseMatBlur?.Invoke();
+        }
+        public void BoxFilter(int valueBlur)
+        {
+            Mat copiesMat = _useEffectBlur.BoxFilter(valueBlur);
+            _modelImage.ChangeImage(copiesMat);
+            UseMatBlur?.Invoke();
+        }
         public void MedianBlur(int valueBlur)
         {
             Mat copiesMat = _useEffectBlur.MedianBlur(valueBlur);
