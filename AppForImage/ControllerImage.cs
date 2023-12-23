@@ -12,7 +12,6 @@ namespace AppForImage
         ControllerConvert _controllerConvert = new();
         static string[] args = Environment.GetCommandLineArgs();
         static string filepath = args[1];
-        Mat myMat = new Mat();
         Mat src = Cv2.ImRead(filepath);
         Stack<Mat> stackChanges = new Stack<Mat>();
         static string imageFormat = FindMyImageFormat();
@@ -46,10 +45,21 @@ namespace AppForImage
         }
         public void MatBlur(int valueBlur)
         {
-
-            Cv2.Blur(src, myMat, new OpenCvSharp.Size(valueBlur, valueBlur));
+            Mat source = _modelImage.GetChangedImage().Clone();
+            Mat newMat = new Mat();
+            Cv2.Blur(source, newMat, new OpenCvSharp.Size(valueBlur, valueBlur));
             Mat copiesMat = new();
-            myMat.CopyTo(copiesMat);
+            newMat.CopyTo(copiesMat);
+            _modelImage.ChangeImage(copiesMat);
+            UseMatBlur?.Invoke();
+        }
+        public void MedianBlur(int valueBlur)
+        {
+            Mat source = _modelImage.GetChangedImage().Clone();
+            Mat newMat = new Mat();
+            Cv2.MedianBlur(source, newMat, valueBlur);
+            Mat copiesMat = new();
+            newMat.CopyTo(copiesMat);
             _modelImage.ChangeImage(copiesMat);
             UseMatBlur?.Invoke();
         }

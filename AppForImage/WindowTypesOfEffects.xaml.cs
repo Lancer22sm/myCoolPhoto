@@ -25,14 +25,19 @@ namespace AppForImage
         {
             _controller = controller;
             _windowEffectBlur = effectblur;
-            _windowEffectBlur.MyeventBlurValueChanged += OnValueChange;
+            _windowEffectBlur.MyeventBlurValueChanged += OnValueBlurChange;
+            _windowEffectBlur.MyeventMedianBlurValueChanged += OnValueMedianBlurChange;
             _windowEffectBlur.MyEventSavedImage += OnSavedImage;
             InitializeComponent();
         }
 
-        private void OnValueChange(double value)
+        private void OnValueBlurChange(double value)
         {
             _controller.MatBlur(Convert.ToInt32(value));
+        }
+        private void OnValueMedianBlurChange(double value)
+        {
+            _controller.MedianBlur(Convert.ToInt32(value));
         }
         private void OnSavedImage()
         {

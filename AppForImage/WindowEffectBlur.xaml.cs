@@ -20,6 +20,7 @@ namespace AppForImage
     public partial class WindowEffectBlur : Window
     {
         public event Action<double> MyeventBlurValueChanged;
+        public event Action<double> MyeventMedianBlurValueChanged;
         public event Action MyEventSavedImage;
         private bool isSaved = true;
         public WindowEffectBlur()
@@ -47,6 +48,24 @@ namespace AppForImage
         }
 
         private void mySliderBlur_PreviewMouseUp(object sender, MouseButtonEventArgs e)
+        {
+            isSaved = true;
+        }
+        private void mySliderMedianBlur_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            MyeventBlurValueChanged?.Invoke(mySliderMedianBlur.Value);
+        }
+
+        private void mySliderMedianBlur_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (isSaved)
+            {
+                MyEventSavedImage?.Invoke();
+                isSaved = false;
+            }
+        }
+
+        private void mySliderMedianBlur_PreviewMouseUp(object sender, MouseButtonEventArgs e)
         {
             isSaved = true;
         }
