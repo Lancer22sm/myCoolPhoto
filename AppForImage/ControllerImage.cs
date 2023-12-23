@@ -15,7 +15,7 @@ namespace AppForImage
         static string filepath = args[1];
         //static string filepath = "C:/Users/Lancer/Pictures/GameCenter/Warface/Warface_sample.jpg";
         Mat src = Cv2.ImRead(filepath);
-        Stack<Mat> stackChanges = new Stack<Mat>();
+        Stack<Mat> stackChanges = new();
         static string imageFormat = FindMyImageFormat();
         public event Action UseMatBlur;
 

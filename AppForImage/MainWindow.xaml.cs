@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Input;
 
@@ -34,6 +35,24 @@ namespace AppForImage
             if (e.Key == Key.Z && e.KeyboardDevice.Modifiers == ModifierKeys.Control)
             {
                 // код при нажатии Ctrl+Z
+                if (_windowEffectsBlur.stackChangiesHistory.Count == 0) return;
+                Stack<double> myHistory = _windowEffectsBlur.stackChangiesHistory.Pop();
+                if (myHistory == _windowEffectsBlur.stackBlurValue)
+                {
+                    _windowEffectsBlur.mySliderBlur.Value = myHistory.Pop();
+                }
+                else if(myHistory == _windowEffectsBlur.stackMedianBlurValue) 
+                {
+                    _windowEffectsBlur.mySliderMedianBlur.Value = myHistory.Pop();
+                }
+                else if(myHistory == _windowEffectsBlur.stackBoxFilterValue)
+                {
+                    _windowEffectsBlur.mySliderBoxFilter.Value = myHistory.Pop();
+                }
+                else if(myHistory == _windowEffectsBlur.stackBilateralFilterValue)
+                {
+                    _windowEffectsBlur.mySliderBilateralFilter.Value = myHistory.Pop();
+                }
                 myImageBackground.Source = _controller.GetStack();
             }
         }

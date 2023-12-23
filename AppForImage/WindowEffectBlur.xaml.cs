@@ -25,6 +25,12 @@ namespace AppForImage
         public event Action<double> MyEventBilateralFilterValueChanged;
         public event Action MyEventSavedImage;
         private bool isSaved = true;
+        public Stack<double> stackBlurValue = new();
+        public Stack<double> stackMedianBlurValue = new();
+        public Stack<double> stackBoxFilterValue = new();
+        public Stack<double> stackBilateralFilterValue = new();
+        public Stack<Stack<double>> stackChangiesHistory = new();
+
         public WindowEffectBlur()
         {
             InitializeComponent();
@@ -44,6 +50,8 @@ namespace AppForImage
         {
             if (isSaved)
             {
+                stackBlurValue.Push(mySliderBlur.Value);
+                stackChangiesHistory.Push(stackBlurValue);
                 MyEventSavedImage?.Invoke();
                 isSaved = false;
             }
@@ -62,6 +70,8 @@ namespace AppForImage
         {
             if (isSaved)
             {
+                stackMedianBlurValue.Push(mySliderMedianBlur.Value);
+                stackChangiesHistory.Push(stackMedianBlurValue);
                 MyEventSavedImage?.Invoke();
                 isSaved = false;
             }
@@ -89,6 +99,8 @@ namespace AppForImage
         {
             if (isSaved)
             {
+                stackBoxFilterValue.Push(mySliderBoxFilter.Value);
+                stackChangiesHistory.Push(stackBoxFilterValue);
                 MyEventSavedImage?.Invoke();
                 isSaved = false;
             }
@@ -103,6 +115,8 @@ namespace AppForImage
         {
             if (isSaved)
             {
+                stackBilateralFilterValue.Push(mySliderBilateralFilter.Value);
+                stackChangiesHistory.Push(stackBilateralFilterValue);
                 MyEventSavedImage?.Invoke();
                 isSaved = false;
             }
