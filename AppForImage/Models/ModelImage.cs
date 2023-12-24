@@ -6,7 +6,7 @@ using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using OpenCvSharp;
 
-namespace AppForImage
+namespace AppForImage.Models
 {
     class ModelImage
     {
@@ -21,7 +21,7 @@ namespace AppForImage
         {
             return myImage;
         }
-        public void ChangeImage(Mat changedImage) 
+        public void ChangeImage(Mat changedImage)
         {
             changeImage = changedImage;
         }
@@ -29,6 +29,6 @@ namespace AppForImage
         {
             return changeImage;
         }
-        
+
     }
 }

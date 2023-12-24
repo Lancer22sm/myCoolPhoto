@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media.Imaging;
 
-namespace AppForImage
+namespace AppForImage.Controllers
 {
     public class ControllerConvert
     {

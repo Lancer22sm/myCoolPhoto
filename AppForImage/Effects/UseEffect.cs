@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AppForImage
+namespace AppForImage.Effects
 {
-    public  class UseEffect
+    public class UseEffect
     {
         Mat sourceImage;
         Mat UsebleImage;
@@ -15,6 +15,10 @@ namespace AppForImage
         public Mat GeneralEffect()
         {
             return UsebleImage;
+        }
+        public void ChangeSrcForEffect()
+        {
+
         }
     }
 }

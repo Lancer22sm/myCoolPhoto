@@ -1,17 +1,20 @@
-﻿using OpenCvSharp;
+﻿using AppForImage.Effects;
+using AppForImage.Models;
+using OpenCvSharp;
 using System;
 using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Windows;
 using System.Windows.Media.Imaging;
 
-namespace AppForImage
+namespace AppForImage.Controllers
 {
     public class ControllerImage
     {
         ModelImage _modelImage = new();
         ControllerConvert _controllerConvert = new();
         UseEffectBlur _useEffectBlur;
+        UseEffectColorize _useEffectColorize;
         static string[] args = Environment.GetCommandLineArgs();
         static string filepath = args[1];
         //static string filepath = "C:/Users/Lancer/Pictures/GameCenter/Warface/Warface_sample.jpg";
@@ -25,22 +28,7 @@ namespace AppForImage
             _modelImage.AddNaturalImage(src);
             _modelImage.ChangeImage(src);
             _useEffectBlur = new(src);
-        }
-        public void ChangeColor()
-        {
-            Mat dst = _modelImage.GetChangedImage();
-            for (int y = 0; y < dst.Height; y++)
-            {
-                for (int x = 0; x < dst.Width; x++)
-                {
-                    Vec3b bgr = dst.At<Vec3b>(y, x);
-                    bgr[0] = 255;
-                    //bgr[1] = bgr[2];
-                    dst.At<Vec3b>(y, x) = bgr;
-                }
-            }
-            _modelImage.ChangeImage(dst);
-            IsUseMatEffect?.Invoke();
+            _useEffectColorize = new(src);
         }
         public Mat GetMyChangedImage()
         {
@@ -50,6 +38,7 @@ namespace AppForImage
         {
             _modelImage.ChangeImage(changedImage);
             _useEffectBlur.ChangeSrcForEffect(_modelImage.GetChangedImage());
+            _useEffectColorize.ChangeSrcForEffect(_modelImage.GetChangedImage());
         }
         public BitmapImage GetMyImage()
         {
@@ -67,6 +56,15 @@ namespace AppForImage
         public void MatBlur(int valueBlur)
         {
             Mat copiesMat = _useEffectBlur.GeneralEffect(valueBlur);
+            _modelImage.ChangeImage(copiesMat);
+            IsUseMatEffect?.Invoke();
+        }
+        public void ChangeColor(int Redvalue, int Greenvalue, int Bluevalue)
+        {
+            byte valueRed = (byte)Redvalue;
+            byte valueGreen = (byte)Greenvalue;
+            byte valueBlue = (byte)Bluevalue;
+            Mat copiesMat = _useEffectColorize.GeneralEffect(valueRed, valueGreen, valueBlue);
             _modelImage.ChangeImage(copiesMat);
             IsUseMatEffect?.Invoke();
         }
@@ -90,7 +88,7 @@ namespace AppForImage
         }
         public BitmapImage GetStack()
         {
-            if(stackChanges.Count > 0)
+            if (stackChanges.Count > 0)
             {
                 Mat backMat = stackChanges.Pop();
                 _modelImage.ChangeImage(backMat);

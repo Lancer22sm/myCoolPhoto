@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace AppForImage
+namespace AppForImage.Effects
 {
     public class UseEffectBlur : UseEffect
     {
@@ -20,6 +20,14 @@ namespace AppForImage
         public void ChangeSrcForEffect(Mat src)
         {
             sourceImage = src;
+        }
+
+        public Mat GeneralEffect(int valueBlur)
+        {
+            Cv2.Blur(sourceImage, UsebleImage, new OpenCvSharp.Size(valueBlur, valueBlur));
+            Mat copiesMat = new();
+            UsebleImage.CopyTo(copiesMat);
+            return copiesMat;
         }
 
         public Mat BoxFilter(int valueBlur)
@@ -39,13 +47,6 @@ namespace AppForImage
             return copiesMat;
         }
 
-        public Mat GeneralEffect(int valueBlur)
-        {
-            Cv2.Blur(sourceImage, UsebleImage, new OpenCvSharp.Size(valueBlur, valueBlur));
-            Mat copiesMat = new();
-            UsebleImage.CopyTo(copiesMat);
-            return copiesMat;
-        }
         public Mat MedianBlur(int valueBlur)
         {
             Cv2.MedianBlur(sourceImage, UsebleImage, valueBlur);

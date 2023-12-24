@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using AppForImage.Controllers;
 
 namespace AppForImage
 {
@@ -37,14 +38,27 @@ namespace AppForImage
             if (e.Key == Key.Z && e.KeyboardDevice.Modifiers == ModifierKeys.Control)
             {
                 // код при нажатии Ctrl+Z
-                if (_windowEffectsBlur.stackChangiesHistory.Count == 0) return;
-                Stack<double> myHistory = _windowEffectsBlur.stackChangiesHistory.Pop();
-                Dictionary<Stack<double>, Slider > dictionaryBlur = _windowEffectsBlur.dictionaryStackSliders;
-                foreach(var dBlur in dictionaryBlur)
+                if (_windowEffectsBlur.stackChangiesHistory.Count > 0)
                 {
-                    if(dBlur.Key == myHistory)
+                    Stack<double> myHistory = _windowEffectsBlur.stackChangiesHistory.Pop();
+                    Dictionary<Stack<double>, Slider> dictionary = _windowEffectsBlur.dictionaryStackSliders;
+                    foreach (var item in dictionary)
                     {
-                        dBlur.Value.Value = myHistory.Pop();
+                        if (item.Key == myHistory)
+                        {
+                            item.Value.Value = myHistory.Pop();
+                        }
+                    }
+                } else if (_windowEffectColorize.stackChangiesHistory.Count > 0)
+                {
+                    Stack<double> myHistory = _windowEffectColorize.stackChangiesHistory.Pop();
+                    Dictionary<Stack<double>, Slider> dictionary = _windowEffectColorize.dictionaryStackSliders;
+                    foreach(var item in dictionary)
+                    {
+                        if (item.Key == myHistory)
+                        {
+                            item.Value.Value = myHistory.Pop();
+                        }
                     }
                 }
                 myImageBackground.Source = _controller.GetStack();
@@ -54,6 +68,7 @@ namespace AppForImage
         private void myWindow_Closed(object sender, EventArgs e)
         {
             _windowEffectsBlur.Close();
+            _windowEffectColorize.Close();
             _typesOfEffects.Close();
         }
     }

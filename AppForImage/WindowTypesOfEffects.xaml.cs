@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using AppForImage.Controllers;
 
 namespace AppForImage
 {
@@ -24,35 +25,37 @@ namespace AppForImage
         private ControllerImage _controller;
         public WindowTypesOfEffects(ControllerImage controller, WindowEffectBlur effectblur, WindowEffectColorize windowEffectColorize)
         {
+            InitializeComponent();
             _controller = controller;
             _windowEffectBlur = effectblur;
-            _windowEffectColorize = windowEffectColorize;
             _windowEffectBlur.MyEventBlurValueChanged += OnValueBlurChange;
             _windowEffectBlur.MyEventBoxFilterValueChanged += OnValueBoxFilterChange;
             _windowEffectBlur.MyEventMedianBlurValueChanged += OnValueMedianBlurChange;
             _windowEffectBlur.MyEventBilateralFilterValueChanged += OnValueBilateralFilterChange;
             _windowEffectBlur.MyEventSavedImage += OnSavedImage;
+            _windowEffectColorize = windowEffectColorize;
             _windowEffectColorize.MyEventRedValueChanged += OnValueRedChange;
             _windowEffectColorize.MyEventGreenValueChanged += OnValueGreenChange;
             _windowEffectColorize.MyEventBlueValueChanged += OnValueBlueChange;
             _windowEffectColorize.MyEventSavedImage += OnSavedImage;
-            InitializeComponent();
-            _windowEffectColorize = windowEffectColorize;
         }
 
-        private void OnValueRedChange(double obj)
+        private void OnValueRedChange(double value)
         {
-            // создай класс
+            int UseValue = Convert.ToInt32(value);
+            _controller.ChangeColor(UseValue, 0, 0);
         }
 
-        private void OnValueGreenChange(double obj)
+        private void OnValueGreenChange(double value)
         {
-            // создай класс
+            int UseValue = Convert.ToInt32(value);
+            _controller.ChangeColor(0, UseValue, 0);
         }
 
-        private void OnValueBlueChange(double obj)
+        private void OnValueBlueChange(double value)
         {
-            // создай класс
+            int UseValue = Convert.ToInt32(value);
+            _controller.ChangeColor(0, 0, UseValue);
         }
 
         private void OnValueBilateralFilterChange(double value)
@@ -78,8 +81,8 @@ namespace AppForImage
         }
         private void OnSavedImage()
         {
-            _controller.ChangeImageForEffects(_controller.GetMyChangedImage());
             _controller.PushStack();
+            _controller.ChangeImageForEffects(_controller.GetMyChangedImage());
         }
 
         private void ButtonBlur_Click(object sender, RoutedEventArgs e)
