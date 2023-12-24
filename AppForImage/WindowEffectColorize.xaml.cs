@@ -26,13 +26,14 @@ namespace AppForImage
         private Stack<double> stackRedValue = new();
         private Stack<double> stackGreenValue = new();
         private Stack<double> stackBlueValue = new();
-        public Stack<Stack<double>> stackChangiesHistory = new();
+        public Stack<Stack<double>> _stackChangiesHistory;
         public Dictionary<Stack<double>, Slider> dictionaryStackSliders;
         private bool isSaved = true;
         private bool isEnabledSliders = false;
-        public WindowEffectColorize()
+        public WindowEffectColorize(Stack<Stack<double>> stackChangiesHistory)
         {
             InitializeComponent();
+            _stackChangiesHistory = stackChangiesHistory;
             dictionaryStackSliders = new()
             {
                 { stackRedValue, mySliderRed },
@@ -55,7 +56,7 @@ namespace AppForImage
             {
                 isEnabledSliders = true;
                 stackRedValue.Push(mySliderRed.Value);
-                stackChangiesHistory.Push(stackRedValue);
+                _stackChangiesHistory.Push(stackRedValue);
                 MyEventSavedImage?.Invoke();
                 isSaved = false;
             }
@@ -81,7 +82,7 @@ namespace AppForImage
             {
                 isEnabledSliders = true;
                 stackGreenValue.Push(mySliderGreen.Value);
-                stackChangiesHistory.Push(stackGreenValue);
+                _stackChangiesHistory.Push(stackGreenValue);
                 MyEventSavedImage?.Invoke();
                 isSaved = false;
             }
@@ -107,7 +108,7 @@ namespace AppForImage
             {
                 isEnabledSliders = true;
                 stackBlueValue.Push(mySliderBlue.Value);
-                stackChangiesHistory.Push(stackBlueValue);
+                _stackChangiesHistory.Push(stackBlueValue);
                 MyEventSavedImage?.Invoke();
                 isSaved = false;
             }

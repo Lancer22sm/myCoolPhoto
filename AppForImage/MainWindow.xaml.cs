@@ -14,15 +14,29 @@ namespace AppForImage
     public partial class MainWindow : Window
     {
         private readonly WindowTypesOfEffects _typesOfEffects;
-        private readonly WindowEffectBlur _windowEffectsBlur = new();
-        private readonly WindowEffectColorize _windowEffectColorize = new();
+        private readonly WindowEffectColorize _windowEffectColorize;
+        private readonly WindowEffectBlur _windowEffectsBlur;
         private readonly ControllerImage _controller = new();
+        Dictionary<Stack<double>, Slider> generalDictionary = new();
+        public Stack<Stack<double>> stackChangiesHistory = new();
         public MainWindow()
         {
             InitializeComponent();
+            _windowEffectColorize = new(stackChangiesHistory);
+            _windowEffectsBlur = new(stackChangiesHistory);
             _typesOfEffects = new(_controller, _windowEffectsBlur, _windowEffectColorize);
             myImageBackground.Source = _controller.ImageDownload();
             _controller.IsUseMatEffect += ChangesImage;
+            Dictionary<Stack<double>, Slider> dictionaryBlur = _windowEffectsBlur.dictionaryStackSliders;
+            Dictionary<Stack<double>, Slider> dictionaryColorize = _windowEffectColorize.dictionaryStackSliders;
+            foreach(var item in dictionaryBlur)
+            {
+                generalDictionary.Add(item.Key, item.Value);
+            }
+            foreach(var item in dictionaryColorize)
+            {
+                generalDictionary.Add(item.Key, item.Value);
+            }
         }
 
         private void ButtonEffects_Click(object sender, RoutedEventArgs e)
@@ -39,22 +53,10 @@ namespace AppForImage
             if (e.Key == Key.Z && e.KeyboardDevice.Modifiers == ModifierKeys.Control)
             {
                 // код при нажатии Ctrl+Z
-                if (_windowEffectsBlur.stackChangiesHistory.Count > 0)
+                if (stackChangiesHistory.Count > 0)
                 {
-                    Stack<double> myHistory = _windowEffectsBlur.stackChangiesHistory.Pop();
-                    Dictionary<Stack<double>, Slider> dictionary = _windowEffectsBlur.dictionaryStackSliders;
-                    foreach (var item in dictionary)
-                    {
-                        if (item.Key == myHistory)
-                        {
-                            item.Value.Value = myHistory.Pop();
-                        }
-                    }
-                } else if (_windowEffectColorize.stackChangiesHistory.Count > 0)
-                {
-                    Stack<double> myHistory = _windowEffectColorize.stackChangiesHistory.Pop();
-                    Dictionary<Stack<double>, Slider> dictionary = _windowEffectColorize.dictionaryStackSliders;
-                    foreach(var item in dictionary)
+                    Stack<double> myHistory = stackChangiesHistory.Pop();
+                    foreach (var item in generalDictionary)
                     {
                         if (item.Key == myHistory)
                         {

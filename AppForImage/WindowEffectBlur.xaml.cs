@@ -29,15 +29,16 @@ namespace AppForImage
         private Stack<double> stackMedianBlurValue = new();
         private Stack<double> stackBoxFilterValue = new();
         private Stack<double> stackBilateralFilterValue = new();
-        public Stack<Stack<double>> stackChangiesHistory = new();
+        public Stack<Stack<double>> _stackChangiesHistory;
         public Dictionary<Stack<double>, Slider> dictionaryStackSliders;
         private bool isEnabledSliders = false;
 
 
 
-        public WindowEffectBlur()
+        public WindowEffectBlur(Stack<Stack<double>> stackChangiesHistory)
         {
             InitializeComponent();
+            _stackChangiesHistory = stackChangiesHistory;
             dictionaryStackSliders = new()
             {
                 { stackBlurValue, mySliderBlur },
@@ -66,7 +67,7 @@ namespace AppForImage
             {
                 isEnabledSliders = true;
                 stackBlurValue.Push(mySliderBlur.Value);
-                stackChangiesHistory.Push(stackBlurValue);
+                _stackChangiesHistory.Push(stackBlurValue);
                 MyEventSavedImage?.Invoke();
                 isSaved = false;
             }
@@ -91,7 +92,7 @@ namespace AppForImage
             {
                 isEnabledSliders = true;
                 stackMedianBlurValue.Push(mySliderMedianBlur.Value);
-                stackChangiesHistory.Push(stackMedianBlurValue);
+                _stackChangiesHistory.Push(stackMedianBlurValue);
                 MyEventSavedImage?.Invoke();
                 isSaved = false;
             }
@@ -125,7 +126,7 @@ namespace AppForImage
             {
                 isEnabledSliders = true;
                 stackBoxFilterValue.Push(mySliderBoxFilter.Value);
-                stackChangiesHistory.Push(stackBoxFilterValue);
+                _stackChangiesHistory.Push(stackBoxFilterValue);
                 MyEventSavedImage?.Invoke();
                 isSaved = false;
             }
@@ -143,7 +144,7 @@ namespace AppForImage
             {
                 isEnabledSliders = true;
                 stackBilateralFilterValue.Push(mySliderBilateralFilter.Value);
-                stackChangiesHistory.Push(stackBilateralFilterValue);
+                _stackChangiesHistory.Push(stackBilateralFilterValue);
                 MyEventSavedImage?.Invoke();
                 isSaved = false;
             }
