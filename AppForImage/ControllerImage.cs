@@ -1,6 +1,7 @@
 ﻿using OpenCvSharp;
 using System;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using System.Windows;
 using System.Windows.Media.Imaging;
 
@@ -17,13 +18,29 @@ namespace AppForImage
         Mat src = Cv2.ImRead(filepath);
         Stack<Mat> stackChanges = new();
         static string imageFormat = FindMyImageFormat();
-        public event Action UseMatBlur;
+        public event Action IsUseMatEffect;
 
         public ControllerImage()
         {
             _modelImage.AddNaturalImage(src);
             _modelImage.ChangeImage(src);
             _useEffectBlur = new(src);
+        }
+        public void ChangeColor()
+        {
+            Mat dst = _modelImage.GetChangedImage();
+            for (int y = 0; y < dst.Height; y++)
+            {
+                for (int x = 0; x < dst.Width; x++)
+                {
+                    Vec3b bgr = dst.At<Vec3b>(y, x);
+                    bgr[0] = 255;
+                    //bgr[1] = bgr[2];
+                    dst.At<Vec3b>(y, x) = bgr;
+                }
+            }
+            _modelImage.ChangeImage(dst);
+            IsUseMatEffect?.Invoke();
         }
         public Mat GetMyChangedImage()
         {
@@ -51,25 +68,25 @@ namespace AppForImage
         {
             Mat copiesMat = _useEffectBlur.GeneralEffect(valueBlur);
             _modelImage.ChangeImage(copiesMat);
-            UseMatBlur?.Invoke();
+            IsUseMatEffect?.Invoke();
         }
         public void BilateralFilter(int valueBlur)
         {
             Mat copiesMat = _useEffectBlur.BilateralFilter(valueBlur);
             _modelImage.ChangeImage(copiesMat);
-            UseMatBlur?.Invoke();
+            IsUseMatEffect?.Invoke();
         }
         public void BoxFilter(int valueBlur)
         {
             Mat copiesMat = _useEffectBlur.BoxFilter(valueBlur);
             _modelImage.ChangeImage(copiesMat);
-            UseMatBlur?.Invoke();
+            IsUseMatEffect?.Invoke();
         }
         public void MedianBlur(int valueBlur)
         {
             Mat copiesMat = _useEffectBlur.MedianBlur(valueBlur);
             _modelImage.ChangeImage(copiesMat);
-            UseMatBlur?.Invoke();
+            IsUseMatEffect?.Invoke();
         }
         public BitmapImage GetStack()
         {

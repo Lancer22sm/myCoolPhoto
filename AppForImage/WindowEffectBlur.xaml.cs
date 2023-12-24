@@ -25,15 +25,25 @@ namespace AppForImage
         public event Action<double> MyEventBilateralFilterValueChanged;
         public event Action MyEventSavedImage;
         private bool isSaved = true;
-        public Stack<double> stackBlurValue = new();
-        public Stack<double> stackMedianBlurValue = new();
-        public Stack<double> stackBoxFilterValue = new();
-        public Stack<double> stackBilateralFilterValue = new();
+        private Stack<double> stackBlurValue = new();
+        private Stack<double> stackMedianBlurValue = new();
+        private Stack<double> stackBoxFilterValue = new();
+        private Stack<double> stackBilateralFilterValue = new();
         public Stack<Stack<double>> stackChangiesHistory = new();
+        public Dictionary<Stack<double>, Slider> dictionaryStackSliders;
+
+
 
         public WindowEffectBlur()
         {
             InitializeComponent();
+            dictionaryStackSliders = new()
+            {
+                { stackBlurValue, mySliderBlur },
+                { stackMedianBlurValue, mySliderMedianBlur },
+                { stackBoxFilterValue, mySliderBoxFilter },
+                { stackBilateralFilterValue, mySliderBilateralFilter }
+            };
         }
 
         private void ButtonClose_Click(object sender, RoutedEventArgs e)

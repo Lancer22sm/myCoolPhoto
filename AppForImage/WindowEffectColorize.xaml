@@ -1,11 +1,11 @@
-﻿<Window x:Class="AppForImage.WindowEffectBlur"
+﻿<Window x:Class="AppForImage.WindowEffectColorize"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AppForImage"
         mc:Ignorable="d"
-        Title="Effect Blur" Height="350" WindowStyle="None" Width="150">
+        Title="EffectColorize" Height="350" WindowStyle="None" Width="150">
     <Window.Resources>
         <Style TargetType="Button">
             <Setter Property="Background" Value="MediumPurple"/>
@@ -120,16 +120,12 @@
         </Grid.Background>
         <Button x:Name="myButtonClose" Content="___" Style="{StaticResource HoverButtonStyle}" HorizontalAlignment="Right" Margin="0,5,5,0" VerticalAlignment="Top" RenderTransformOrigin="-3.786,0.741" Height="15" Width="30" Click="ButtonClose_Click" FontWeight="Bold" FontSize="8" Foreground="#FFDADADA"/>
         <StackPanel x:Name="myStackPanel" Margin="0,20,0,0" Width="{Binding ElementName=window, Path=Width}" Height="{Binding ElementName=window, Path=Height}">
-            <Label HorizontalAlignment="Center" Margin="0,20,0,0" FontWeight="Bold" Foreground="#FFDADADA">Blur</Label>
-            <Slider x:Name="mySliderBlur" Width="{Binding ElementName=myStackPanel, Path=Width}" Height="{Binding ElementName=myStackPanel, Path=Height}" Style="{StaticResource Horizontal_Slider}" HorizontalAlignment="Center" Margin="0,0,0,0" VerticalAlignment="Top" RenderTransformOrigin="1,0" Minimum="1" Maximum="100" ValueChanged="mySliderBlur_ValueChanged" PreviewMouseDown="mySliderBlur_PreviewMouseDown" PreviewMouseUp="mySliderBlur_PreviewMouseUp"/>
-            <Label HorizontalAlignment="Center" Margin="0,20,0,0" FontWeight="Bold" Foreground="#FFDADADA">MedianBlur</Label>
-            <Slider x:Name="mySliderMedianBlur" Width="{Binding ElementName=myStackPanel, Path=Width}" Height="{Binding ElementName=myStackPanel, Path=Height}" Style="{StaticResource Horizontal_Slider}" HorizontalAlignment="Center" Margin="0,0,0,0" VerticalAlignment="Top" RenderTransformOrigin="1,0" Minimum="1" Maximum="100" ValueChanged="mySliderMedianBlur_ValueChanged" PreviewMouseDown="mySliderMedianBlur_PreviewMouseDown" PreviewMouseUp="mySliderMedianBlur_PreviewMouseUp"/>
-            <Label HorizontalAlignment="Center" Margin="0,20,0,0" FontWeight="Bold" Foreground="#FFDADADA">BoxFilter</Label>
-            <Slider x:Name="mySliderBoxFilter" Width="{Binding ElementName=myStackPanel, Path=Width}" Height="{Binding ElementName=myStackPanel, Path=Height}" Style="{StaticResource Horizontal_Slider}" HorizontalAlignment="Center" Margin="0,0,0,0" VerticalAlignment="Top" RenderTransformOrigin="1,0" Minimum="1" Maximum="100" ValueChanged="mySliderBoxFilter_ValueChanged" PreviewMouseDown="mySliderBoxFilter_PreviewMouseDown" PreviewMouseUp="mySliderBoxFilter_PreviewMouseUp"/>
-            <Label HorizontalAlignment="Center" Margin="0,20,0,0" FontWeight="Bold" Foreground="#FFDADADA">BilateralFilter</Label>
-            <Slider x:Name="mySliderBilateralFilter" Width="{Binding ElementName=myStackPanel, Path=Width}" Height="{Binding ElementName=myStackPanel, Path=Height}" Style="{StaticResource Horizontal_Slider}" HorizontalAlignment="Center" Margin="0,0,0,0" VerticalAlignment="Top" RenderTransformOrigin="1,0" Minimum="1" Maximum="100" PreviewMouseDown="mySliderBilateralFilter_PreviewMouseDown" PreviewMouseUp="mySliderBilateralFilter_PreviewMouseUp"/>
-            <Label HorizontalAlignment="Center" Margin="0,0,0,0" FontWeight="Bold" Foreground="#FFDADADA" FontSize="8">CPU load</Label>
-
+            <Label HorizontalAlignment="Center" Margin="0,20,0,0" FontWeight="Bold" Foreground="#FFDADADA">Red</Label>
+            <Slider x:Name="mySliderRed" Width="{Binding ElementName=myStackPanel, Path=Width}" Height="{Binding ElementName=myStackPanel, Path=Height}" Style="{StaticResource Horizontal_Slider}" HorizontalAlignment="Center" Margin="0,0,0,0" VerticalAlignment="Top" RenderTransformOrigin="1,0" Minimum="1" Maximum="255" PreviewMouseDown="mySliderRed_PreviewMouseDown" PreviewMouseUp="mySliderRed_PreviewMouseUp" ValueChanged="mySliderRed_ValueChanged"/>
+            <Label HorizontalAlignment="Center" Margin="0,20,0,0" FontWeight="Bold" Foreground="#FFDADADA">Green</Label>
+            <Slider x:Name="mySliderGreen" Width="{Binding ElementName=myStackPanel, Path=Width}" Height="{Binding ElementName=myStackPanel, Path=Height}" Style="{StaticResource Horizontal_Slider}" HorizontalAlignment="Center" Margin="0,0,0,0" VerticalAlignment="Top" RenderTransformOrigin="1,0" Minimum="1" Maximum="255" PreviewMouseDown="mySliderGreen_PreviewMouseDown" PreviewMouseUp="mySliderGreen_PreviewMouseUp" ValueChanged="mySliderGreen_ValueChanged"/>
+            <Label HorizontalAlignment="Center" Margin="0,20,0,0" FontWeight="Bold" Foreground="#FFDADADA">Blue</Label>
+            <Slider x:Name="mySliderBlue" Width="{Binding ElementName=myStackPanel, Path=Width}" Height="{Binding ElementName=myStackPanel, Path=Height}" Style="{StaticResource Horizontal_Slider}" HorizontalAlignment="Center" Margin="0,0,0,0" VerticalAlignment="Top" RenderTransformOrigin="1,0" Minimum="1" Maximum="255" PreviewMouseDown="mySliderBlue_PreviewMouseDown" PreviewMouseUp="mySliderBlue_PreviewMouseUp" ValueChanged="mySliderBlue_ValueChanged"/>
         </StackPanel>
     </Grid>
 </Window>

@@ -43,7 +43,11 @@
                 <GradientStop Color="#FF5B5B5B" Offset="1"/>
             </RadialGradientBrush>
         </Grid.Background>
-        <Button x:Name="myButtonClose" Content="___" Style="{StaticResource HoverButtonStyle}" HorizontalAlignment="Right" Margin="0,5,5,0" VerticalAlignment="Top" RenderTransformOrigin="-3.786,0.741" Height="15" Width="30" Click="ButtonClose_Click" FontWeight="Bold" FontSize="8" Foreground="#FFDADADA"/>
-        <Button x:Name="myButtonBlur" Content="Размытие" Style="{StaticResource HoverButtonStyle}" HorizontalAlignment="Center" Margin="0,35,0,0" VerticalAlignment="Top" RenderTransformOrigin="-3.786,0.741" Height="25" Width="100" Click="ButtonBlur_Click" FontSize="16" Foreground="#FFDADADA"/>
+        <StackPanel>
+            <Button x:Name="myButtonClose" Content="___" Style="{StaticResource HoverButtonStyle}" HorizontalAlignment="Right" Margin="0,5,5,0" VerticalAlignment="Top" RenderTransformOrigin="-3.786,0.741" Height="15" Width="30" Click="ButtonClose_Click" FontWeight="Bold" FontSize="8" Foreground="#FFDADADA"/>
+            <Button x:Name="myButtonBlur" Content="Размытие" Style="{StaticResource HoverButtonStyle}" HorizontalAlignment="Center" Margin="0,35,0,0" VerticalAlignment="Top" RenderTransformOrigin="-3.786,0.741" Height="25" Width="100" Click="ButtonBlur_Click" FontSize="16" Foreground="#FFDADADA"/>
+            <Button x:Name="myButtonColors" Content="Цвета" Style="{StaticResource HoverButtonStyle}" HorizontalAlignment="Center" Margin="0,35,0,0" VerticalAlignment="Top" RenderTransformOrigin="-3.786,0.741" Height="25" Width="100" FontSize="16" Foreground="#FFDADADA" Click="myButtonColors_Click"/>
+
+        </StackPanel>
     </Grid>
 </Window>

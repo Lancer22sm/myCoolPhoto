@@ -20,18 +20,41 @@ namespace AppForImage
     public partial class WindowTypesOfEffects : Window
     {
         private WindowEffectBlur _windowEffectBlur;
+        private WindowEffectColorize _windowEffectColorize;
         private ControllerImage _controller;
-        public WindowTypesOfEffects(ControllerImage controller, WindowEffectBlur effectblur)
+        public WindowTypesOfEffects(ControllerImage controller, WindowEffectBlur effectblur, WindowEffectColorize windowEffectColorize)
         {
             _controller = controller;
             _windowEffectBlur = effectblur;
+            _windowEffectColorize = windowEffectColorize;
             _windowEffectBlur.MyEventBlurValueChanged += OnValueBlurChange;
             _windowEffectBlur.MyEventBoxFilterValueChanged += OnValueBoxFilterChange;
             _windowEffectBlur.MyEventMedianBlurValueChanged += OnValueMedianBlurChange;
             _windowEffectBlur.MyEventBilateralFilterValueChanged += OnValueBilateralFilterChange;
             _windowEffectBlur.MyEventSavedImage += OnSavedImage;
+            _windowEffectColorize.MyEventRedValueChanged += OnValueRedChange;
+            _windowEffectColorize.MyEventGreenValueChanged += OnValueGreenChange;
+            _windowEffectColorize.MyEventBlueValueChanged += OnValueBlueChange;
+            _windowEffectColorize.MyEventSavedImage += OnSavedImage;
             InitializeComponent();
+            _windowEffectColorize = windowEffectColorize;
         }
+
+        private void OnValueRedChange(double obj)
+        {
+            // создай класс
+        }
+
+        private void OnValueGreenChange(double obj)
+        {
+            // создай класс
+        }
+
+        private void OnValueBlueChange(double obj)
+        {
+            // создай класс
+        }
+
         private void OnValueBilateralFilterChange(double value)
         {
             _controller.BilateralFilter(Convert.ToInt32(value));
@@ -75,6 +98,12 @@ namespace AppForImage
             {
                 DragMove();
             }
+        }
+
+        private void myButtonColors_Click(object sender, RoutedEventArgs e)
+        {
+            //_controller.ChangeColor();
+            _windowEffectColorize.Show();
         }
     }
 }

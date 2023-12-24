@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace AppForImage
@@ -12,13 +13,14 @@ namespace AppForImage
     {
         private readonly WindowTypesOfEffects _typesOfEffects;
         private readonly WindowEffectBlur _windowEffectsBlur = new();
+        private readonly WindowEffectColorize _windowEffectColorize = new();
         private readonly ControllerImage _controller = new();
         public MainWindow()
         {
             InitializeComponent();
-            _typesOfEffects = new(_controller, _windowEffectsBlur);
+            _typesOfEffects = new(_controller, _windowEffectsBlur, _windowEffectColorize);
             myImageBackground.Source = _controller.ImageDownload();
-            _controller.UseMatBlur += ChangesImage;
+            _controller.IsUseMatEffect += ChangesImage;
         }
 
         private void ButtonEffects_Click(object sender, RoutedEventArgs e)
@@ -37,21 +39,13 @@ namespace AppForImage
                 // код при нажатии Ctrl+Z
                 if (_windowEffectsBlur.stackChangiesHistory.Count == 0) return;
                 Stack<double> myHistory = _windowEffectsBlur.stackChangiesHistory.Pop();
-                if (myHistory == _windowEffectsBlur.stackBlurValue)
+                Dictionary<Stack<double>, Slider > dictionaryBlur = _windowEffectsBlur.dictionaryStackSliders;
+                foreach(var dBlur in dictionaryBlur)
                 {
-                    _windowEffectsBlur.mySliderBlur.Value = myHistory.Pop();
-                }
-                else if(myHistory == _windowEffectsBlur.stackMedianBlurValue) 
-                {
-                    _windowEffectsBlur.mySliderMedianBlur.Value = myHistory.Pop();
-                }
-                else if(myHistory == _windowEffectsBlur.stackBoxFilterValue)
-                {
-                    _windowEffectsBlur.mySliderBoxFilter.Value = myHistory.Pop();
-                }
-                else if(myHistory == _windowEffectsBlur.stackBilateralFilterValue)
-                {
-                    _windowEffectsBlur.mySliderBilateralFilter.Value = myHistory.Pop();
+                    if(dBlur.Key == myHistory)
+                    {
+                        dBlur.Value.Value = myHistory.Pop();
+                    }
                 }
                 myImageBackground.Source = _controller.GetStack();
             }
