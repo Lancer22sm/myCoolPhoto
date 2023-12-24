@@ -24,7 +24,8 @@ namespace AppForImage.Effects
         }
         public Mat GeneralEffect(byte redValue, byte greenValue, byte blueValue)
         {
-            Mat dst = sourceImage;
+            Mat dst = new();
+            sourceImage.CopyTo(dst);
             for (int y = 0; y < dst.Height; y++)
             {
                 for (int x = 0; x < dst.Width; x++)

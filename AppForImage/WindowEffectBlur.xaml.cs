@@ -31,6 +31,7 @@ namespace AppForImage
         private Stack<double> stackBilateralFilterValue = new();
         public Stack<Stack<double>> stackChangiesHistory = new();
         public Dictionary<Stack<double>, Slider> dictionaryStackSliders;
+        private bool isEnabledSliders = false;
 
 
 
@@ -53,13 +54,17 @@ namespace AppForImage
 
         private void mySliderBlur_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            MyEventBlurValueChanged?.Invoke(mySliderBlur.Value);
+            if(isEnabledSliders)
+            {
+                MyEventBlurValueChanged?.Invoke(mySliderBlur.Value);
+            }
         }
 
         private void mySliderBlur_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             if (isSaved)
             {
+                isEnabledSliders = true;
                 stackBlurValue.Push(mySliderBlur.Value);
                 stackChangiesHistory.Push(stackBlurValue);
                 MyEventSavedImage?.Invoke();
@@ -69,17 +74,22 @@ namespace AppForImage
 
         private void mySliderBlur_PreviewMouseUp(object sender, MouseButtonEventArgs e)
         {
+            isEnabledSliders = false;
             isSaved = true;
         }
         private void mySliderMedianBlur_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            MyEventMedianBlurValueChanged?.Invoke(mySliderMedianBlur.Value);
+            if(isEnabledSliders)
+            {
+                MyEventMedianBlurValueChanged?.Invoke(mySliderMedianBlur.Value);
+            }
         }
 
         private void mySliderMedianBlur_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             if (isSaved)
             {
+                isEnabledSliders = true;
                 stackMedianBlurValue.Push(mySliderMedianBlur.Value);
                 stackChangiesHistory.Push(stackMedianBlurValue);
                 MyEventSavedImage?.Invoke();
@@ -89,6 +99,7 @@ namespace AppForImage
 
         private void mySliderMedianBlur_PreviewMouseUp(object sender, MouseButtonEventArgs e)
         {
+            isEnabledSliders = false;
             isSaved = true;
         }
 
@@ -102,13 +113,17 @@ namespace AppForImage
 
         private void mySliderBoxFilter_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            MyEventBoxFilterValueChanged?.Invoke(mySliderBoxFilter.Value);
+            if(isEnabledSliders)
+            {
+                MyEventBoxFilterValueChanged?.Invoke(mySliderBoxFilter.Value);
+            }
         }
 
         private void mySliderBoxFilter_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             if (isSaved)
             {
+                isEnabledSliders = true;
                 stackBoxFilterValue.Push(mySliderBoxFilter.Value);
                 stackChangiesHistory.Push(stackBoxFilterValue);
                 MyEventSavedImage?.Invoke();
@@ -118,6 +133,7 @@ namespace AppForImage
 
         private void mySliderBoxFilter_PreviewMouseUp(object sender, MouseButtonEventArgs e)
         {
+            isEnabledSliders = false;
             isSaved = true;
         }
 
@@ -125,6 +141,7 @@ namespace AppForImage
         {
             if (isSaved)
             {
+                isEnabledSliders = true;
                 stackBilateralFilterValue.Push(mySliderBilateralFilter.Value);
                 stackChangiesHistory.Push(stackBilateralFilterValue);
                 MyEventSavedImage?.Invoke();
@@ -135,6 +152,7 @@ namespace AppForImage
         private void mySliderBilateralFilter_PreviewMouseUp(object sender, MouseButtonEventArgs e)
         {
             isSaved = true;
+            isEnabledSliders = false;
             MyEventBilateralFilterValueChanged?.Invoke(mySliderBilateralFilter.Value);
         }
     }

@@ -29,6 +29,7 @@ namespace AppForImage
         public Stack<Stack<double>> stackChangiesHistory = new();
         public Dictionary<Stack<double>, Slider> dictionaryStackSliders;
         private bool isSaved = true;
+        private bool isEnabledSliders = false;
         public WindowEffectColorize()
         {
             InitializeComponent();
@@ -52,6 +53,7 @@ namespace AppForImage
         {
             if (isSaved)
             {
+                isEnabledSliders = true;
                 stackRedValue.Push(mySliderRed.Value);
                 stackChangiesHistory.Push(stackRedValue);
                 MyEventSavedImage?.Invoke();
@@ -61,18 +63,23 @@ namespace AppForImage
 
         private void mySliderRed_PreviewMouseUp(object sender, MouseButtonEventArgs e)
         {
+            isEnabledSliders = false;
             isSaved = true;
         }
 
         private void mySliderRed_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            MyEventRedValueChanged?.Invoke(mySliderRed.Value);
+            if(isEnabledSliders)
+            {
+                MyEventRedValueChanged?.Invoke(mySliderRed.Value);
+            }
         }
 
         private void mySliderGreen_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             if (isSaved)
             {
+                isEnabledSliders = true;
                 stackGreenValue.Push(mySliderGreen.Value);
                 stackChangiesHistory.Push(stackGreenValue);
                 MyEventSavedImage?.Invoke();
@@ -82,18 +89,23 @@ namespace AppForImage
 
         private void mySliderGreen_PreviewMouseUp(object sender, MouseButtonEventArgs e)
         {
+            isEnabledSliders = false;
             isSaved = true;
         }
 
         private void mySliderGreen_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            MyEventGreenValueChanged?.Invoke(mySliderGreen.Value);
+            if(isEnabledSliders)
+            {
+                MyEventGreenValueChanged?.Invoke(mySliderGreen.Value);
+            }
         }
 
         private void mySliderBlue_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             if (isSaved)
             {
+                isEnabledSliders = true;
                 stackBlueValue.Push(mySliderBlue.Value);
                 stackChangiesHistory.Push(stackBlueValue);
                 MyEventSavedImage?.Invoke();
@@ -103,12 +115,16 @@ namespace AppForImage
 
         private void mySliderBlue_PreviewMouseUp(object sender, MouseButtonEventArgs e)
         {
+            isEnabledSliders = false;
             isSaved = true;
         }
 
         private void mySliderBlue_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            MyEventBlueValueChanged?.Invoke(mySliderBlue.Value);
+            if(isEnabledSliders)
+            {
+                MyEventBlueValueChanged?.Invoke(mySliderBlue.Value);
+            }
         }
 
         private void ButtonClose_Click(object sender, RoutedEventArgs e)

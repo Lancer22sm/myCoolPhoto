@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media.Imaging;
 using AppForImage.Controllers;
 
 namespace AppForImage
@@ -61,7 +62,7 @@ namespace AppForImage
                         }
                     }
                 }
-                myImageBackground.Source = _controller.GetStack();
+                myImageBackground.Source = _controller.GetStack(); ;
             }
         }
 
