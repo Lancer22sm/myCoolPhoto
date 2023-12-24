@@ -119,7 +119,7 @@
             </RadialGradientBrush>
         </Grid.Background>
         <Button x:Name="myButtonClose" Content="___" Style="{StaticResource HoverButtonStyle}" HorizontalAlignment="Right" Margin="0,5,5,0" VerticalAlignment="Top" RenderTransformOrigin="-3.786,0.741" Height="20" Width="40" Click="ButtonClose_Click" FontWeight="Bold" FontSize="10" Foreground="#FFDADADA"/>
-        <StackPanel x:Name="myStackPanel" Margin="20,20,20,20" Width="{Binding ElementName=window, Path=Width}" Height="{Binding ElementName=window, Path=Height}">
+        <StackPanel x:Name="myStackPanel" Margin="10,25,10,20" Width="{Binding ElementName=window, Path=Width}" Height="{Binding ElementName=window, Path=Height}">
             <Label HorizontalAlignment="Center" Margin="0,20,0,0" FontWeight="Bold" Foreground="#FFDADADA">Blur</Label>
             <Slider x:Name="mySliderBlur" Width="{Binding ElementName=myStackPanel, Path=ActualWidth}" Style="{StaticResource Horizontal_Slider}" HorizontalAlignment="Center" Margin="0,0,0,0" VerticalAlignment="Top" RenderTransformOrigin="1,0" Minimum="1" Maximum="100" ValueChanged="mySliderBlur_ValueChanged" PreviewMouseDown="mySliderBlur_PreviewMouseDown" PreviewMouseUp="mySliderBlur_PreviewMouseUp"/>
             <Label HorizontalAlignment="Center" Margin="0,20,0,0" FontWeight="Bold" Foreground="#FFDADADA">MedianBlur</Label>

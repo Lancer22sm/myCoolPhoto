@@ -44,9 +44,19 @@
             </RadialGradientBrush>
         </Grid.Background>
         <Viewbox Stretch="Uniform">
-            <Image x:Name="myImageBackground" Width="{Binding ElementName=window, Path=Width}" Height="{Binding ElementName=window, Path=Height}" HorizontalAlignment="Left" Margin="20,20,20,20" VerticalAlignment="Top" Stretch="Fill"/>
+            <Image x:Name="myImageBackground" Width="{Binding ElementName=window, Path=Width}" Height="{Binding ElementName=window, Path=Height}" HorizontalAlignment="Left" Margin="20,20,20,40" VerticalAlignment="Top" Stretch="Fill"/>
         </Viewbox>
-        <Button x:Name="myButtonEffects" Content="Эффекты" Style="{StaticResource HoverButtonStyle}" HorizontalAlignment="Left" Margin="5,0,0,5" VerticalAlignment="Bottom" RenderTransformOrigin="-3.786,0.741" Height="30" Width="90" Click="ButtonEffects_Click" FontSize="16" FontWeight="Bold" Foreground="#FFDADADA"/>
-
+        <Border VerticalAlignment="Bottom" Height="40" BorderThickness="1">
+            <Border.BorderBrush>
+                <SolidColorBrush Color="#FF261E44" Opacity="0.6"/>
+            </Border.BorderBrush>
+            <Border.Background>
+                <LinearGradientBrush EndPoint="0.1,1" StartPoint="0.1,0" Opacity="0.5">
+                    <GradientStop Color="#FF2B2B2B" Offset="1"/>
+                    <GradientStop Color="#FF616161"/>
+                </LinearGradientBrush>
+            </Border.Background>
+            <Button x:Name="myButtonEffects" Content="Эффекты" Style="{StaticResource HoverButtonStyle}" HorizontalAlignment="Left" Margin="5,0,0,5" VerticalAlignment="Bottom" RenderTransformOrigin="-3.786,0.741" Height="30" Width="90" Click="ButtonEffects_Click" FontSize="16" FontWeight="Bold" Foreground="#FFDADADA"/>
+        </Border>
     </Grid>
 </Window>
