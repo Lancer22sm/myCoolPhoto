@@ -33,21 +33,16 @@ namespace AppForImage.Effects
                     if ((sourceBgr[2] + valueChange) < 0)
                     {
                         bgr[2] = 0;
-                        UsebleImage.At<Vec3b>(y, x) = bgr;
-                        continue;
                     }
                     else if ((sourceBgr[2] + valueChange) > 255)
                     {
                         bgr[2] = 255;
-                        UsebleImage.At<Vec3b>(y, x) = bgr;
-                        continue;
                     }
                     else
                     {
                         bgr[2] = (byte)(sourceBgr[2] + valueChange);
-                        UsebleImage.At<Vec3b>(y, x) = bgr;
-                        continue;
                     }
+                    UsebleImage.At<Vec3b>(y, x) = bgr;
                 }
             }
             return UsebleImage;
@@ -65,21 +60,16 @@ namespace AppForImage.Effects
                     if ((sourceBgr[1] + valueChange) < 0)
                     {
                         bgr[1] = 0;
-                        UsebleImage.At<Vec3b>(y, x) = bgr;
-                        continue;
                     }
                     else if ((sourceBgr[1] + valueChange) > 255)
                     {
                         bgr[1] = 255;
-                        UsebleImage.At<Vec3b>(y, x) = bgr;
-                        continue;
                     }
                     else
                     {
                         bgr[1] = (byte)(sourceBgr[1] + valueChange);
-                        UsebleImage.At<Vec3b>(y, x) = bgr;
-                        continue;
                     }
+                    UsebleImage.At<Vec3b>(y, x) = bgr;
                 }
             }
             return UsebleImage;
@@ -97,21 +87,16 @@ namespace AppForImage.Effects
                     if ((sourceBgr[0] + valueChange) < 0)
                     {
                         bgr[0] = 0;
-                        UsebleImage.At<Vec3b>(y, x) = bgr;
-                        continue;
                     }
                     else if ((sourceBgr[0] + valueChange) > 255)
                     {
                         bgr[0] = 255;
-                        UsebleImage.At<Vec3b>(y, x) = bgr;
-                        continue;
                     }
                     else
                     {
                         bgr[0] = (byte)(sourceBgr[0] + valueChange);
-                        UsebleImage.At<Vec3b>(y, x) = bgr;
-                        continue;
                     }
+                    UsebleImage.At<Vec3b>(y, x) = bgr;
                 }
             }
             return UsebleImage;
