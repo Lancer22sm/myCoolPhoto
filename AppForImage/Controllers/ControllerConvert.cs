@@ -23,7 +23,7 @@ namespace AppForImage.Controllers
         }
         public byte[] MatToByteArray(Mat mat, string imageFormat)
         {
-            int[] param = new int[2] { 1, 80 };
+            int[] param = new int[2] { 1, 20 };
             Cv2.ImEncode(imageFormat, mat, out byte[] btArr, param);
             return btArr;
         }

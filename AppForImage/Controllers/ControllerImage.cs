@@ -18,7 +18,7 @@ namespace AppForImage.Controllers
         static string[] args = Environment.GetCommandLineArgs();
         static string filepath = args[1];
         //static string filepath = "C:/Users/Lancer/Pictures/GameCenter/Warface/Warface_sample.jpg";
-        Mat src = Cv2.ImRead(filepath);
+        Mat src = Cv2.ImRead(filepath, ImreadModes.Unchanged);
         Stack<Mat> stackChanges = new();
         static string imageFormat = FindMyImageFormat();
         public event Action IsUseMatEffect;
@@ -59,12 +59,12 @@ namespace AppForImage.Controllers
             _modelImage.ChangeImage(copiesMat);
             IsUseMatEffect?.Invoke();
         }
-        public void ChangeColor(int Redvalue, int Greenvalue, int Bluevalue)
+        public void ChangeColor(int redvalue, int greenvalue, int bluevalue)
         {
-            byte valueRed = (byte)Redvalue;
-            byte valueGreen = (byte)Greenvalue;
-            byte valueBlue = (byte)Bluevalue;
-            Mat copiesMat = _useEffectColorize.GeneralEffect(valueRed, valueGreen, valueBlue);
+            Mat copiesMat = new();
+            if (greenvalue == 0 & bluevalue == 0) copiesMat = _useEffectColorize.ChangeRed(redvalue);
+            if (bluevalue == 0 & redvalue == 0) copiesMat = _useEffectColorize.ChangeGreen(greenvalue);
+            if (redvalue == 0 & greenvalue == 0) copiesMat = _useEffectColorize.ChangeBlue(bluevalue);
             _modelImage.ChangeImage(copiesMat);
             IsUseMatEffect?.Invoke();
         }
