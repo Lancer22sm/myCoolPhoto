@@ -22,7 +22,6 @@ namespace AppForImage
         public event Action<double> MyEventRedValueChanged;
         public event Action<double> MyEventGreenValueChanged;
         public event Action<double> MyEventBlueValueChanged;
-        public event Action MyEventSavedImage;
         private Stack<double> stackRedValue = new();
         private Stack<double> stackGreenValue = new();
         private Stack<double> stackBlueValue = new();
@@ -57,7 +56,6 @@ namespace AppForImage
                 isEnabledSliders = true;
                 stackRedValue.Push(mySliderRed.Value);
                 _stackChangiesHistory.Push(stackRedValue);
-                MyEventSavedImage?.Invoke();
                 isSaved = false;
             }
         }
@@ -83,7 +81,6 @@ namespace AppForImage
                 isEnabledSliders = true;
                 stackGreenValue.Push(mySliderGreen.Value);
                 _stackChangiesHistory.Push(stackGreenValue);
-                MyEventSavedImage?.Invoke();
                 isSaved = false;
             }
         }
@@ -109,7 +106,6 @@ namespace AppForImage
                 isEnabledSliders = true;
                 stackBlueValue.Push(mySliderBlue.Value);
                 _stackChangiesHistory.Push(stackBlueValue);
-                MyEventSavedImage?.Invoke();
                 isSaved = false;
             }
         }

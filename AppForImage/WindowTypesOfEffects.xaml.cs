@@ -37,7 +37,6 @@ namespace AppForImage
             _windowEffectColorize.MyEventRedValueChanged += OnValueRedChange;
             _windowEffectColorize.MyEventGreenValueChanged += OnValueGreenChange;
             _windowEffectColorize.MyEventBlueValueChanged += OnValueBlueChange;
-            _windowEffectColorize.MyEventSavedImage += OnSavedImage;
         }
 
         private void OnValueRedChange(double value)
@@ -105,7 +104,6 @@ namespace AppForImage
 
         private void myButtonColors_Click(object sender, RoutedEventArgs e)
         {
-            //_controller.ChangeColor();
             _windowEffectColorize.Show();
         }
     }
