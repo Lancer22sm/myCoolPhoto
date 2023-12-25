@@ -64,7 +64,7 @@ namespace AppForImage
                         }
                     }
                 }
-                myImageBackground.Source = _controller.GetStack(); ;
+                myImageBackground.Source = _controller.GetStack();
             }
         }
 

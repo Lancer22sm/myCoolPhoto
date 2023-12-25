@@ -15,11 +15,11 @@ namespace AppForImage.Effects
 
         public UseEffectBlur(Mat source)
         {
-            sourceImage = source;
+            source.CopyTo(sourceImage);
         }
         public void ChangeSrcForEffect(Mat src)
         {
-            sourceImage = src;
+            src.CopyTo(sourceImage);
         }
 
         public Mat GeneralEffect(int valueBlur)

@@ -34,9 +34,18 @@ namespace AppForImage.Controllers
         {
             return _modelImage.GetChangedImage();
         }
+        public void ChangeImageWithoutColorize(Mat changedImage)
+        {
+            Mat save = new();
+            changedImage.CopyTo(save);
+            _modelImage.ChangeImage(save);
+            _useEffectBlur.ChangeSrcForEffect(_modelImage.GetChangedImage());
+        }
         public void ChangeImageForEffects(Mat changedImage)
         {
-            _modelImage.ChangeImage(changedImage);
+            Mat save = new();
+            changedImage.CopyTo(save);
+            _modelImage.ChangeImage(save);
             _useEffectBlur.ChangeSrcForEffect(_modelImage.GetChangedImage());
             _useEffectColorize.ChangeSrcForEffect(_modelImage.GetChangedImage());
         }

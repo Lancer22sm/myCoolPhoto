@@ -37,6 +37,7 @@ namespace AppForImage
             _windowEffectColorize.MyEventRedValueChanged += OnValueRedChange;
             _windowEffectColorize.MyEventGreenValueChanged += OnValueGreenChange;
             _windowEffectColorize.MyEventBlueValueChanged += OnValueBlueChange;
+            _windowEffectColorize.MyEventSavedImage += OnSavedImageColorize;
         }
 
         private void OnValueRedChange(double value)
@@ -77,6 +78,11 @@ namespace AppForImage
                 ticks++;
             }
             _controller.MedianBlur(ticks);
+        }
+        private void OnSavedImageColorize()
+        {
+            _controller.PushStack();
+            _controller.ChangeImageWithoutColorize(_controller.GetMyChangedImage());
         }
         private void OnSavedImage()
         {
