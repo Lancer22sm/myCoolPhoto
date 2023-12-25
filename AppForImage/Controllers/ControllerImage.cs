@@ -15,6 +15,7 @@ namespace AppForImage.Controllers
         ControllerConvert _controllerConvert = new();
         UseEffectBlur _useEffectBlur;
         UseEffectColorize _useEffectColorize;
+        WindowEffectColorize _windowEffectColorize;
         static string[] args = Environment.GetCommandLineArgs();
         static string filepath = args[1];
         //static string filepath = "C:/Users/Lancer/Pictures/GameCenter/Warface/Warface_sample.jpg";
@@ -23,12 +24,14 @@ namespace AppForImage.Controllers
         static string imageFormat = FindMyImageFormat();
         public event Action IsUseMatEffect;
 
-        public ControllerImage()
+        public ControllerImage(WindowEffectColorize windowEffectColorize)
         {
+            _windowEffectColorize = windowEffectColorize;
             _modelImage.AddNaturalImage(src);
             _modelImage.ChangeImage(src);
             _useEffectBlur = new(src);
-            _useEffectColorize = new(src);
+            _useEffectBlur.GeneralEffect(1, 1, 1, 1);
+            _useEffectColorize = new(_useEffectBlur.usebleImageBilateralFilterBlur);
         }
         public Mat GetMyChangedImage()
         {
@@ -45,7 +48,7 @@ namespace AppForImage.Controllers
         {
             src = _modelImage.GetChangedImage();
             _useEffectBlur.ChangeSrcForEffect(src);
-            _useEffectColorize.ChangeSrcForEffect(src);
+            _useEffectColorize.ChangeSrcForEffect(_useEffectBlur.usebleImageBilateralFilterBlur);
         }
         public BitmapImage GetMyImage()
         {
@@ -63,8 +66,12 @@ namespace AppForImage.Controllers
         public void ChangeBlur(int blurValue, int medianBlurValue, int boxFilterValue, int bilateralFilterValue)
         {
             src = _useEffectBlur.GeneralEffect(blurValue, medianBlurValue, boxFilterValue, bilateralFilterValue);
+            int redvalue = Convert.ToInt32(_windowEffectColorize.mySliderRed.Value);
+            int greenvalue = Convert.ToInt32(_windowEffectColorize.mySliderGreen.Value);
+            int bluevalue = Convert.ToInt32(_windowEffectColorize.mySliderBlue.Value);
             _modelImage.ChangeImage(src);
             IsUseMatEffect?.Invoke();
+            ChangeColor(redvalue, greenvalue, bluevalue);
         }
         public void ChangeColor(int redvalue, int greenvalue, int bluevalue)
         {

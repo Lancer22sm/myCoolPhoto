@@ -14,7 +14,7 @@ namespace AppForImage.Effects
         Mat usebleImageBlur = new();
         Mat usebleImageMedianBlur = new();
         Mat usebleImageBoxFilterBlur = new();
-        Mat usebleImageBilateralFilterBlur = new();
+        public Mat usebleImageBilateralFilterBlur = new();
 
         public UseEffectBlur(Mat source)
         {

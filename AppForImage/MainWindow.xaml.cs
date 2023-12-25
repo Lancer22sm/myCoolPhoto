@@ -16,7 +16,7 @@ namespace AppForImage
         private readonly WindowTypesOfEffects _typesOfEffects;
         private readonly WindowEffectColorize _windowEffectColorize;
         private readonly WindowEffectBlur _windowEffectsBlur;
-        private readonly ControllerImage _controller = new();
+        private readonly ControllerImage _controller;
         Dictionary<Stack<double>, Slider> generalDictionary = new();
         public Stack<Stack<double>> stackChangiesHistory = new();
         public MainWindow()
@@ -24,6 +24,7 @@ namespace AppForImage
             InitializeComponent();
             _windowEffectColorize = new(stackChangiesHistory);
             _windowEffectsBlur = new(stackChangiesHistory);
+            _controller = new(_windowEffectColorize);
             _typesOfEffects = new(_controller, _windowEffectsBlur, _windowEffectColorize);
             myImageBackground.Source = _controller.ImageDownload();
             _controller.IsUseMatEffect += ChangesImage;
