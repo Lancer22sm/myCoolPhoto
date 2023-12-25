@@ -34,7 +34,7 @@ namespace AppForImage.Controllers
         {
             return _modelImage.GetChangedImage();
         }
-        public void ChangeImageWithoutColorize(Mat changedImage)
+        public void ChangeImageForEffectsFromColorize(Mat changedImage)
         {
             Mat save = new();
             changedImage.CopyTo(save);
@@ -101,6 +101,7 @@ namespace AppForImage.Controllers
             {
                 Mat backMat = stackChanges.Pop();
                 _modelImage.ChangeImage(backMat);
+                ChangeImageForEffects(_modelImage.GetChangedImage());
             }
             return _controllerConvert.MatToBitmap(_modelImage.GetChangedImage(), imageFormat);
         }

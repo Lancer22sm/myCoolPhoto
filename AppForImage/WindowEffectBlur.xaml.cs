@@ -24,6 +24,7 @@ namespace AppForImage
         public event Action<double> MyEventBoxFilterValueChanged;
         public event Action<double> MyEventBilateralFilterValueChanged;
         public event Action MyEventSavedImage;
+        public event Action MyEventSavedImageStack;
         private bool isSaved = true;
         private Stack<double> stackBlurValue = new();
         private Stack<double> stackMedianBlurValue = new();
@@ -68,7 +69,7 @@ namespace AppForImage
                 isEnabledSliders = true;
                 stackBlurValue.Push(mySliderBlur.Value);
                 _stackChangiesHistory.Push(stackBlurValue);
-                MyEventSavedImage?.Invoke();
+                MyEventSavedImageStack?.Invoke();
                 isSaved = false;
             }
         }
@@ -77,6 +78,7 @@ namespace AppForImage
         {
             isEnabledSliders = false;
             isSaved = true;
+            MyEventSavedImage?.Invoke();
         }
         private void mySliderMedianBlur_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
@@ -93,7 +95,7 @@ namespace AppForImage
                 isEnabledSliders = true;
                 stackMedianBlurValue.Push(mySliderMedianBlur.Value);
                 _stackChangiesHistory.Push(stackMedianBlurValue);
-                MyEventSavedImage?.Invoke();
+                MyEventSavedImageStack?.Invoke();
                 isSaved = false;
             }
         }
@@ -102,6 +104,7 @@ namespace AppForImage
         {
             isEnabledSliders = false;
             isSaved = true;
+            MyEventSavedImage?.Invoke();
         }
 
         private void Grid_MouseDown(object sender, MouseButtonEventArgs e)
@@ -127,7 +130,7 @@ namespace AppForImage
                 isEnabledSliders = true;
                 stackBoxFilterValue.Push(mySliderBoxFilter.Value);
                 _stackChangiesHistory.Push(stackBoxFilterValue);
-                MyEventSavedImage?.Invoke();
+                MyEventSavedImageStack?.Invoke();
                 isSaved = false;
             }
         }
@@ -136,6 +139,7 @@ namespace AppForImage
         {
             isEnabledSliders = false;
             isSaved = true;
+            MyEventSavedImage?.Invoke();
         }
 
         private void mySliderBilateralFilter_PreviewMouseDown(object sender, MouseButtonEventArgs e)
@@ -145,7 +149,7 @@ namespace AppForImage
                 isEnabledSliders = true;
                 stackBilateralFilterValue.Push(mySliderBilateralFilter.Value);
                 _stackChangiesHistory.Push(stackBilateralFilterValue);
-                MyEventSavedImage?.Invoke();
+                MyEventSavedImageStack?.Invoke();
                 isSaved = false;
             }
         }
@@ -155,6 +159,7 @@ namespace AppForImage
             isSaved = true;
             isEnabledSliders = false;
             MyEventBilateralFilterValueChanged?.Invoke(mySliderBilateralFilter.Value);
+            MyEventSavedImage?.Invoke();
         }
     }
 }

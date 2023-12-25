@@ -23,6 +23,7 @@ namespace AppForImage
         public event Action<double> MyEventGreenValueChanged;
         public event Action<double> MyEventBlueValueChanged;
         public event Action MyEventSavedImage;
+        public event Action MyEventSavedImageStack;
         private Stack<double> stackRedValue = new();
         private Stack<double> stackGreenValue = new();
         private Stack<double> stackBlueValue = new();
@@ -57,7 +58,7 @@ namespace AppForImage
                 isEnabledSliders = true;
                 stackRedValue.Push(mySliderRed.Value);
                 _stackChangiesHistory.Push(stackRedValue);
-                MyEventSavedImage?.Invoke();
+                MyEventSavedImageStack?.Invoke();
                 isSaved = false;
             }
         }
@@ -66,6 +67,7 @@ namespace AppForImage
         {
             isEnabledSliders = false;
             isSaved = true;
+            MyEventSavedImage?.Invoke();
         }
 
         private void mySliderRed_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
@@ -83,7 +85,7 @@ namespace AppForImage
                 isEnabledSliders = true;
                 stackGreenValue.Push(mySliderGreen.Value);
                 _stackChangiesHistory.Push(stackGreenValue);
-                MyEventSavedImage?.Invoke();
+                MyEventSavedImageStack?.Invoke();
                 isSaved = false;
             }
         }
@@ -92,6 +94,7 @@ namespace AppForImage
         {
             isEnabledSliders = false;
             isSaved = true;
+            MyEventSavedImage?.Invoke();
         }
 
         private void mySliderGreen_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
@@ -109,7 +112,7 @@ namespace AppForImage
                 isEnabledSliders = true;
                 stackBlueValue.Push(mySliderBlue.Value);
                 _stackChangiesHistory.Push(stackBlueValue);
-                MyEventSavedImage?.Invoke();
+                MyEventSavedImageStack?.Invoke();
                 isSaved = false;
             }
         }
@@ -118,6 +121,7 @@ namespace AppForImage
         {
             isEnabledSliders = false;
             isSaved = true;
+            MyEventSavedImage?.Invoke();
         }
 
         private void mySliderBlue_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)

@@ -32,30 +32,29 @@ namespace AppForImage
             _windowEffectBlur.MyEventBoxFilterValueChanged += OnValueBoxFilterChange;
             _windowEffectBlur.MyEventMedianBlurValueChanged += OnValueMedianBlurChange;
             _windowEffectBlur.MyEventBilateralFilterValueChanged += OnValueBilateralFilterChange;
-            _windowEffectBlur.MyEventSavedImage += OnSavedImage;
+            _windowEffectBlur.MyEventSavedImage += OnSavedImageForEffects;
+            _windowEffectBlur.MyEventSavedImageStack += OnSavedImageStack;
             _windowEffectColorize = windowEffectColorize;
             _windowEffectColorize.MyEventRedValueChanged += OnValueRedChange;
             _windowEffectColorize.MyEventGreenValueChanged += OnValueGreenChange;
             _windowEffectColorize.MyEventBlueValueChanged += OnValueBlueChange;
-            _windowEffectColorize.MyEventSavedImage += OnSavedImageColorize;
+            _windowEffectColorize.MyEventSavedImage += OnSavedImageForEffectsFromColorize;
+            _windowEffectColorize.MyEventSavedImageStack += OnSavedImageStack;
         }
 
         private void OnValueRedChange(double value)
         {
-            int UseValue = Convert.ToInt32(value);
-            _controller.ChangeColor(UseValue, 0, 0);
+            _controller.ChangeColor(Convert.ToInt32(value), 0, 0);
         }
 
         private void OnValueGreenChange(double value)
         {
-            int UseValue = Convert.ToInt32(value);
-            _controller.ChangeColor(0, UseValue, 0);
+            _controller.ChangeColor(0, Convert.ToInt32(value), 0);
         }
 
         private void OnValueBlueChange(double value)
         {
-            int UseValue = Convert.ToInt32(value);
-            _controller.ChangeColor(0, 0, UseValue);
+            _controller.ChangeColor(0, 0, Convert.ToInt32(value));
         }
 
         private void OnValueBilateralFilterChange(double value)
@@ -79,15 +78,17 @@ namespace AppForImage
             }
             _controller.MedianBlur(ticks);
         }
-        private void OnSavedImageColorize()
+        private void OnSavedImageForEffectsFromColorize()
         {
-            _controller.PushStack();
-            _controller.ChangeImageWithoutColorize(_controller.GetMyChangedImage());
+            _controller.ChangeImageForEffectsFromColorize(_controller.GetMyChangedImage());
         }
-        private void OnSavedImage()
+        private void OnSavedImageForEffects()
+        {
+            _controller.ChangeImageForEffects(_controller.GetMyChangedImage());
+        }
+        private void OnSavedImageStack()
         {
             _controller.PushStack();
-            _controller.ChangeImageForEffects(_controller.GetMyChangedImage());
         }
 
         private void ButtonBlur_Click(object sender, RoutedEventArgs e)
