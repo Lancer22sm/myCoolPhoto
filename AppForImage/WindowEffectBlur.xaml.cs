@@ -19,11 +19,8 @@ namespace AppForImage
     /// </summary>
     public partial class WindowEffectBlur : Window
     {
-        public event Action<double> MyEventBlurValueChanged;
-        public event Action<double> MyEventMedianBlurValueChanged;
-        public event Action<double> MyEventBoxFilterValueChanged;
-        public event Action<double> MyEventBilateralFilterValueChanged;
-        public event Action MyEventSavedImage;
+        public event Action<double, double, double, double> MyEventBlurValueChanged;
+        public event Action MyEventSavedImage; // используй для кнопки сохранения
         public event Action MyEventSavedImageStack;
         private bool isSaved = true;
         private Stack<double> stackBlurValue = new();
@@ -58,7 +55,7 @@ namespace AppForImage
         {
             if(isEnabledSliders)
             {
-                MyEventBlurValueChanged?.Invoke(mySliderBlur.Value);
+                MyEventBlurValueChanged?.Invoke(mySliderBlur.Value, mySliderMedianBlur.Value, mySliderBoxFilter.Value, mySliderBilateralFilter.Value);
             }
         }
 
@@ -78,13 +75,12 @@ namespace AppForImage
         {
             isEnabledSliders = false;
             isSaved = true;
-            MyEventSavedImage?.Invoke();
         }
         private void mySliderMedianBlur_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             if(isEnabledSliders)
             {
-                MyEventMedianBlurValueChanged?.Invoke(mySliderMedianBlur.Value);
+                MyEventBlurValueChanged?.Invoke(mySliderBlur.Value, mySliderMedianBlur.Value, mySliderBoxFilter.Value, mySliderBilateralFilter.Value);
             }
         }
 
@@ -104,7 +100,6 @@ namespace AppForImage
         {
             isEnabledSliders = false;
             isSaved = true;
-            MyEventSavedImage?.Invoke();
         }
 
         private void Grid_MouseDown(object sender, MouseButtonEventArgs e)
@@ -119,7 +114,7 @@ namespace AppForImage
         {
             if(isEnabledSliders)
             {
-                MyEventBoxFilterValueChanged?.Invoke(mySliderBoxFilter.Value);
+                MyEventBlurValueChanged?.Invoke(mySliderBlur.Value, mySliderMedianBlur.Value, mySliderBoxFilter.Value, mySliderBilateralFilter.Value);
             }
         }
 
@@ -139,7 +134,6 @@ namespace AppForImage
         {
             isEnabledSliders = false;
             isSaved = true;
-            MyEventSavedImage?.Invoke();
         }
 
         private void mySliderBilateralFilter_PreviewMouseDown(object sender, MouseButtonEventArgs e)
@@ -158,8 +152,7 @@ namespace AppForImage
         {
             isSaved = true;
             isEnabledSliders = false;
-            MyEventBilateralFilterValueChanged?.Invoke(mySliderBilateralFilter.Value);
-            MyEventSavedImage?.Invoke();
+            MyEventBlurValueChanged?.Invoke(mySliderBlur.Value, mySliderMedianBlur.Value, mySliderBoxFilter.Value, mySliderBilateralFilter.Value);
         }
     }
 }

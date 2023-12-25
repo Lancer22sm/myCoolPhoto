@@ -34,20 +34,18 @@ namespace AppForImage.Controllers
         {
             return _modelImage.GetChangedImage();
         }
-        public void ChangeImageForEffectsFromColorize(Mat changedImage)
+        public void ChangeImageFromEffectColorize(Mat changedImage)
         {
             Mat save = new();
             changedImage.CopyTo(save);
             _modelImage.ChangeImage(save);
             _useEffectBlur.ChangeSrcForEffect(_modelImage.GetChangedImage());
         }
-        public void ChangeImageForEffects(Mat changedImage)
+        public void ChangeImageFromEffectBlur()
         {
-            Mat save = new();
-            changedImage.CopyTo(save);
-            _modelImage.ChangeImage(save);
-            _useEffectBlur.ChangeSrcForEffect(_modelImage.GetChangedImage());
-            _useEffectColorize.ChangeSrcForEffect(_modelImage.GetChangedImage());
+            src = _modelImage.GetChangedImage();
+            _useEffectBlur.ChangeSrcForEffect(src);
+            _useEffectColorize.ChangeSrcForEffect(src);
         }
         public BitmapImage GetMyImage()
         {
@@ -62,37 +60,18 @@ namespace AppForImage.Controllers
         {
             return _controllerConvert.MatToBitmap(_modelImage.GetNaturalImage(), imageFormat);
         }
-        public void MatBlur(int valueBlur)
+        public void ChangeBlur(int blurValue, int medianBlurValue, int boxFilterValue, int bilateralFilterValue)
         {
-            Mat copiesMat = _useEffectBlur.GeneralEffect(valueBlur);
-            _modelImage.ChangeImage(copiesMat);
+            src = _useEffectBlur.GeneralEffect(blurValue, medianBlurValue, boxFilterValue, bilateralFilterValue);
+            _modelImage.ChangeImage(src);
             IsUseMatEffect?.Invoke();
         }
         public void ChangeColor(int redvalue, int greenvalue, int bluevalue)
         {
-            Mat copiesMat = new();
-            if (greenvalue == 0 & bluevalue == 0) copiesMat = _useEffectColorize.ChangeRed(redvalue);
-            if (bluevalue == 0 & redvalue == 0) copiesMat = _useEffectColorize.ChangeGreen(greenvalue);
-            if (redvalue == 0 & greenvalue == 0) copiesMat = _useEffectColorize.ChangeBlue(bluevalue);
-            _modelImage.ChangeImage(copiesMat);
-            IsUseMatEffect?.Invoke();
-        }
-        public void BilateralFilter(int valueBlur)
-        {
-            Mat copiesMat = _useEffectBlur.BilateralFilter(valueBlur);
-            _modelImage.ChangeImage(copiesMat);
-            IsUseMatEffect?.Invoke();
-        }
-        public void BoxFilter(int valueBlur)
-        {
-            Mat copiesMat = _useEffectBlur.BoxFilter(valueBlur);
-            _modelImage.ChangeImage(copiesMat);
-            IsUseMatEffect?.Invoke();
-        }
-        public void MedianBlur(int valueBlur)
-        {
-            Mat copiesMat = _useEffectBlur.MedianBlur(valueBlur);
-            _modelImage.ChangeImage(copiesMat);
+            if (greenvalue == 0 & bluevalue == 0) src = _useEffectColorize.ChangeRed(redvalue);
+            else if (bluevalue == 0 & redvalue == 0) src = _useEffectColorize.ChangeGreen(greenvalue);
+            else if (redvalue == 0 & greenvalue == 0) src = _useEffectColorize.ChangeBlue(bluevalue);
+            _modelImage.ChangeImage(src);
             IsUseMatEffect?.Invoke();
         }
         public BitmapImage GetStack()
@@ -101,13 +80,15 @@ namespace AppForImage.Controllers
             {
                 Mat backMat = stackChanges.Pop();
                 _modelImage.ChangeImage(backMat);
-                ChangeImageForEffects(_modelImage.GetChangedImage());
+                ChangeImageFromEffectBlur();
             }
             return _controllerConvert.MatToBitmap(_modelImage.GetChangedImage(), imageFormat);
         }
         public void PushStack()
         {
-            stackChanges.Push(_modelImage.GetChangedImage());
+            Mat CopiesToStack = new();
+            _modelImage.GetChangedImage().CopyTo(CopiesToStack);
+            stackChanges.Push(CopiesToStack);
         }
     }
 }

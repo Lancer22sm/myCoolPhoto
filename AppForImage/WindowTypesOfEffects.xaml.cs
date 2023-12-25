@@ -29,9 +29,6 @@ namespace AppForImage
             _controller = controller;
             _windowEffectBlur = effectblur;
             _windowEffectBlur.MyEventBlurValueChanged += OnValueBlurChange;
-            _windowEffectBlur.MyEventBoxFilterValueChanged += OnValueBoxFilterChange;
-            _windowEffectBlur.MyEventMedianBlurValueChanged += OnValueMedianBlurChange;
-            _windowEffectBlur.MyEventBilateralFilterValueChanged += OnValueBilateralFilterChange;
             _windowEffectBlur.MyEventSavedImage += OnSavedImageForEffects;
             _windowEffectBlur.MyEventSavedImageStack += OnSavedImageStack;
             _windowEffectColorize = windowEffectColorize;
@@ -56,35 +53,25 @@ namespace AppForImage
         {
             _controller.ChangeColor(0, 0, Convert.ToInt32(value));
         }
-
-        private void OnValueBilateralFilterChange(double value)
+        private void OnValueBlurChange(double valueBlur, double valueMedianBlur, double valueBoxFilter, double valueBilateralFilter)
         {
-            _controller.BilateralFilter(Convert.ToInt32(value));
-        }
-        private void OnValueBoxFilterChange(double value)
-        {
-            _controller.BoxFilter(Convert.ToInt32(value));
-        }
-        private void OnValueBlurChange(double value)
-        {
-            _controller.MatBlur(Convert.ToInt32(value));
-        }
-        private void OnValueMedianBlurChange(double value)
-        {
-            int ticks = Convert.ToInt32(value);
-            if(ticks % 2 == 0)
+            int blurValue = Convert.ToInt32(valueBlur);
+            int medianBlurValue = Convert.ToInt32(valueMedianBlur);
+            if (medianBlurValue % 2 == 0)
             {
-                ticks++;
+                medianBlurValue++;
             }
-            _controller.MedianBlur(ticks);
+            int boxFilterValue = Convert.ToInt32(valueBoxFilter);
+            int bilateralFilterValue = Convert.ToInt32(valueBilateralFilter);
+            _controller.ChangeBlur(blurValue, medianBlurValue, boxFilterValue, bilateralFilterValue);
         }
         private void OnSavedImageForEffectsFromColorize()
         {
-            _controller.ChangeImageForEffectsFromColorize(_controller.GetMyChangedImage());
+            //_controller.ChangeImageFromEffectColorize(_controller.GetMyChangedImage());
         }
         private void OnSavedImageForEffects()
         {
-            _controller.ChangeImageForEffects(_controller.GetMyChangedImage());
+            _controller.ChangeImageFromEffectBlur();
         }
         private void OnSavedImageStack()
         {

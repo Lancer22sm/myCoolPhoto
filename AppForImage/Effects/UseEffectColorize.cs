@@ -12,94 +12,56 @@ namespace AppForImage.Effects
     internal class UseEffectColorize : UseEffect
     {
         Mat sourceImage = new();
+        Mat usebleImage = new();
         public UseEffectColorize(Mat source)
         {
-            source.CopyTo(sourceImage);
+            sourceImage = source;
+            //source.CopyTo(sourceImage);
         }
         public void ChangeSrcForEffect(Mat src)
         {
-            src.CopyTo(sourceImage);
+            sourceImage = src;
+            //src.CopyTo(sourceImage);
         }
         public Mat ChangeRed(int valueChange)
         {
-            Mat UsebleImage = new Mat();
-            sourceImage.CopyTo(UsebleImage);
-            for (int y = 0; y < UsebleImage.Height; y++)
-            {
-                for (int x = 0; x < UsebleImage.Width; x++)
-                {
-                    Vec3b sourceBgr = sourceImage.At<Vec3b>(y, x);
-                    Vec3b bgr = UsebleImage.At<Vec3b>(y, x);
-                    if ((sourceBgr[2] + valueChange) < 0)
-                    {
-                        bgr[2] = 0;
-                    }
-                    else if ((sourceBgr[2] + valueChange) > 255)
-                    {
-                        bgr[2] = 255;
-                    }
-                    else
-                    {
-                        bgr[2] = (byte)(sourceBgr[2] + valueChange);
-                    }
-                    UsebleImage.At<Vec3b>(y, x) = bgr;
-                }
-            }
-            return UsebleImage;
+            ChangeColor(valueChange, 2);
+            return usebleImage;
         }
         public Mat ChangeGreen(int valueChange)
         {
-            Mat UsebleImage = new Mat();
-            sourceImage.CopyTo(UsebleImage);
-            for (int y = 0; y < UsebleImage.Height; y++)
-            {
-                for (int x = 0; x < UsebleImage.Width; x++)
-                {
-                    Vec3b sourceBgr = sourceImage.At<Vec3b>(y, x);
-                    Vec3b bgr = UsebleImage.At<Vec3b>(y, x);
-                    if ((sourceBgr[1] + valueChange) < 0)
-                    {
-                        bgr[1] = 0;
-                    }
-                    else if ((sourceBgr[1] + valueChange) > 255)
-                    {
-                        bgr[1] = 255;
-                    }
-                    else
-                    {
-                        bgr[1] = (byte)(sourceBgr[1] + valueChange);
-                    }
-                    UsebleImage.At<Vec3b>(y, x) = bgr;
-                }
-            }
-            return UsebleImage;
+            ChangeColor(valueChange, 1);
+            return usebleImage;
         }
         public Mat ChangeBlue(int valueChange)
         {
-            Mat UsebleImage = new Mat();
-            sourceImage.CopyTo(UsebleImage);
-            for (int y = 0; y < UsebleImage.Height; y++)
+            ChangeColor(valueChange, 0);
+            return usebleImage;
+        }
+        private void ChangeColor(int valueChange, int color)
+        {
+            sourceImage.CopyTo(usebleImage);
+            for (int y = 0; y < sourceImage.Height; y++)
             {
-                for (int x = 0; x < UsebleImage.Width; x++)
+                for (int x = 0; x < sourceImage.Width; x++)
                 {
                     Vec3b sourceBgr = sourceImage.At<Vec3b>(y, x);
-                    Vec3b bgr = UsebleImage.At<Vec3b>(y, x);
-                    if ((sourceBgr[0] + valueChange) < 0)
+                    Vec3b bgr = usebleImage.At<Vec3b>(y, x);
+                    if ((sourceBgr[color] + valueChange) < 0)
                     {
-                        bgr[0] = 0;
+                        bgr[color] = 0;
                     }
-                    else if ((sourceBgr[0] + valueChange) > 255)
+                    else if ((sourceBgr[color] + valueChange) > 255)
                     {
-                        bgr[0] = 255;
+                        bgr[color] = 255;
                     }
                     else
                     {
-                        bgr[0] = (byte)(sourceBgr[0] + valueChange);
+                        bgr[color] = (byte)(sourceBgr[color] + valueChange);
                     }
-                    UsebleImage.At<Vec3b>(y, x) = bgr;
+                    usebleImage.At<Vec3b>(y, x) = bgr;
                 }
             }
-            return UsebleImage;
         }
     }
 }
