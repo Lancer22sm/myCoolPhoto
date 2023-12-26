@@ -17,8 +17,8 @@ namespace AppForImage.Controllers
         UseEffectColorize _useEffectColorize;
         WindowEffectColorize _windowEffectColorize;
         static string[] args = Environment.GetCommandLineArgs();
-        static string filepath = args[1];
-        //static string filepath = "C:/Users/Lancer/Pictures/GameCenter/Warface/Warface_sample.jpg";
+        //static string filepath = args[1];
+        static string filepath = "C:/Users/Lancer/Pictures/Wallpaper_worktable.jpg";
         Mat src = Cv2.ImRead(filepath, ImreadModes.Unchanged);
         Mat useImage = new();
         Stack<Mat> stackChanges = new();
@@ -32,7 +32,7 @@ namespace AppForImage.Controllers
             _modelImage.ChangeImage(src);
             _useEffectBlur = new(src);
             _useEffectBlur.GeneralEffect(1, 1, 1, 1);
-            _useEffectColorize = new(_useEffectBlur.usebleImageBilateralFilterBlur);
+            _useEffectColorize = new(_useEffectBlur.usebleImageReturn);
         }
         public Mat GetMyChangedImage()
         {
@@ -63,15 +63,16 @@ namespace AppForImage.Controllers
             int redvalue = Convert.ToInt32(_windowEffectColorize.mySliderRed.Value);
             int greenvalue = Convert.ToInt32(_windowEffectColorize.mySliderGreen.Value);
             int bluevalue = Convert.ToInt32(_windowEffectColorize.mySliderBlue.Value);
+            _useEffectColorize.OnSaveOtherEffect();
             ChangeFullColor(redvalue, greenvalue, bluevalue);
             _modelImage.ChangeImage(useImage);
             IsUseMatEffect?.Invoke();
         }
         private void ChangeFullColor(int redvalue, int greenvalue, int bluevalue)
         {
-            useImage = _useEffectColorize.ChangeRed(redvalue);
-            useImage = _useEffectColorize.ChangeGreen(greenvalue);
-            useImage = _useEffectColorize.ChangeBlue(bluevalue);
+            if (redvalue != 0) useImage = _useEffectColorize.ChangeRed(redvalue);
+            if (greenvalue != 0) useImage = _useEffectColorize.ChangeGreen(greenvalue);
+            if (bluevalue != 0) useImage = _useEffectColorize.ChangeBlue(bluevalue);
         }
         public void ChangeColor(int redvalue, int greenvalue, int bluevalue)
         {

@@ -23,6 +23,10 @@ namespace AppForImage.Effects
             sourceImage = src;
             sourceImage.CopyTo(usebleImage);
         }
+        public void OnSaveOtherEffect()
+        {
+            sourceImage.CopyTo(usebleImage);
+        }
         public Mat ChangeRed(int valueChange)
         {
             ChangeColor(valueChange, 2);
