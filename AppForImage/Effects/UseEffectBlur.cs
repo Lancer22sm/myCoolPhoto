@@ -1,10 +1,5 @@
 ﻿using OpenCvSharp;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
 
 namespace AppForImage.Effects
 {
@@ -16,10 +11,12 @@ namespace AppForImage.Effects
         Mat usebleImageBoxFilterBlur = new();
         Mat usebleImageBilateralFilterBlur = new();
         public Mat usebleImageReturn = new();
+        int _chanelsImage;
 
-        public UseEffectBlur(Mat source)
+        public UseEffectBlur(Mat source, int chanelsImage)
         {
             sourceImage = source;
+            _chanelsImage = chanelsImage;
             GeneralEffect(1, 1, 1, 1);
         }
         public void ChangeSrcForEffect(Mat src)
@@ -34,9 +31,13 @@ namespace AppForImage.Effects
             Cv2.Blur(sourceImage, usebleImageBlur, new OpenCvSharp.Size(valueBlur, valueBlur));
             Cv2.MedianBlur(usebleImageBlur, usebleImageMedianBlur, medianBlur);
             Cv2.BoxFilter(usebleImageMedianBlur, usebleImageBoxFilterBlur, usebleImageBoxFilterBlur.Depth(), new OpenCvSharp.Size(boxFilter, boxFilter));
-            double valuePixels = Convert.ToDouble(bilateralFilter);
-            Cv2.BilateralFilter(usebleImageBoxFilterBlur, usebleImageBilateralFilterBlur, bilateralFilter, valuePixels, valuePixels);
-            usebleImageReturn = usebleImageBilateralFilterBlur;
+            if (_chanelsImage <= 3)
+            {
+                double valuePixels = Convert.ToDouble(bilateralFilter);
+                Cv2.BilateralFilter(usebleImageBoxFilterBlur, usebleImageBilateralFilterBlur, bilateralFilter, valuePixels, valuePixels);
+                usebleImageReturn = usebleImageBilateralFilterBlur;
+            }
+            else usebleImageReturn = usebleImageBoxFilterBlur;
             return usebleImageReturn;
         }
 

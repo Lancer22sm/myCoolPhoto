@@ -3,8 +3,6 @@ using AppForImage.Models;
 using OpenCvSharp;
 using System;
 using System.Collections.Generic;
-using System.Security.Cryptography;
-using System.Windows;
 using System.Windows.Media.Imaging;
 
 namespace AppForImage.Controllers
@@ -14,11 +12,11 @@ namespace AppForImage.Controllers
         ModelImage _modelImage = new();
         ControllerConvert _controllerConvert = new();
         UseEffectBlur _useEffectBlur;
-        UseEffectColorize _useEffectColorize;
         WindowEffectColorize _windowEffectColorize;
+        ControllerColorize _controllerColorize;
         static string[] args = Environment.GetCommandLineArgs();
-        //static string filepath = args[1];
-        static string filepath = "C:/Users/Lancer/Pictures/Wallpaper_worktable.jpg";
+        static string filepath = args[1];
+        //static string filepath = "C:/Users/Lancer/Pictures/674023.png";
         Mat src = Cv2.ImRead(filepath, ImreadModes.Unchanged);
         Mat useImage = new();
         Stack<Mat> stackChanges = new();
@@ -30,9 +28,9 @@ namespace AppForImage.Controllers
             _windowEffectColorize = windowEffectColorize;
             _modelImage.AddNaturalImage(src);
             _modelImage.ChangeImage(src);
-            _useEffectBlur = new(src);
+            _useEffectBlur = new(src, src.Channels());
             _useEffectBlur.GeneralEffect(1, 1, 1, 1);
-            _useEffectColorize = new(_useEffectBlur.usebleImageReturn);
+            _controllerColorize = new(_windowEffectColorize, _useEffectBlur.usebleImageReturn);
         }
         public Mat GetMyChangedImage()
         {
@@ -60,34 +58,13 @@ namespace AppForImage.Controllers
         public void ChangeBlur(int blurValue, int medianBlurValue, int boxFilterValue, int bilateralFilterValue)
         {
             useImage = _useEffectBlur.GeneralEffect(blurValue, medianBlurValue, boxFilterValue, bilateralFilterValue);
-            int redvalue = Convert.ToInt32(_windowEffectColorize.mySliderRed.Value);
-            int greenvalue = Convert.ToInt32(_windowEffectColorize.mySliderGreen.Value);
-            int bluevalue = Convert.ToInt32(_windowEffectColorize.mySliderBlue.Value);
-            _useEffectColorize.OnSaveOtherEffect();
-            ChangeFullColor(redvalue, greenvalue, bluevalue);
+            useImage = _controllerColorize.ChangeFullColor();
             _modelImage.ChangeImage(useImage);
             IsUseMatEffect?.Invoke();
         }
-        private void ChangeFullColor(int redvalue, int greenvalue, int bluevalue)
-        {
-            if (redvalue != 0) useImage = _useEffectColorize.ChangeRed(redvalue);
-            if (greenvalue != 0) useImage = _useEffectColorize.ChangeGreen(greenvalue);
-            if (bluevalue != 0) useImage = _useEffectColorize.ChangeBlue(bluevalue);
-        }
         public void ChangeColor(int redvalue, int greenvalue, int bluevalue)
         {
-            if (greenvalue == 0 & bluevalue == 0 & redvalue != 0)
-            {
-                useImage = _useEffectColorize.ChangeRed(redvalue);
-            }
-            else if (bluevalue == 0 & redvalue == 0 & greenvalue != 0)
-            {
-                useImage = _useEffectColorize.ChangeGreen(greenvalue);
-            }
-            else if (redvalue == 0 & greenvalue == 0 & bluevalue != 0)
-            {
-                useImage = _useEffectColorize.ChangeBlue(bluevalue);
-            }
+            useImage = _controllerColorize.ChangeColor(redvalue, greenvalue, bluevalue);
             _modelImage.ChangeImage(useImage);
             IsUseMatEffect?.Invoke();
         }
