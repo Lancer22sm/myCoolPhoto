@@ -35,7 +35,7 @@ namespace AppForImage
             _windowEffectColorize.MyEventRedValueChanged += OnValueRedChange;
             _windowEffectColorize.MyEventGreenValueChanged += OnValueGreenChange;
             _windowEffectColorize.MyEventBlueValueChanged += OnValueBlueChange;
-            _windowEffectColorize.MyEventSavedImage += OnSavedImageForEffectsFromColorize;
+            _windowEffectColorize.MyEventSavedImage += OnSavedImageForEffects;
             _windowEffectColorize.MyEventSavedImageStack += OnSavedImageStack;
         }
 
@@ -65,13 +65,9 @@ namespace AppForImage
             int bilateralFilterValue = Convert.ToInt32(valueBilateralFilter);
             _controller.ChangeBlur(blurValue, medianBlurValue, boxFilterValue, bilateralFilterValue);
         }
-        private void OnSavedImageForEffectsFromColorize()
-        {
-            //_controller.ChangeImageFromEffectColorize(_controller.GetMyChangedImage());
-        }
         private void OnSavedImageForEffects()
         {
-            _controller.ChangeImageFromEffectBlur();
+            _controller.ChangeImageFromEffects();
         }
         private void OnSavedImageStack()
         {

@@ -38,18 +38,11 @@ namespace AppForImage.Controllers
         {
             return _modelImage.GetChangedImage();
         }
-        public void ChangeImageFromEffectColorize(Mat changedImage)
-        {
-            Mat save = new();
-            changedImage.CopyTo(save);
-            _modelImage.ChangeImage(save);
-            _useEffectBlur.ChangeSrcForEffect(_modelImage.GetChangedImage());
-        }
-        public void ChangeImageFromEffectBlur()
+        public void ChangeImageFromEffects()
         {
             src = _modelImage.GetChangedImage();
-            _useEffectBlur.ChangeSrcForEffect(src);
-            _useEffectColorize.ChangeSrcForEffect(_useEffectBlur.usebleImageBilateralFilterBlur);
+            //_useEffectBlur.ChangeSrcForEffect(src);
+            //_useEffectColorize.ChangeSrcForEffect(_useEffectBlur.usebleImageBilateralFilterBlur);
         }
         public BitmapImage GetMyImage()
         {
@@ -102,8 +95,8 @@ namespace AppForImage.Controllers
             if (stackChanges.Count > 0)
             {
                 Mat backMat = stackChanges.Pop();
-                _modelImage.ChangeImage(backMat);
-                ChangeImageFromEffectBlur();
+                backMat.CopyTo(useImage);
+                IsUseMatEffect?.Invoke();
             }
             return _controllerConvert.MatToBitmap(_modelImage.GetChangedImage(), imageFormat);
         }
