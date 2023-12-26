@@ -16,10 +16,12 @@ namespace AppForImage.Effects
         public UseEffectColorize(Mat source)
         {
             sourceImage = source;
+            sourceImage.CopyTo(usebleImage);
         }
         public void ChangeSrcForEffect(Mat src)
         {
             sourceImage = src;
+            sourceImage.CopyTo(usebleImage);
         }
         public Mat ChangeRed(int valueChange)
         {
@@ -38,7 +40,6 @@ namespace AppForImage.Effects
         }
         private void ChangeColor(int valueChange, int color)
         {
-            sourceImage.CopyTo(usebleImage);
             for (int y = 0; y < sourceImage.Height; y++)
             {
                 for (int x = 0; x < sourceImage.Width; x++)

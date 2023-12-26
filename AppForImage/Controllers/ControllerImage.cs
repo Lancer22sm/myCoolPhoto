@@ -20,6 +20,7 @@ namespace AppForImage.Controllers
         static string filepath = args[1];
         //static string filepath = "C:/Users/Lancer/Pictures/GameCenter/Warface/Warface_sample.jpg";
         Mat src = Cv2.ImRead(filepath, ImreadModes.Unchanged);
+        Mat useImage = new();
         Stack<Mat> stackChanges = new();
         static string imageFormat = FindMyImageFormat();
         public event Action IsUseMatEffect;
@@ -65,20 +66,35 @@ namespace AppForImage.Controllers
         }
         public void ChangeBlur(int blurValue, int medianBlurValue, int boxFilterValue, int bilateralFilterValue)
         {
-            src = _useEffectBlur.GeneralEffect(blurValue, medianBlurValue, boxFilterValue, bilateralFilterValue);
+            useImage = _useEffectBlur.GeneralEffect(blurValue, medianBlurValue, boxFilterValue, bilateralFilterValue);
             int redvalue = Convert.ToInt32(_windowEffectColorize.mySliderRed.Value);
             int greenvalue = Convert.ToInt32(_windowEffectColorize.mySliderGreen.Value);
             int bluevalue = Convert.ToInt32(_windowEffectColorize.mySliderBlue.Value);
-            _modelImage.ChangeImage(src);
+            ChangeFullColor(redvalue, greenvalue, bluevalue);
+            _modelImage.ChangeImage(useImage);
             IsUseMatEffect?.Invoke();
-            ChangeColor(redvalue, greenvalue, bluevalue);
+        }
+        private void ChangeFullColor(int redvalue, int greenvalue, int bluevalue)
+        {
+            useImage = _useEffectColorize.ChangeRed(redvalue);
+            useImage = _useEffectColorize.ChangeGreen(greenvalue);
+            useImage = _useEffectColorize.ChangeBlue(bluevalue);
         }
         public void ChangeColor(int redvalue, int greenvalue, int bluevalue)
         {
-            if (greenvalue == 0 & bluevalue == 0) src = _useEffectColorize.ChangeRed(redvalue);
-            else if (bluevalue == 0 & redvalue == 0) src = _useEffectColorize.ChangeGreen(greenvalue);
-            else if (redvalue == 0 & greenvalue == 0) src = _useEffectColorize.ChangeBlue(bluevalue);
-            _modelImage.ChangeImage(src);
+            if (greenvalue == 0 & bluevalue == 0 & redvalue != 0)
+            {
+                useImage = _useEffectColorize.ChangeRed(redvalue);
+            }
+            else if (bluevalue == 0 & redvalue == 0 & greenvalue != 0)
+            {
+                useImage = _useEffectColorize.ChangeGreen(greenvalue);
+            }
+            else if (redvalue == 0 & greenvalue == 0 & bluevalue != 0)
+            {
+                useImage = _useEffectColorize.ChangeBlue(bluevalue);
+            }
+            _modelImage.ChangeImage(useImage);
             IsUseMatEffect?.Invoke();
         }
         public BitmapImage GetStack()

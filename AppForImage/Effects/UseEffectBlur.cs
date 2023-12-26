@@ -23,6 +23,7 @@ namespace AppForImage.Effects
         public void ChangeSrcForEffect(Mat src)
         {
             sourceImage = src;
+            GeneralEffect(1, 1, 1, 1);
         }
 
         public Mat GeneralEffect(int valueBlur, int medianBlur, int boxFilter, int bilateralFilter)
