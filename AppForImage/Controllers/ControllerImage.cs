@@ -26,6 +26,7 @@ namespace AppForImage.Controllers
         public event Action IsUseMatEffect;
         bool isChangePreviewImage = false;
         Mat previewImage = new Mat();
+        Mat previewImageSource = new Mat();
 
         public ControllerImage(WindowEffectColorize windowEffectColorize)
         {
@@ -67,6 +68,9 @@ namespace AppForImage.Controllers
         public void StartChangePreviewImage()
         {
             isChangePreviewImage = true;
+            int[] param = new int[2] { 1, 10 };
+            Cv2.ImEncode(imageFormat, src, out byte[] btArr, param);
+            previewImageSource = Cv2.ImDecode(btArr, ImreadModes.Unchanged);
         }
         public void StopChangePreviewImage()
         {
@@ -76,12 +80,7 @@ namespace AppForImage.Controllers
         {
             if(isChangePreviewImage)
             {
-                Mat usedImagePreview = new();
-                //useImage.CopyTo(previewImage);
-                int[] param = new int[2] { 1, 10 };
-                Cv2.ImEncode(imageFormat, useImage, out byte[] btArr, param);
-                usedImagePreview = Cv2.ImDecode(btArr, ImreadModes.Unchanged);
-                previewImage = _useEffectBlur.GeneralEffect(usedImagePreview, blurValue, medianBlurValue, boxFilterValue, bilateralFilterValue);
+                previewImage = _useEffectBlur.GeneralEffect(previewImageSource, blurValue, medianBlurValue, boxFilterValue, bilateralFilterValue);
                 previewImage = _controllerColorize.ChangeFullColor(previewImage);
                 IsUseMatEffect?.Invoke();
             }
@@ -96,12 +95,7 @@ namespace AppForImage.Controllers
         {
             if(isChangePreviewImage)
             {
-                Mat usedImagePreview = new();
-                //useImage.CopyTo(previewImage);
-                int[] param = new int[2] { 1, 10 };
-                Cv2.ImEncode(imageFormat, useImage, out byte[] btArr, param);
-                usedImagePreview = Cv2.ImDecode(btArr, ImreadModes.Unchanged);
-                previewImage = _controllerColorize.ChangeColor(usedImagePreview, redvalue, greenvalue, bluevalue);
+                previewImage = _controllerColorize.ChangeColor(previewImageSource, redvalue, greenvalue, bluevalue);
                 IsUseMatEffect?.Invoke();
             }
             else
