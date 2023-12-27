@@ -2,7 +2,7 @@
 
 namespace AppForImage.Effects
 {
-    public class UseEffect
+    public abstract class UseEffect
     {
         Mat sourceImage;
         Mat UsebleImage;
@@ -11,9 +11,6 @@ namespace AppForImage.Effects
         {
             return UsebleImage;
         }
-        public void ChangeSrcForEffect()
-        {
-
-        }
+        public abstract void ChangeSrcForEffect(Mat src);
     }
 }

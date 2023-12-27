@@ -11,7 +11,7 @@ namespace AppForImage.Effects
             sourceImage = source;
             sourceImage.CopyTo(usebleImage);
         }
-        public void ChangeSrcForEffect(Mat src)
+        public override void ChangeSrcForEffect(Mat src)
         {
             sourceImage = src;
             sourceImage.CopyTo(usebleImage);

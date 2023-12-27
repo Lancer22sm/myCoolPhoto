@@ -19,7 +19,7 @@ namespace AppForImage.Effects
             _chanelsImage = chanelsImage;
             GeneralEffect(1, 1, 1, 1);
         }
-        public void ChangeSrcForEffect(Mat src)
+        public override void ChangeSrcForEffect(Mat src)
         {
             sourceImage = src;
             GeneralEffect(1, 1, 1, 1);
