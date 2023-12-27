@@ -11,7 +11,7 @@ namespace AppForImage
         private WindowEffectColorize _windowEffectColorize;
         private ControllerImage _controller;
         public event Action OnEndChange;
-        public event Action OnStartChange;
+        //public event Action OnStartChange;
         public WindowTypesOfEffects(ControllerImage controller, WindowEffectBlur effectblur, WindowEffectColorize windowEffectColorize)
         {
             InitializeComponent();
@@ -87,7 +87,7 @@ namespace AppForImage
         private void OnSavedImageStack()
         {
             _controller.PushStack();
-            OnStartChange?.Invoke();
+            //OnStartChange?.Invoke();
             _controller.StartChangePreviewImage();
             // перед зажиманием слайдеров
         }

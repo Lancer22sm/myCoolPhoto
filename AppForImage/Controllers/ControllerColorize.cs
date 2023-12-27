@@ -50,6 +50,7 @@ namespace AppForImage.Controllers
 
         public Mat ChangeColor(Mat myMat, int redvalue, int greenvalue, int bluevalue)
         {
+            _useEffectColorize.OnSaveOtherEffect();
             if (greenvalue == 0 & bluevalue == 0 & redvalue != 0)
             {
                 _useImage = _useEffectColorize.ChangeRed(myMat, redvalue);
