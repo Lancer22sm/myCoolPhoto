@@ -3,6 +3,7 @@ using AppForImage.Models;
 using OpenCvSharp;
 using System;
 using System.Collections.Generic;
+using System.Windows;
 using System.Windows.Media.Imaging;
 
 namespace AppForImage.Controllers
@@ -16,7 +17,7 @@ namespace AppForImage.Controllers
         ControllerColorize _controllerColorize;
         static string[] args = Environment.GetCommandLineArgs();
         static string filepath = args[1];
-        //static string filepath = "C:/Users/Lancer/Pictures/674023.png";
+        //static string filepath = "C:/Users/Lancer/Pictures/таблицы.png";
         Mat src = Cv2.ImRead(filepath, ImreadModes.Unchanged);
         Mat useImage = new();
         Stack<Mat> stackChanges = new();

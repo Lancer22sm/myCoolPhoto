@@ -4,10 +4,11 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using AppForImage.Controllers;
+using OpenCvSharp;
 
 namespace AppForImage
 {
-    public partial class MainWindow : Window
+    public partial class MainWindow : System.Windows.Window
     {
         private readonly WindowTypesOfEffects _typesOfEffects;
         private readonly WindowEffectColorize _windowEffectColorize;
@@ -15,6 +16,8 @@ namespace AppForImage
         private readonly ControllerImage _controller;
         Dictionary<Stack<double>, Slider> generalDictionary = new();
         public Stack<Stack<double>> stackChangiesHistory = new();
+        OpenCvSharp.Window _myPreviewWindow = new();
+        Mat previewImage = new();
         public MainWindow()
         {
             InitializeComponent();
@@ -23,7 +26,8 @@ namespace AppForImage
             _controller = new(_windowEffectColorize);
             _typesOfEffects = new(_controller, _windowEffectsBlur, _windowEffectColorize);
             myImageBackground.Source = _controller.ImageDownload();
-            _controller.IsUseMatEffect += ChangesImage;
+            _controller.IsUseMatEffect += PreviewChangesImage;
+            _typesOfEffects.OnEndChange += ChangesImage;
             Dictionary<Stack<double>, Slider> dictionaryBlur = _windowEffectsBlur.dictionaryStackSliders;
             Dictionary<Stack<double>, Slider> dictionaryColorize = _windowEffectColorize.dictionaryStackSliders;
             foreach(var item in dictionaryBlur)
@@ -35,10 +39,16 @@ namespace AppForImage
                 generalDictionary.Add(item.Key, item.Value);
             }
         }
-
         private void ButtonEffects_Click(object sender, RoutedEventArgs e)
         {
             _typesOfEffects.Show();
+        }
+        private void PreviewChangesImage()
+        {
+            _controller.GetMyChangedImage().CopyTo(previewImage);
+
+            _myPreviewWindow.Resize(Convert.ToInt32(ActualWidth), Convert.ToInt32(ActualHeight));
+            _myPreviewWindow.ShowImage(previewImage);
         }
         private void ChangesImage()
         {

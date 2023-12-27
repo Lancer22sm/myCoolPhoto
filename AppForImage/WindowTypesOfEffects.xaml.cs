@@ -10,6 +10,8 @@ namespace AppForImage
         private WindowEffectBlur _windowEffectBlur;
         private WindowEffectColorize _windowEffectColorize;
         private ControllerImage _controller;
+        public event Action OnEndChange;
+        public event Action OnStartChange;
         public WindowTypesOfEffects(ControllerImage controller, WindowEffectBlur effectblur, WindowEffectColorize windowEffectColorize)
         {
             InitializeComponent();
@@ -18,14 +20,20 @@ namespace AppForImage
             _windowEffectBlur.MyEventBlurValueChanged += OnValueBlurChange;
             _windowEffectBlur.MyEventSavedImage += OnSavedImageForEffects;
             _windowEffectBlur.MyEventSavedImageStack += OnSavedImageStack;
+            _windowEffectBlur.MyEventOnEndChangeImage += OnEndChangeImageForEffects;
             _windowEffectColorize = windowEffectColorize;
             _windowEffectColorize.MyEventRedValueChanged += OnValueRedChange;
             _windowEffectColorize.MyEventGreenValueChanged += OnValueGreenChange;
             _windowEffectColorize.MyEventBlueValueChanged += OnValueBlueChange;
             _windowEffectColorize.MyEventSavedImage += OnSavedImageForEffects;
             _windowEffectColorize.MyEventSavedImageStack += OnSavedImageStack;
+            _windowEffectColorize.MyEventOnEndChangeImage += OnEndChangeImageForEffects;
         }
-
+        private void OnEndChangeImageForEffects()
+        {
+            OnEndChange?.Invoke();
+            // Перед отжиманием слайдеров
+        }
         private void OnValueRedChange(double value)
         {
             _controller.ChangeColor(Convert.ToInt32(value), 0, 0);
@@ -59,6 +67,8 @@ namespace AppForImage
         private void OnSavedImageStack()
         {
             _controller.PushStack();
+            OnStartChange?.Invoke();
+            // перед зажиманием слайдеров
         }
 
         private void ButtonBlur_Click(object sender, RoutedEventArgs e)
