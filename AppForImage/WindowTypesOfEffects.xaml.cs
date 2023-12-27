@@ -11,7 +11,7 @@ namespace AppForImage
         private WindowEffectColorize _windowEffectColorize;
         private ControllerImage _controller;
         public event Action OnEndChange;
-        public event Action OnStartChange;
+        //public event Action OnStartChange;
         public WindowTypesOfEffects(ControllerImage controller, WindowEffectBlur effectblur, WindowEffectColorize windowEffectColorize)
         {
             InitializeComponent();
@@ -29,8 +29,28 @@ namespace AppForImage
             _windowEffectColorize.MyEventSavedImageStack += OnSavedImageStack;
             _windowEffectColorize.MyEventOnEndChangeImage += OnEndChangeImageForEffects;
         }
-        private void OnEndChangeImageForEffects()
+        private void OnEndChangeImageForEffects(double valueBlur, double valueMedianBlur, double valueBoxFilter, double valueBilateralFilter)
         {
+            _controller.StopChangePreviewImage();
+            OnValueBlurChange(valueBlur, valueMedianBlur, valueBoxFilter, valueBilateralFilter);
+            OnEndChange?.Invoke();
+            // Перед отжиманием слайдеров
+        }
+        private void OnEndChangeImageForEffects(double valueColor, int numColor)
+        {
+            _controller.StopChangePreviewImage();
+            switch (numColor)
+            {
+                case 0:
+                    _controller.ChangeColor(Convert.ToInt32(valueColor), 0, 0);
+                    break;
+                case 1:
+                    _controller.ChangeColor(0, Convert.ToInt32(valueColor), 0);
+                    break;
+                case 2:
+                    _controller.ChangeColor(0, 0, Convert.ToInt32(valueColor));
+                    break;
+            }
             OnEndChange?.Invoke();
             // Перед отжиманием слайдеров
         }
@@ -67,7 +87,8 @@ namespace AppForImage
         private void OnSavedImageStack()
         {
             _controller.PushStack();
-            OnStartChange?.Invoke();
+            //OnStartChange?.Invoke();
+            _controller.StartChangePreviewImage();
             // перед зажиманием слайдеров
         }
 

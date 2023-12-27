@@ -16,8 +16,6 @@ namespace AppForImage
         private readonly ControllerImage _controller;
         Dictionary<Stack<double>, Slider> generalDictionary = new();
         public Stack<Stack<double>> stackChangiesHistory = new();
-        OpenCvSharp.Window _myPreviewWindow = new();
-        Mat previewImage = new();
         public MainWindow()
         {
             InitializeComponent();
@@ -45,10 +43,7 @@ namespace AppForImage
         }
         private void PreviewChangesImage()
         {
-            _controller.GetMyChangedImage().CopyTo(previewImage);
-
-            _myPreviewWindow.Resize(Convert.ToInt32(ActualWidth), Convert.ToInt32(ActualHeight));
-            _myPreviewWindow.ShowImage(previewImage);
+            myImageBackground.Source = _controller.GetMyImagePreview();
         }
         private void ChangesImage()
         {

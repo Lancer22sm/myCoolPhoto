@@ -11,7 +11,7 @@ namespace AppForImage
         public event Action<double> MyEventRedValueChanged;
         public event Action<double> MyEventGreenValueChanged;
         public event Action<double> MyEventBlueValueChanged;
-        public event Action MyEventOnEndChangeImage;
+        public event Action<double, int> MyEventOnEndChangeImage;
         public event Action MyEventSavedImage; // используй для кнопки сохранения
         public event Action MyEventSavedImageStack;
         private Stack<double> stackRedValue = new();
@@ -57,7 +57,7 @@ namespace AppForImage
         {
             isEnabledSliders = false;
             isSaved = true;
-            MyEventOnEndChangeImage?.Invoke();
+            MyEventOnEndChangeImage?.Invoke(mySliderRed.Value, 0);
         }
 
         private void mySliderRed_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
@@ -84,7 +84,7 @@ namespace AppForImage
         {
             isEnabledSliders = false;
             isSaved = true;
-            MyEventOnEndChangeImage?.Invoke();
+            MyEventOnEndChangeImage?.Invoke(mySliderGreen.Value, 1);
         }
 
         private void mySliderGreen_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
@@ -111,7 +111,7 @@ namespace AppForImage
         {
             isEnabledSliders = false;
             isSaved = true;
-            MyEventOnEndChangeImage?.Invoke();
+            MyEventOnEndChangeImage?.Invoke(mySliderBlue.Value, 2);
         }
 
         private void mySliderBlue_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)

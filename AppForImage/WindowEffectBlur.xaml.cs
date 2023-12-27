@@ -11,7 +11,7 @@ namespace AppForImage
         public event Action<double, double, double, double> MyEventBlurValueChanged;
         public event Action MyEventSavedImage; // используй для кнопки сохранения
         public event Action MyEventSavedImageStack;
-        public event Action MyEventOnEndChangeImage;
+        public event Action<double, double, double, double> MyEventOnEndChangeImage;
         private bool isSaved = true;
         private Stack<double> stackBlurValue = new();
         private Stack<double> stackMedianBlurValue = new();
@@ -65,7 +65,7 @@ namespace AppForImage
         {
             isEnabledSliders = false;
             isSaved = true;
-            MyEventOnEndChangeImage?.Invoke();
+            MyEventOnEndChangeImage?.Invoke(mySliderBlur.Value, mySliderMedianBlur.Value, mySliderBoxFilter.Value, mySliderBilateralFilter.Value);
         }
         private void mySliderMedianBlur_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
@@ -91,7 +91,7 @@ namespace AppForImage
         {
             isEnabledSliders = false;
             isSaved = true;
-            MyEventOnEndChangeImage?.Invoke();
+            MyEventOnEndChangeImage?.Invoke(mySliderBlur.Value, mySliderMedianBlur.Value, mySliderBoxFilter.Value, mySliderBilateralFilter.Value);
         }
 
         private void Grid_MouseDown(object sender, MouseButtonEventArgs e)
@@ -126,7 +126,7 @@ namespace AppForImage
         {
             isEnabledSliders = false;
             isSaved = true;
-            MyEventOnEndChangeImage?.Invoke();
+            MyEventOnEndChangeImage?.Invoke(mySliderBlur.Value, mySliderMedianBlur.Value, mySliderBoxFilter.Value, mySliderBilateralFilter.Value);
         }
 
         private void mySliderBilateralFilter_PreviewMouseDown(object sender, MouseButtonEventArgs e)

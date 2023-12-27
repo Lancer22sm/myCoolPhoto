@@ -7,17 +7,22 @@ namespace AppForImage.Controllers
 {
     public class ControllerConvert
     {
-        public BitmapImage MatToBitmap(Mat matimg, string imageFormat)
+        int lowQualityPng = 1;
+        int lowQualityJpg = 10;
+        int highQualityPng = 9;
+        int highQualityJpg = 100;
+        public BitmapImage MatToBitmap(Mat matimg, string imageFormat, bool isChangePreview)
         {
             BitmapImage bmp = new BitmapImage();
             bmp.BeginInit();
-            bmp.StreamSource = new MemoryStream(MatToByteArray(matimg, imageFormat));
+            if (isChangePreview) bmp.StreamSource = new MemoryStream(MatToByteArray(matimg, imageFormat, lowQualityPng, lowQualityJpg));
+            else bmp.StreamSource = new MemoryStream(MatToByteArray(matimg, imageFormat, highQualityPng, highQualityJpg));
             bmp.EndInit();
             return bmp;
         }
-        public byte[] MatToByteArray(Mat mat, string imageFormat)
+        public byte[] MatToByteArray(Mat mat, string imageFormat, int qualityPng, int qualityJpg)
         {
-            int[] param = new int[2] { 1, 20 };
+            int[] param = new int[2] { qualityPng, qualityJpg };
             Cv2.ImEncode(imageFormat, mat, out byte[] btArr, param);
             return btArr;
         }
