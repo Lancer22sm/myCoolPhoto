@@ -17,8 +17,8 @@ namespace AppForImage.Controllers
         WindowEffectColorize _windowEffectColorize;
         ControllerColorize _controllerColorize;
         static string[] args = Environment.GetCommandLineArgs();
-        //static string filepath = args[1];
-        static string filepath = "C:/Users/Lancer/Pictures/9K0kU-dxOAQ.jpg";
+        static string filepath = args[1];
+        //static string filepath = "C:/Users/Lancer/Pictures/9K0kU-dxOAQ.jpg";
         Mat src = Cv2.ImRead(filepath, ImreadModes.Unchanged);
         Mat useImage = new();
         Stack<Mat> stackChanges = new();
@@ -27,6 +27,8 @@ namespace AppForImage.Controllers
         bool isChangePreviewImage = false;
         Mat previewImage = new Mat();
         Mat previewImageSource = new Mat();
+        Mat resize_image = new();
+        Mat previewColor = new();
 
         public ControllerImage(WindowEffectColorize windowEffectColorize)
         {
@@ -67,10 +69,17 @@ namespace AppForImage.Controllers
         }
         public void StartChangePreviewImage()
         {
-            isChangePreviewImage = true;
+            double powerResize = 1;
             int[] param = new int[2] { 1, 10 };
-            Cv2.ImEncode(imageFormat, src, out byte[] btArr, param);
+            if (src.Height + src.Width > 2000) powerResize = 0.8;
+            if (src.Height + src.Width > 3000) powerResize = 0.7;
+            if (src.Height + src.Width > 4000) powerResize = 0.6;
+            if (src.Height + src.Width > 5000) powerResize = 0.5;
+            if (src.Height + src.Width > 6000) powerResize = 0.4;
+            Cv2.Resize(src, resize_image, new OpenCvSharp.Size(), powerResize, powerResize, InterpolationFlags.Linear);
+            Cv2.ImEncode(imageFormat, resize_image, out byte[] btArr, param);
             previewImageSource = Cv2.ImDecode(btArr, ImreadModes.Unchanged);
+            isChangePreviewImage = true;
         }
         public void StopChangePreviewImage()
         {
@@ -80,8 +89,8 @@ namespace AppForImage.Controllers
         {
             if(isChangePreviewImage)
             {
-                previewImage = _useEffectBlur.GeneralEffect(previewImageSource, blurValue, medianBlurValue, boxFilterValue, bilateralFilterValue);
-                previewImage = _controllerColorize.ChangeFullColor(previewImage);
+                previewColor = _useEffectBlur.GeneralEffect(previewImageSource, blurValue, medianBlurValue, boxFilterValue, bilateralFilterValue);
+                previewImage = _controllerColorize.ChangeFullColor(previewColor);
                 IsUseMatEffect?.Invoke();
             }
             else

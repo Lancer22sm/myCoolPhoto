@@ -26,6 +26,7 @@ namespace AppForImage
             myImageBackground.Source = _controller.ImageDownload();
             _controller.IsUseMatEffect += PreviewChangesImage;
             _typesOfEffects.OnEndChange += ChangesImage;
+            _typesOfEffects.OnStartChange += ChangeSizeWindow;
             Dictionary<Stack<double>, Slider> dictionaryBlur = _windowEffectsBlur.dictionaryStackSliders;
             Dictionary<Stack<double>, Slider> dictionaryColorize = _windowEffectColorize.dictionaryStackSliders;
             foreach(var item in dictionaryBlur)
@@ -40,6 +41,13 @@ namespace AppForImage
         private void ButtonEffects_Click(object sender, RoutedEventArgs e)
         {
             _typesOfEffects.Show();
+        }
+        private void ChangeSizeWindow()
+        {
+            _controller.StartChangePreviewImage();
+            _controller.ChangeBlur(1, 1, 1, 1);
+            myImageBackground.Width = _controller.GetMyImagePreview().Width;
+            myImageBackground.Height = _controller.GetMyImagePreview().Height;
         }
         private void PreviewChangesImage()
         {
