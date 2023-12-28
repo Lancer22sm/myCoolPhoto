@@ -76,6 +76,10 @@ namespace AppForImage.Effects
             ChangeColor(myMat, valueChange, 0);
             return usebleImage;
         }
+        public void OnSaveOtherEffect(Mat myMat)
+        {
+            myMat.CopyTo(usebleImage);
+        }
         private void ChangeColor(Mat myMat, int valueChange, int color)
         {
             for (int y = 0; y < myMat.Height; y++)

@@ -9,7 +9,7 @@ namespace AppForImage.Models
 
         public void AddNaturalImage(Mat naturalImage)
         {
-            myImage = naturalImage;
+            naturalImage.CopyTo(myImage);
         }
         public Mat GetNaturalImage()
         {
@@ -17,7 +17,7 @@ namespace AppForImage.Models
         }
         public void ChangeImage(Mat changedImage)
         {
-            changeImage = changedImage;
+            changedImage.CopyTo(changeImage);
         }
         public Mat GetChangedImage()
         {

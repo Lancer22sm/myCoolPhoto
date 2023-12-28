@@ -18,6 +18,7 @@ namespace AppForImage.Controllers
         public void ChangeUseImageForColorize(Mat useImage)
         {
             _useImage = useImage;
+            _useEffectColorize.OnSaveOtherEffect(useImage);
         }
         public Mat ChangeColor(int redvalue, int greenvalue, int bluevalue)
         {
@@ -50,31 +51,29 @@ namespace AppForImage.Controllers
 
         public Mat ChangeColor(Mat myMat, int redvalue, int greenvalue, int bluevalue)
         {
-            _useEffectColorize.OnSaveOtherEffect();
             if (greenvalue == 0 & bluevalue == 0 & redvalue != 0)
             {
-                _useImage = _useEffectColorize.ChangeRed(myMat, redvalue);
+                myMat = _useEffectColorize.ChangeRed(myMat, redvalue);
             }
             else if (bluevalue == 0 & redvalue == 0 & greenvalue != 0)
             {
-                _useImage = _useEffectColorize.ChangeGreen(myMat, greenvalue);
+                myMat = _useEffectColorize.ChangeGreen(myMat, greenvalue);
             }
             else if (redvalue == 0 & greenvalue == 0 & bluevalue != 0)
             {
-                _useImage = _useEffectColorize.ChangeBlue(myMat, bluevalue);
+                myMat = _useEffectColorize.ChangeBlue(myMat, bluevalue);
             }
-            return _useImage;
+            return myMat;
         }
         public Mat ChangeFullColor(Mat myMat)
         {
-            _useEffectColorize.OnSaveOtherEffect();
             int redvalue = Convert.ToInt32(_windowEffectColorize.mySliderRed.Value);
             int greenvalue = Convert.ToInt32(_windowEffectColorize.mySliderGreen.Value);
             int bluevalue = Convert.ToInt32(_windowEffectColorize.mySliderBlue.Value);
-            if (redvalue != 0) _useImage = _useEffectColorize.ChangeRed(myMat, redvalue);
-            if (greenvalue != 0) _useImage = _useEffectColorize.ChangeGreen(myMat, greenvalue);
-            if (bluevalue != 0) _useImage = _useEffectColorize.ChangeBlue(myMat, bluevalue);
-            return _useImage;
+            if (redvalue != 0) myMat = _useEffectColorize.ChangeRed(myMat, redvalue);
+            if (greenvalue != 0) myMat = _useEffectColorize.ChangeGreen(myMat, greenvalue);
+            if (bluevalue != 0) myMat = _useEffectColorize.ChangeBlue(myMat, bluevalue);
+            return myMat;
         }
     }
 }

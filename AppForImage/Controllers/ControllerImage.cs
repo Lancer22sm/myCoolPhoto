@@ -20,14 +20,20 @@ namespace AppForImage.Controllers
         static string filepath = args[1];
         //static string filepath = "C:/Users/Lancer/Pictures/9K0kU-dxOAQ.jpg";
         Mat src = Cv2.ImRead(filepath, ImreadModes.Unchanged);
+
         Mat useImage = new();
+        Mat useImageBlur = new();
+        Mat useImageColor = new();
+
         Stack<Mat> stackChanges = new();
         static string imageFormat = FindMyImageFormat();
         public event Action IsUseMatEffect;
         bool isChangePreviewImage = false;
+
         Mat previewImage = new Mat();
-        Mat previewImageSource = new Mat();
-        Mat resize_image = new();
+        Mat previewImageSource = Cv2.ImRead(filepath, ImreadModes.ReducedColor8);
+        Mat previewImageChangerSource = new Mat();
+        Mat previewBlur = new();
         Mat previewColor = new();
 
         public ControllerImage(WindowEffectColorize windowEffectColorize)
@@ -39,6 +45,7 @@ namespace AppForImage.Controllers
             _useEffectBlur.GeneralEffect(1, 1, 1, 1);
             _controllerColorize = new(_windowEffectColorize, _useEffectBlur.usebleImageReturn);
             ChangeBlur(1, 1, 1, 1);
+            previewImageSource.CopyTo(previewImageChangerSource);
         }
         public Mat GetMyChangedImage()
         {
@@ -67,36 +74,36 @@ namespace AppForImage.Controllers
         {
             return _controllerConvert.MatToBitmap(_modelImage.GetNaturalImage(), imageFormat, false);
         }
-        public void StartChangePreviewImage()
+        public void StartChangePreviewImage() // перед зажатием слайдеров
         {
-            double powerResize = 1;
-            int[] param = new int[2] { 1, 10 };
-            if (src.Height + src.Width > 2000) powerResize = 0.8;
-            if (src.Height + src.Width > 3000) powerResize = 0.7;
-            if (src.Height + src.Width > 4000) powerResize = 0.6;
-            if (src.Height + src.Width > 5000) powerResize = 0.5;
-            if (src.Height + src.Width > 6000) powerResize = 0.4;
-            Cv2.Resize(src, resize_image, new OpenCvSharp.Size(), powerResize, powerResize, InterpolationFlags.Linear);
-            Cv2.ImEncode(imageFormat, resize_image, out byte[] btArr, param);
-            previewImageSource = Cv2.ImDecode(btArr, ImreadModes.Unchanged);
+            Mat sss = new();
+            previewImageChangerSource.CopyTo(sss);
+            _controllerColorize.ChangeUseImageForColorize(sss);
             isChangePreviewImage = true;
         }
-        public void StopChangePreviewImage()
+        public void StopChangePreviewImage() // перед отжатием слайдеров
         {
+            Mat sss = new();
+            _modelImage.GetChangedImage().CopyTo(sss);
+            _controllerColorize.ChangeUseImageForColorize(sss);
             isChangePreviewImage = false;
         }
         public void ChangeBlur(int blurValue, int medianBlurValue, int boxFilterValue, int bilateralFilterValue)
         {
             if(isChangePreviewImage)
             {
-                previewColor = _useEffectBlur.GeneralEffect(previewImageSource, blurValue, medianBlurValue, boxFilterValue, bilateralFilterValue);
-                previewImage = _controllerColorize.ChangeFullColor(previewColor);
+                previewBlur = _useEffectBlur.GeneralEffect(previewImageSource, blurValue, medianBlurValue, boxFilterValue, bilateralFilterValue);
+                previewImage = _controllerColorize.ChangeFullColor(previewBlur);
+                previewImage.CopyTo(previewColor);
+                previewImage.CopyTo(previewImageChangerSource);
+                //MessageBox.Show(previewColor.ToString() + "Preview");
                 IsUseMatEffect?.Invoke();
             }
             else
             {
-                useImage = _useEffectBlur.GeneralEffect(blurValue, medianBlurValue, boxFilterValue, bilateralFilterValue);
-                useImage = _controllerColorize.ChangeFullColor();
+                useImageBlur = _useEffectBlur.GeneralEffect(src, blurValue, medianBlurValue, boxFilterValue, bilateralFilterValue);
+                useImageColor = _controllerColorize.ChangeFullColor(useImageBlur);
+                useImage = useImageColor;
                 _modelImage.ChangeImage(useImage);
             }
         }
@@ -104,12 +111,15 @@ namespace AppForImage.Controllers
         {
             if(isChangePreviewImage)
             {
-                previewImage = _controllerColorize.ChangeColor(previewImageSource, redvalue, greenvalue, bluevalue);
+                //MessageBox.Show(previewColor.ToString() + "Preview");
+                previewImage = _controllerColorize.ChangeColor(previewColor, redvalue, greenvalue, bluevalue);
+                previewImage.CopyTo(previewImageChangerSource);
                 IsUseMatEffect?.Invoke();
             }
             else
             {
-                useImage = _controllerColorize.ChangeColor(redvalue, greenvalue, bluevalue);
+                //MessageBox.Show(useImageColor.ToString() + "useImage");
+                useImage = _controllerColorize.ChangeColor(useImageColor, redvalue, greenvalue, bluevalue);
                 _modelImage.ChangeImage(useImage);
             }
         }
@@ -118,7 +128,8 @@ namespace AppForImage.Controllers
             if (stackChanges.Count > 0)
             {
                 Mat backMat = stackChanges.Pop();
-                backMat.CopyTo(useImage);
+                //backMat.CopyTo(useImage);
+                _modelImage.ChangeImage(backMat);
             }
             return _controllerConvert.MatToBitmap(_modelImage.GetChangedImage(), imageFormat, false);
         }
