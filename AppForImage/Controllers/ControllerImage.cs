@@ -76,16 +76,10 @@ namespace AppForImage.Controllers
         }
         public void StartChangePreviewImage() // перед зажатием слайдеров
         {
-            Mat sss = new();
-            previewImageChangerSource.CopyTo(sss);
-            _controllerColorize.ChangeUseImageForColorize(sss);
             isChangePreviewImage = true;
         }
         public void StopChangePreviewImage() // перед отжатием слайдеров
         {
-            Mat sss = new();
-            _modelImage.GetChangedImage().CopyTo(sss);
-            _controllerColorize.ChangeUseImageForColorize(sss);
             isChangePreviewImage = false;
         }
         public void ChangeBlur(int blurValue, int medianBlurValue, int boxFilterValue, int bilateralFilterValue)
@@ -93,15 +87,16 @@ namespace AppForImage.Controllers
             if(isChangePreviewImage)
             {
                 previewBlur = _useEffectBlur.GeneralEffect(previewImageSource, blurValue, medianBlurValue, boxFilterValue, bilateralFilterValue);
+                _controllerColorize.ChangeUseImageForColorize(previewBlur);
                 previewImage = _controllerColorize.ChangeFullColor(previewBlur);
                 previewImage.CopyTo(previewColor);
-                previewImage.CopyTo(previewImageChangerSource);
                 //MessageBox.Show(previewColor.ToString() + "Preview");
                 IsUseMatEffect?.Invoke();
             }
             else
             {
                 useImageBlur = _useEffectBlur.GeneralEffect(src, blurValue, medianBlurValue, boxFilterValue, bilateralFilterValue);
+                _controllerColorize.ChangeUseImageForColorize(useImageBlur);
                 useImageColor = _controllerColorize.ChangeFullColor(useImageBlur);
                 useImage = useImageColor;
                 _modelImage.ChangeImage(useImage);
@@ -112,13 +107,14 @@ namespace AppForImage.Controllers
             if(isChangePreviewImage)
             {
                 //MessageBox.Show(previewColor.ToString() + "Preview");
+                _controllerColorize.ChangeUseImageForColorize(previewColor); // подумай тут
                 previewImage = _controllerColorize.ChangeColor(previewColor, redvalue, greenvalue, bluevalue);
-                previewImage.CopyTo(previewImageChangerSource);
                 IsUseMatEffect?.Invoke();
             }
             else
             {
                 //MessageBox.Show(useImageColor.ToString() + "useImage");
+                _controllerColorize.ChangeUseImageForColorize(useImageColor); // подумай тут
                 useImage = _controllerColorize.ChangeColor(useImageColor, redvalue, greenvalue, bluevalue);
                 _modelImage.ChangeImage(useImage);
             }
