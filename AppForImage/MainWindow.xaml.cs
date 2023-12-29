@@ -21,7 +21,7 @@ namespace AppForImage
             InitializeComponent();
             _windowEffectColorize = new(stackChangiesHistory);
             _windowEffectsBlur = new(stackChangiesHistory);
-            _controller = new(_windowEffectColorize);
+            _controller = new(_windowEffectColorize, _windowEffectsBlur);
             _typesOfEffects = new(_controller, _windowEffectsBlur, _windowEffectColorize);
             myImageBackground.Source = _controller.ImageDownload();
             _controller.IsUseMatEffect += PreviewChangesImage;

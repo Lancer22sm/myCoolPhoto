@@ -13,49 +13,43 @@ namespace AppForImage.Controllers
     {
         ModelImage _modelImage = new();
         ControllerConvert _controllerConvert = new();
-        UseEffectBlur _useEffectBlur;
+        WindowEffectBlur _windowEffectBlur;
         WindowEffectColorize _windowEffectColorize;
         ControllerColorize _controllerColorize;
+        ControllerBlur _controllerBlur;
         static string[] args = Environment.GetCommandLineArgs();
         static string filepath = args[1];
         //static string filepath = "C:/Users/Lancer/Pictures/9K0kU-dxOAQ.jpg";
+        
         Mat src = Cv2.ImRead(filepath, ImreadModes.Unchanged);
-
         Mat useImage = new();
         Mat useImageBlur = new();
-        Mat useImageColor = new();
+
+        Mat previewImageSource = Cv2.ImRead(filepath, ImreadModes.ReducedColor8);
+        Mat previewImage = new();
+        Mat previewBlur = new();
 
         Stack<Mat> stackChanges = new();
         static string imageFormat = FindMyImageFormat();
         public event Action IsUseMatEffect;
         bool isChangePreviewImage = false;
 
-        Mat previewImage = new Mat();
-        Mat previewImageSource = Cv2.ImRead(filepath, ImreadModes.ReducedColor8);
-        Mat previewImageChangerSource = new Mat();
-        Mat previewBlur = new();
-        Mat previewColor = new();
-
-        public ControllerImage(WindowEffectColorize windowEffectColorize)
+        public ControllerImage(WindowEffectColorize windowEffectColorize, WindowEffectBlur windowEffectBlur)
         {
             _windowEffectColorize = windowEffectColorize;
+            _windowEffectBlur = windowEffectBlur;
             _modelImage.AddNaturalImage(src);
             _modelImage.ChangeImage(src);
-            _useEffectBlur = new(src, src.Channels());
-            _useEffectBlur.GeneralEffect(1, 1, 1, 1);
-            _controllerColorize = new(_windowEffectColorize, _useEffectBlur.usebleImageReturn);
-            ChangeBlur(1, 1, 1, 1);
-            previewImageSource.CopyTo(previewImageChangerSource);
+            _controllerBlur = new(_windowEffectBlur, src.Channels());
+            _controllerColorize = new(_windowEffectColorize);
         }
         public Mat GetMyChangedImage()
         {
             return _modelImage.GetChangedImage();
         }
-        public void ChangeImageFromEffects()
+        public void ChangeSourceImageFromEffects()
         {
             src = _modelImage.GetChangedImage();
-            //_useEffectBlur.ChangeSrcForEffect(src);
-            //_useEffectColorize.ChangeSrcForEffect(_useEffectBlur.usebleImageBilateralFilterBlur);
         }
         public BitmapImage GetMyImagePreview()
         {
@@ -82,40 +76,20 @@ namespace AppForImage.Controllers
         {
             isChangePreviewImage = false;
         }
-        public void ChangeBlur(int blurValue, int medianBlurValue, int boxFilterValue, int bilateralFilterValue)
+        public void ChangeImageFromEffects()
         {
             if(isChangePreviewImage)
             {
-                previewBlur = _useEffectBlur.GeneralEffect(previewImageSource, blurValue, medianBlurValue, boxFilterValue, bilateralFilterValue);
+                previewBlur = _controllerBlur.ChangeFullBlur(previewImageSource, true);
                 _controllerColorize.ChangeUseImageForColorize(previewBlur);
                 previewImage = _controllerColorize.ChangeFullColor(previewBlur);
-                previewImage.CopyTo(previewColor);
-                //MessageBox.Show(previewColor.ToString() + "Preview");
                 IsUseMatEffect?.Invoke();
             }
             else
             {
-                useImageBlur = _useEffectBlur.GeneralEffect(src, blurValue, medianBlurValue, boxFilterValue, bilateralFilterValue);
+                useImageBlur = _controllerBlur.ChangeFullBlur(src, false);
                 _controllerColorize.ChangeUseImageForColorize(useImageBlur);
-                useImageColor = _controllerColorize.ChangeFullColor(useImageBlur);
-                useImage = useImageColor;
-                _modelImage.ChangeImage(useImage);
-            }
-        }
-        public void ChangeColor(int redvalue, int greenvalue, int bluevalue)
-        {
-            if(isChangePreviewImage)
-            {
-                //MessageBox.Show(previewColor.ToString() + "Preview");
-                _controllerColorize.ChangeUseImageForColorize(previewColor); // подумай тут
-                previewImage = _controllerColorize.ChangeColor(previewColor, redvalue, greenvalue, bluevalue);
-                IsUseMatEffect?.Invoke();
-            }
-            else
-            {
-                //MessageBox.Show(useImageColor.ToString() + "useImage");
-                _controllerColorize.ChangeUseImageForColorize(useImageColor); // подумай тут
-                useImage = _controllerColorize.ChangeColor(useImageColor, redvalue, greenvalue, bluevalue);
+                useImage = _controllerColorize.ChangeFullColor(useImageBlur);
                 _modelImage.ChangeImage(useImage);
             }
         }
@@ -124,7 +98,6 @@ namespace AppForImage.Controllers
             if (stackChanges.Count > 0)
             {
                 Mat backMat = stackChanges.Pop();
-                //backMat.CopyTo(useImage);
                 _modelImage.ChangeImage(backMat);
             }
             return _controllerConvert.MatToBitmap(_modelImage.GetChangedImage(), imageFormat, false);

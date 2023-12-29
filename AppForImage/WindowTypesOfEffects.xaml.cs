@@ -17,72 +17,30 @@ namespace AppForImage
             InitializeComponent();
             _controller = controller;
             _windowEffectBlur = effectblur;
-            _windowEffectBlur.MyEventBlurValueChanged += OnValueBlurChange;
+            _windowEffectBlur.MyEventBlurValueChanged += OnValueEffectChange;
             _windowEffectBlur.MyEventSavedImage += OnSavedImageForEffects;
             _windowEffectBlur.MyEventSavedImageStack += OnSavedImageStack;
             _windowEffectBlur.MyEventOnEndChangeImage += OnEndChangeImageForEffects;
             _windowEffectColorize = windowEffectColorize;
-            _windowEffectColorize.MyEventRedValueChanged += OnValueRedChange;
-            _windowEffectColorize.MyEventGreenValueChanged += OnValueGreenChange;
-            _windowEffectColorize.MyEventBlueValueChanged += OnValueBlueChange;
+            _windowEffectColorize.MyEventColorValueChanged += OnValueEffectChange;
             _windowEffectColorize.MyEventSavedImage += OnSavedImageForEffects;
             _windowEffectColorize.MyEventSavedImageStack += OnSavedImageStack;
             _windowEffectColorize.MyEventOnEndChangeImage += OnEndChangeImageForEffects;
         }
-        private void OnEndChangeImageForEffects(double valueBlur, double valueMedianBlur, double valueBoxFilter, double valueBilateralFilter)
+        private void OnEndChangeImageForEffects()
         {
             _controller.StopChangePreviewImage();
-            OnValueBlurChange(valueBlur, valueMedianBlur, valueBoxFilter, valueBilateralFilter);
+            OnValueEffectChange();
             OnEndChange?.Invoke();
             // Перед отжиманием слайдеров
         }
-        private void OnEndChangeImageForEffects(double valueColor, int numColor)
+        private void OnValueEffectChange()
         {
-            _controller.StopChangePreviewImage();
-            switch (numColor)
-            {
-                case 0:
-                    _controller.ChangeColor(Convert.ToInt32(valueColor), 0, 0);
-                    break;
-                case 1:
-                    _controller.ChangeColor(0, Convert.ToInt32(valueColor), 0);
-                    break;
-                case 2:
-                    _controller.ChangeColor(0, 0, Convert.ToInt32(valueColor));
-                    break;
-            }
-            OnEndChange?.Invoke();
-            // Перед отжиманием слайдеров
-        }
-        private void OnValueRedChange(double value)
-        {
-            _controller.ChangeColor(Convert.ToInt32(value), 0, 0);
-        }
-
-        private void OnValueGreenChange(double value)
-        {
-            _controller.ChangeColor(0, Convert.ToInt32(value), 0);
-        }
-
-        private void OnValueBlueChange(double value)
-        {
-            _controller.ChangeColor(0, 0, Convert.ToInt32(value));
-        }
-        private void OnValueBlurChange(double valueBlur, double valueMedianBlur, double valueBoxFilter, double valueBilateralFilter)
-        {
-            int blurValue = Convert.ToInt32(valueBlur);
-            int medianBlurValue = Convert.ToInt32(valueMedianBlur);
-            if (medianBlurValue % 2 == 0)
-            {
-                medianBlurValue++;
-            }
-            int boxFilterValue = Convert.ToInt32(valueBoxFilter);
-            int bilateralFilterValue = Convert.ToInt32(valueBilateralFilter);
-            _controller.ChangeBlur(blurValue, medianBlurValue, boxFilterValue, bilateralFilterValue);
+            _controller.ChangeImageFromEffects();
         }
         private void OnSavedImageForEffects()
         {
-            _controller.ChangeImageFromEffects();
+            _controller.ChangeSourceImageFromEffects();
         }
         private void OnSavedImageStack()
         {

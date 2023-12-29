@@ -5,7 +5,6 @@ namespace AppForImage.Effects
 {
     public class UseEffectBlur : UseEffect
     {
-        Mat sourceImage = new();
         Mat usebleImageBlur = new();
         Mat usebleImageMedianBlur = new();
         Mat usebleImageBoxFilterBlur = new();
@@ -13,45 +12,24 @@ namespace AppForImage.Effects
         public Mat usebleImageReturn = new();
         int _chanelsImage;
 
-        public UseEffectBlur(Mat source, int chanelsImage)
+        public UseEffectBlur(int chanelsImage)
         {
-            sourceImage = source;
             _chanelsImage = chanelsImage;
-            GeneralEffect(1, 1, 1, 1);
         }
-        public override void ChangeSrcForEffect(Mat src)
-        {
-            sourceImage = src;
-            GeneralEffect(1, 1, 1, 1);
-        }
-
-        public Mat GeneralEffect(int valueBlur, int medianBlur, int boxFilter, int bilateralFilter)
-        {
-            //MessageBox.Show($"{valueBlur} != {blurValue}\n{medianBlur} != {blurMedian}\n{boxFilter} != {filterBox}\n{bilateralFilter} != {filterBilateral}");
-            Cv2.Blur(sourceImage, usebleImageBlur, new OpenCvSharp.Size(valueBlur, valueBlur));
-            Cv2.MedianBlur(usebleImageBlur, usebleImageMedianBlur, medianBlur);
-            Cv2.BoxFilter(usebleImageMedianBlur, usebleImageBoxFilterBlur, usebleImageBoxFilterBlur.Depth(), new OpenCvSharp.Size(boxFilter, boxFilter));
-            if (_chanelsImage <= 3)
-            {
-                double valuePixels = Convert.ToDouble(bilateralFilter);
-                Cv2.BilateralFilter(usebleImageBoxFilterBlur, usebleImageBilateralFilterBlur, bilateralFilter, valuePixels, valuePixels);
-                usebleImageReturn = usebleImageBilateralFilterBlur;
-            }
-            else usebleImageReturn = usebleImageBoxFilterBlur;
-            return usebleImageReturn;
-        }
-
-
 
         public Mat GeneralEffect(Mat useImagePreview, int valueBlur, int medianBlur, int boxFilter, int bilateralFilter)
         {
-            Cv2.Blur(useImagePreview, usebleImageBlur, new OpenCvSharp.Size(valueBlur, valueBlur));
-            Cv2.MedianBlur(usebleImageBlur, usebleImageMedianBlur, medianBlur);
-            Cv2.BoxFilter(usebleImageMedianBlur, usebleImageBoxFilterBlur, usebleImageBoxFilterBlur.Depth(), new OpenCvSharp.Size(boxFilter, boxFilter));
+            if (valueBlur > 1) Cv2.Blur(useImagePreview, usebleImageBlur, new Size(valueBlur, valueBlur));
+            else usebleImageBlur = useImagePreview;
+            if (medianBlur > 1) Cv2.MedianBlur(usebleImageBlur, usebleImageMedianBlur, medianBlur);
+            else usebleImageMedianBlur = usebleImageBlur;
+            if (boxFilter > 1) Cv2.BoxFilter(usebleImageMedianBlur, usebleImageBoxFilterBlur, usebleImageBoxFilterBlur.Depth(), new OpenCvSharp.Size(boxFilter, boxFilter));
+            else usebleImageBoxFilterBlur = usebleImageMedianBlur;
             if (_chanelsImage <= 3)
             {
                 double valuePixels = Convert.ToDouble(bilateralFilter);
-                Cv2.BilateralFilter(usebleImageBoxFilterBlur, usebleImageBilateralFilterBlur, bilateralFilter, valuePixels, valuePixels);
+                if (bilateralFilter > 1) Cv2.BilateralFilter(usebleImageBoxFilterBlur, usebleImageBilateralFilterBlur, bilateralFilter, valuePixels, valuePixels);
+                else usebleImageBilateralFilterBlur = usebleImageBoxFilterBlur;
                 usebleImageReturn = usebleImageBilateralFilterBlur;
             }
             else usebleImageReturn = usebleImageBoxFilterBlur;

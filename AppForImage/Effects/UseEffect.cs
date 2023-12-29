@@ -11,6 +11,6 @@ namespace AppForImage.Effects
         {
             return UsebleImage;
         }
-        public abstract void ChangeSrcForEffect(Mat src);
+
     }
 }

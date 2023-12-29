@@ -8,10 +8,8 @@ namespace AppForImage
 {
     public partial class WindowEffectColorize : Window
     {
-        public event Action<double> MyEventRedValueChanged;
-        public event Action<double> MyEventGreenValueChanged;
-        public event Action<double> MyEventBlueValueChanged;
-        public event Action<double, int> MyEventOnEndChangeImage;
+        public event Action MyEventColorValueChanged;
+        public event Action MyEventOnEndChangeImage;
         public event Action MyEventSavedImage; // используй для кнопки сохранения
         public event Action MyEventSavedImageStack;
         private Stack<double> stackRedValue = new();
@@ -57,14 +55,14 @@ namespace AppForImage
         {
             isEnabledSliders = false;
             isSaved = true;
-            MyEventOnEndChangeImage?.Invoke(mySliderRed.Value, 0);
+            MyEventOnEndChangeImage?.Invoke();
         }
 
         private void mySliderRed_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             if(isEnabledSliders)
             {
-                MyEventRedValueChanged?.Invoke(mySliderRed.Value);
+                MyEventColorValueChanged?.Invoke();            
             }
         }
 
@@ -84,14 +82,14 @@ namespace AppForImage
         {
             isEnabledSliders = false;
             isSaved = true;
-            MyEventOnEndChangeImage?.Invoke(mySliderGreen.Value, 1);
+            MyEventOnEndChangeImage?.Invoke();
         }
 
         private void mySliderGreen_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             if(isEnabledSliders)
             {
-                MyEventGreenValueChanged?.Invoke(mySliderGreen.Value);
+                MyEventColorValueChanged?.Invoke();
             }
         }
 
@@ -111,14 +109,14 @@ namespace AppForImage
         {
             isEnabledSliders = false;
             isSaved = true;
-            MyEventOnEndChangeImage?.Invoke(mySliderBlue.Value, 2);
+            MyEventOnEndChangeImage?.Invoke();
         }
 
         private void mySliderBlue_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             if(isEnabledSliders)
             {
-                MyEventBlueValueChanged?.Invoke(mySliderBlue.Value);
+                MyEventColorValueChanged?.Invoke();
             }
         }
 
