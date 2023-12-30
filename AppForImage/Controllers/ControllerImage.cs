@@ -11,26 +11,26 @@ namespace AppForImage.Controllers
 {
     public class ControllerImage
     {
-        ModelImage _modelImage = new();
-        ControllerConvert _controllerConvert = new();
-        WindowEffectBlur _windowEffectBlur;
-        WindowEffectColorize _windowEffectColorize;
-        ControllerColorize _controllerColorize;
-        ControllerBlur _controllerBlur;
-        static string[] args = Environment.GetCommandLineArgs();
-        static string filepath = args[1];
+        readonly ModelImage _modelImage = new();
+        readonly ControllerConvert _controllerConvert = new();
+        readonly WindowEffectBlur _windowEffectBlur;
+        readonly WindowEffectColorize _windowEffectColorize;
+        readonly ControllerColorize _controllerColorize;
+        readonly ControllerBlur _controllerBlur;
+        static readonly string[] args = Environment.GetCommandLineArgs();
+        static readonly string filepath = args[1];
         //static string filepath = "C:/Users/Lancer/Pictures/9K0kU-dxOAQ.jpg";
         
         Mat src = Cv2.ImRead(filepath, ImreadModes.Unchanged);
         Mat useImage = new();
         Mat useImageBlur = new();
 
-        Mat previewImageSource = Cv2.ImRead(filepath, ImreadModes.ReducedColor8);
+        readonly Mat previewImageSource = Cv2.ImRead(filepath, ImreadModes.ReducedColor8);
         Mat previewImage = new();
         Mat previewBlur = new();
 
         Stack<Mat> stackChanges = new();
-        static string imageFormat = FindMyImageFormat();
+        static readonly string imageFormat = FindMyImageFormat();
         public event Action IsUseMatEffect;
         bool isChangePreviewImage = false;
 

@@ -6,8 +6,8 @@ namespace AppForImage.Controllers
 {
     internal class ControllerColorize
     {
-        UseEffectColorize _useEffectColorize = new();
-        WindowEffectColorize _windowEffectColorize;
+        readonly UseEffectColorize _useEffectColorize = new();
+        readonly WindowEffectColorize _windowEffectColorize;
         public ControllerColorize(WindowEffectColorize windowEffectColorize)
         {
             _windowEffectColorize = windowEffectColorize;

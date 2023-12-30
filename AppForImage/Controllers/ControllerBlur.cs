@@ -10,8 +10,8 @@ namespace AppForImage.Controllers
 {
     internal class ControllerBlur
     {
-        WindowEffectBlur _windowEffectBlur;
-        UseEffectBlur _useEffectBlur;
+        readonly WindowEffectBlur _windowEffectBlur;
+        readonly UseEffectBlur _useEffectBlur;
         public ControllerBlur(WindowEffectBlur windowEffectBlur, int chanelsImage)
         {
             _windowEffectBlur = windowEffectBlur;
@@ -26,15 +26,15 @@ namespace AppForImage.Controllers
             int valueBilateralFilter = Convert.ToInt32(_windowEffectBlur.mySliderBilateralFilter.Value);
             if (onChangePreview)
             {
-                valueBlur = (valueBlur / 10) + 1;
-                valueMedianBlur = (valueMedianBlur / 10) + 1;
-                valueBoxFilter = (valueBoxFilter / 10) + 1;
-                valueBilateralFilter = (valueBilateralFilter / 10) + 1;
+                valueBlur /= 10;
+                valueMedianBlur /= 10;
+                valueBoxFilter /= 10;
+                valueBilateralFilter /= 10;
             }
-            if (valueMedianBlur % 2 == 0)
-            {
-                valueMedianBlur++;
-            }
+            if (valueBlur == 0) valueBlur = 1;
+            if (valueMedianBlur % 2 == 0) valueMedianBlur++;
+            if (valueBoxFilter == 0) valueBoxFilter = 1;
+            if (valueBilateralFilter == 0) valueBilateralFilter = 1;
             return _useEffectBlur.GeneralEffect(sourceImage, valueBlur, valueMedianBlur, valueBoxFilter, valueBilateralFilter);
         }
     }

@@ -7,9 +7,9 @@ namespace AppForImage
 {
     public partial class WindowTypesOfEffects : Window
     {
-        private WindowEffectBlur _windowEffectBlur;
-        private WindowEffectColorize _windowEffectColorize;
-        private ControllerImage _controller;
+        private readonly WindowEffectBlur _windowEffectBlur;
+        private readonly WindowEffectColorize _windowEffectColorize;
+        private readonly ControllerImage _controller;
         public event Action OnEndChange;
         //public event Action OnStartChange;
         public WindowTypesOfEffects(ControllerImage controller, WindowEffectBlur effectblur, WindowEffectColorize windowEffectColorize)
