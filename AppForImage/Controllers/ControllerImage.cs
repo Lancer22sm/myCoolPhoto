@@ -76,6 +76,12 @@ namespace AppForImage.Controllers
         {
             isChangePreviewImage = false;
         }
+        public void CreatePointsToMask(int coordinateX, int coordinateY)
+        {
+            // создай новый контроллер для маски
+            // и передай в него координаты картинки
+            // затем нарисуй там точку
+        }
         public void ChangeImageFromEffects()
         {
             if(isChangePreviewImage)

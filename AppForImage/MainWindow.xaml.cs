@@ -76,5 +76,13 @@ namespace AppForImage
             _windowEffectColorize.Close();
             _typesOfEffects.Close();
         }
+
+        private void myImageBackground_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            System.Windows.Point currentPosition = e.GetPosition(myImageBackground);
+            double x = currentPosition.X;
+            double y = currentPosition.Y;
+            _controller.CreatePointsToMask(Convert.ToInt32(x), Convert.ToInt32(y));
+        }
     }
 }

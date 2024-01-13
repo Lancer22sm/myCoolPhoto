@@ -44,7 +44,7 @@
             </RadialGradientBrush>
         </Grid.Background>
         <Viewbox Stretch="Uniform">
-            <Image x:Name="myImageBackground" Width="{Binding ElementName=window, Path=ActualWidth}" Height="{Binding ElementName=window, Path=ActualHeight}" HorizontalAlignment="Left" VerticalAlignment="Top" Stretch="Fill"/>
+            <Image x:Name="myImageBackground" Width="{Binding ElementName=window, Path=ActualWidth}" Height="{Binding ElementName=window, Path=ActualHeight}" HorizontalAlignment="Left" VerticalAlignment="Top" Stretch="Fill" PreviewMouseDown="myImageBackground_PreviewMouseDown"/>
         </Viewbox>
         <Border VerticalAlignment="Bottom" Height="40" BorderThickness="1">
             <Border.BorderBrush>
