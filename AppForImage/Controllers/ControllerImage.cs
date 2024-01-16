@@ -76,8 +76,12 @@ namespace AppForImage.Controllers
         {
             isChangePreviewImage = false;
         }
-        public void CreatePointsToMask(int coordinateX, int coordinateY)
+        public void CreatePointsToMask(int coordinateX, int coordinateY) // пробное
         {
+            // MessageBox.Show($"x = {coordinateX}, y = {coordinateY}");
+            Mat useRed = new Mat();
+            useRed = _controllerColorize.CreateRedPointForMask(src, coordinateX, coordinateY);
+            _modelImage.ChangeImage(useRed);
             // создай новый контроллер для маски
             // и передай в него координаты картинки
             // затем нарисуй там точку

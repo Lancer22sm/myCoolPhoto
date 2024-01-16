@@ -26,5 +26,10 @@ namespace AppForImage.Controllers
             if (bluevalue != 0) myMat = _useEffectColorize.ChangeBlue(myMat, bluevalue);
             return myMat;
         }
+        public Mat CreateRedPointForMask(Mat myMat, int pointX, int pointY) // пробное
+        {
+            myMat = _useEffectColorize.CreatePointRed(myMat, pointX, pointY);
+            return myMat;
+        }
     }
 }

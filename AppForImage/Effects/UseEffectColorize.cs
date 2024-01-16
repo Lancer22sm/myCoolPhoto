@@ -25,6 +25,20 @@ namespace AppForImage.Effects
             ChangeColor(myMat, valueChange, 0);
             return usebleImage;
         }
+        public Mat CreatePointRed(Mat myMat, int pointX, int pointY) // пробное
+        {
+            Vec3b sourceBgr = myMat.At<Vec3b>(pointY, pointX);
+            for (int y = pointY - 15; y < pointY + 15; y++)
+            {
+                for (int x = pointX - 15; x < pointX + 15; x++)
+                {
+                    sourceBgr = myMat.At<Vec3b>(y, x);
+                    sourceBgr[2] = 255;
+                    myMat.At<Vec3b>(y, x) = sourceBgr;
+                }
+            }
+            return myMat;
+        }
         private void ChangeColor(Mat myMat, int valueChange, int color)
         {
             for (int y = 0; y < myMat.Height; y++)

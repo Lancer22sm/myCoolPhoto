@@ -16,6 +16,7 @@ namespace AppForImage
         private readonly ControllerImage _controller;
         Dictionary<Stack<double>, Slider> generalDictionary = new();
         public Stack<Stack<double>> stackChangiesHistory = new();
+        bool isUseWidgetMask = false; // добавь кнопку типо включить режим выделения, создание точек настроенно
         public MainWindow()
         {
             InitializeComponent();
@@ -77,12 +78,16 @@ namespace AppForImage
             _typesOfEffects.Close();
         }
 
-        private void myImageBackground_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        private void myImageBackground_PreviewMouseDown(object sender, MouseButtonEventArgs e) // создание точек для маски настроено
         {
-            System.Windows.Point currentPosition = e.GetPosition(myImageBackground);
-            double x = currentPosition.X;
-            double y = currentPosition.Y;
-            _controller.CreatePointsToMask(Convert.ToInt32(x), Convert.ToInt32(y));
+            if (isUseWidgetMask)
+            {
+                System.Windows.Point currentPosition = e.GetPosition(myImageBackground);
+                double x = currentPosition.X;
+                double y = currentPosition.Y;
+                _controller.CreatePointsToMask(Convert.ToInt32(x), Convert.ToInt32(y));
+                myImageBackground.Source = _controller.GetMyImage();
+            }
         }
     }
 }
