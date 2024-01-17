@@ -14,6 +14,7 @@ namespace AppForImage
         private readonly WindowEffectColorize _windowEffectColorize;
         private readonly WindowEffectBlur _windowEffectsBlur;
         private readonly ControllerImage _controller;
+        List<RadioButton> _radioButtons = new();
         Dictionary<Stack<double>, Slider> generalDictionary = new();
         public Stack<Stack<double>> stackChangiesHistory = new();
         bool isUseWidgetMask = false; // добавь кнопку типо включить режим выделения, создание точек настроенно
@@ -85,6 +86,11 @@ namespace AppForImage
                 System.Windows.Point currentPosition = e.GetPosition(myImageBackground);
                 double x = currentPosition.X;
                 double y = currentPosition.Y;
+                RadioButton radioButton = new RadioButton();
+                radioButton.Width = 10;
+                radioButton.Height = 10;
+                radioButton.Margin = new Thickness(x,y,0,0);
+                //myViewBoxImage.Children.Add(radioButton);
                 _controller.CreatePointsToMask(Convert.ToInt32(x), Convert.ToInt32(y));
                 myImageBackground.Source = _controller.GetMyImage();
             }
