@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 using AppForImage.Controllers;
 using OpenCvSharp;
 
@@ -17,7 +18,7 @@ namespace AppForImage
         List<RadioButton> _radioButtons = new();
         Dictionary<Stack<double>, Slider> generalDictionary = new();
         public Stack<Stack<double>> stackChangiesHistory = new();
-        bool isUseWidgetMask = false; // добавь кнопку типо включить режим выделения, создание точек настроенно
+        bool isUseWidgetMask = true; // добавь кнопку типо включить режим выделения, создание точек настроенно
         public MainWindow()
         {
             InitializeComponent();
@@ -79,7 +80,7 @@ namespace AppForImage
             _typesOfEffects.Close();
         }
 
-        private void myImageBackground_PreviewMouseDown(object sender, MouseButtonEventArgs e) // создание точек для маски настроено
+        private void myImageBackground_PreviewMouseDown_1(object sender, MouseButtonEventArgs e)
         {
             if (isUseWidgetMask)
             {
@@ -87,12 +88,15 @@ namespace AppForImage
                 double x = currentPosition.X;
                 double y = currentPosition.Y;
                 RadioButton radioButton = new RadioButton();
-                radioButton.Width = 10;
-                radioButton.Height = 10;
-                radioButton.Margin = new Thickness(x,y,0,0);
-                //myViewBoxImage.Children.Add(radioButton);
-                _controller.CreatePointsToMask(Convert.ToInt32(x), Convert.ToInt32(y));
-                myImageBackground.Source = _controller.GetMyImage();
+                radioButton.Width = 20;
+                radioButton.Height = 20;
+                radioButton.HorizontalAlignment = HorizontalAlignment.Left;
+                radioButton.VerticalAlignment = VerticalAlignment.Top;
+                Panel.SetZIndex(radioButton, 2);
+                radioButton.RenderTransform = new TranslateTransform(x, y);
+                myGeneralCanvas.Children.Add(radioButton);
+                //_controller.CreatePointsToMask(Convert.ToInt32(x), Convert.ToInt32(y));
+                //myImageBackground.Source = _controller.GetMyImage();
             }
         }
     }

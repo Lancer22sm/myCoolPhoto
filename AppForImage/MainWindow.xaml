@@ -43,9 +43,10 @@
                 <GradientStop Color="#FF5B5B5B" Offset="1"/>
             </RadialGradientBrush>
         </Grid.Background>
-        <Viewbox x:Name="myViewBoxImage" Stretch="Uniform">
-            <Image x:Name="myImageBackground" Width="{Binding ElementName=window, Path=ActualWidth}" Height="{Binding ElementName=window, Path=ActualHeight}" HorizontalAlignment="Left" VerticalAlignment="Top" Stretch="Fill" PreviewMouseDown="myImageBackground_PreviewMouseDown"/>
-        </Viewbox>
+        <Canvas x:Name="myGeneralCanvas" Width="{Binding ElementName=myWindow, Path=ActualWidth}" Height="{Binding ElementName=myWindow, Path=ActualHeight}">
+            <Image x:Name="myImageBackground" Stretch="Uniform" Width="{Binding ElementName=myGeneralCanvas, Path=ActualWidth}" Height="{Binding ElementName=myGeneralCanvas, Path=ActualHeight}" HorizontalAlignment="Left" VerticalAlignment="Top" PreviewMouseDown="myImageBackground_PreviewMouseDown_1"/>
+
+        </Canvas>
         <Border VerticalAlignment="Bottom" Height="40" BorderThickness="1">
             <Border.BorderBrush>
                 <SolidColorBrush Color="#FF261E44" Opacity="0.6"/>
