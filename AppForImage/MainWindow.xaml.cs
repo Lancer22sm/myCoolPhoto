@@ -4,6 +4,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Shapes;
 using AppForImage.Controllers;
 using OpenCvSharp;
 
@@ -94,9 +95,29 @@ namespace AppForImage
                 radioButton.VerticalAlignment = VerticalAlignment.Top;
                 Panel.SetZIndex(radioButton, 2);
                 radioButton.RenderTransform = new TranslateTransform(x, y);
+                _radioButtons.Add(radioButton);
                 myGridInImage.Children.Add(radioButton);
+                CreateLinesForRadioButtons();
                 //_controller.CreatePointsToMask(Convert.ToInt32(x), Convert.ToInt32(y));
                 //myImageBackground.Source = _controller.GetMyImage();
+            }
+        }
+
+        private void CreateLinesForRadioButtons()
+        {
+            if (_radioButtons.Count % 2 == 0)
+            {
+                Line line = new Line();
+                RadioButton but1 = _radioButtons[0];
+                RadioButton but2 = _radioButtons[1];
+                line.X1 = but1.RenderTransform.Value.OffsetX;
+                line.Y1 = but1.RenderTransform.Value.OffsetY;
+                line.X2 = but2.RenderTransform.Value.OffsetX;
+                line.Y2 = but2.RenderTransform.Value.OffsetY;
+                line.Stroke = Brushes.White;
+                line.StrokeThickness = 2;
+                Panel.SetZIndex(line, 2);
+                myGridInImage.Children.Add(line);
             }
         }
     }
