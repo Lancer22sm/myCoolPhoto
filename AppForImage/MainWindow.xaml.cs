@@ -94,7 +94,7 @@ namespace AppForImage
                 radioButton.VerticalAlignment = VerticalAlignment.Top;
                 Panel.SetZIndex(radioButton, 2);
                 radioButton.RenderTransform = new TranslateTransform(x, y);
-                myGeneralCanvas.Children.Add(radioButton);
+                myGridInImage.Children.Add(radioButton);
                 //_controller.CreatePointsToMask(Convert.ToInt32(x), Convert.ToInt32(y));
                 //myImageBackground.Source = _controller.GetMyImage();
             }
