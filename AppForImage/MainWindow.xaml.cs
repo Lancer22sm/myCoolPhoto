@@ -16,7 +16,8 @@ namespace AppForImage
         private readonly WindowEffectColorize _windowEffectColorize;
         private readonly WindowEffectBlur _windowEffectsBlur;
         private readonly ControllerImage _controller;
-        List<RadioButton> _radioButtons = new();
+        private List<RadioButton> _radioButtons = new();
+        private int indexRadioButton = 0;
         Dictionary<Stack<double>, Slider> generalDictionary = new();
         public Stack<Stack<double>> stackChangiesHistory = new();
         bool isUseWidgetMask = true; // добавь кнопку типо включить режим выделения, создание точек настроенно
@@ -30,13 +31,38 @@ namespace AppForImage
             myImageBackground.Source = _controller.ImageDownload();
             _controller.IsUseMatEffect += PreviewChangesImage;
             _typesOfEffects.OnEndChange += ChangesImage;
+            GenerateGeneralDictionary();
+            CreateFunctionDoubleClick();
+        }
+        private void CreateFunctionDoubleClick()
+        {
+            MouseDoubleClick += (sender1, e1) =>
+            {
+                if (_radioButtons.Count > 2)
+                {
+                    Line line = new Line();
+                    RadioButton but1 = _radioButtons[indexRadioButton];
+                    RadioButton but2 = _radioButtons[0];
+                    line.X1 = but1.RenderTransform.Value.OffsetX + (but1.Width / 2);
+                    line.Y1 = but1.RenderTransform.Value.OffsetY + (but1.Height / 2);
+                    line.X2 = but2.RenderTransform.Value.OffsetX + (but2.Width / 2);
+                    line.Y2 = but2.RenderTransform.Value.OffsetY + (but2.Height / 2);
+                    line.Stroke = Brushes.White;
+                    line.StrokeThickness = 2;
+                    Panel.SetZIndex(line, 2);
+                    myGridInImage.Children.Add(line);
+                }
+            };
+        }
+        private void GenerateGeneralDictionary()
+        {
             Dictionary<Stack<double>, Slider> dictionaryBlur = _windowEffectsBlur.dictionaryStackSliders;
             Dictionary<Stack<double>, Slider> dictionaryColorize = _windowEffectColorize.dictionaryStackSliders;
-            foreach(var item in dictionaryBlur)
+            foreach (var item in dictionaryBlur)
             {
                 generalDictionary.Add(item.Key, item.Value);
             }
-            foreach(var item in dictionaryColorize)
+            foreach (var item in dictionaryColorize)
             {
                 generalDictionary.Add(item.Key, item.Value);
             }
@@ -89,6 +115,7 @@ namespace AppForImage
                 double x = currentPosition.X;
                 double y = currentPosition.Y;
                 RadioButton radioButton = new RadioButton();
+                radioButton.PreviewMouseDown += RadioButtonsMouseDown;
                 radioButton.Width = 20;
                 radioButton.Height = 20;
                 radioButton.HorizontalAlignment = HorizontalAlignment.Left;
@@ -102,18 +129,24 @@ namespace AppForImage
                 //myImageBackground.Source = _controller.GetMyImage();
             }
         }
+        private void RadioButtonsMouseDown(object sender, MouseButtonEventArgs e) // при зажатии клавиши мыши на кнопках
+        {
+            //RadioButton radioButton = (RadioButton)sender;
+            //нужен обработчик для кнопки и линий чтобы их передвигать
+        }
 
         private void CreateLinesForRadioButtons()
         {
-            if (_radioButtons.Count % 2 == 0)
+            if (_radioButtons.Count >= 2)
             {
                 Line line = new Line();
-                RadioButton but1 = _radioButtons[0];
-                RadioButton but2 = _radioButtons[1];
-                line.X1 = but1.RenderTransform.Value.OffsetX;
-                line.Y1 = but1.RenderTransform.Value.OffsetY;
-                line.X2 = but2.RenderTransform.Value.OffsetX;
-                line.Y2 = but2.RenderTransform.Value.OffsetY;
+                RadioButton but1 = _radioButtons[indexRadioButton];
+                indexRadioButton++;
+                RadioButton but2 = _radioButtons[indexRadioButton];
+                line.X1 = but1.RenderTransform.Value.OffsetX + (but1.Width / 2);
+                line.Y1 = but1.RenderTransform.Value.OffsetY + (but1.Height / 2);
+                line.X2 = but2.RenderTransform.Value.OffsetX + (but2.Width / 2);
+                line.Y2 = but2.RenderTransform.Value.OffsetY + (but2.Height / 2);
                 line.Stroke = Brushes.White;
                 line.StrokeThickness = 2;
                 Panel.SetZIndex(line, 2);
