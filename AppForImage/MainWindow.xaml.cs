@@ -16,12 +16,14 @@ namespace AppForImage
         private readonly WindowEffectColorize _windowEffectColorize;
         private readonly WindowEffectBlur _windowEffectsBlur;
         private readonly ControllerImage _controller;
-        private List<RadioButton> _radioButtons = new();
+        private readonly List<RadioButton> _radioButtons = new();
+        private readonly List<Line> _lines = new();
         private int indexRadioButton = 0;
         private Line lastLine = new();
         Dictionary<Stack<double>, Slider> generalDictionary = new();
         public Stack<Stack<double>> stackChangiesHistory = new();
         bool isUseWidgetMask = true; // добавь кнопку типо включить режим выделения, создание точек настроенно
+        bool isDragRadioButtons = false; // зажата ли кнопка мыши на radioButton
         public MainWindow()
         {
             InitializeComponent();
@@ -55,6 +57,7 @@ namespace AppForImage
                     line.Stroke = Brushes.White;
                     line.StrokeThickness = 2;
                     Panel.SetZIndex(line, 2);
+                    _lines.Add(line);
                     myGridInImage.Children.Add(line);
                 }
             };
@@ -112,16 +115,17 @@ namespace AppForImage
             _typesOfEffects.Close();
         }
 
-        private void myImageBackground_PreviewMouseDown_1(object sender, MouseButtonEventArgs e)
+        private void myImageBackground_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             if (isUseWidgetMask)
             {
                 System.Windows.Point currentPosition = e.GetPosition(myImageBackground);
-                double x = currentPosition.X;
-                double y = currentPosition.Y;
-                RadioButton radioButton = new RadioButton();
-                radioButton.Name = $"radioButton{indexRadioButton}";
+                double x = currentPosition.X - 10;
+                double y = currentPosition.Y - 10;
+                RadioButton radioButton = new();
+                radioButton.PreviewMouseMove += RadioButtonsMouseMove;
                 radioButton.PreviewMouseDown += RadioButtonsMouseDown;
+                radioButton.PreviewMouseUp += RadioButtonsMouseUp;
                 radioButton.Width = 20;
                 radioButton.Height = 20;
                 radioButton.HorizontalAlignment = HorizontalAlignment.Left;
@@ -135,13 +139,39 @@ namespace AppForImage
                 //myImageBackground.Source = _controller.GetMyImage();
             }
         }
-        private void RadioButtonsMouseDown(object sender, MouseButtonEventArgs e) // при зажатии клавиши мыши на кнопках
+        private void RadioButtonsMouseUp(object sender, MouseButtonEventArgs e)
         {
-            //RadioButton radioButton = (RadioButton)sender;
-            //нужен обработчик для кнопки и линий чтобы их передвигать
+            isDragRadioButtons = false;
+        }
+        private void RadioButtonsMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            isDragRadioButtons = true;
         }
 
-        private void CreateLinesForRadioButtons()
+        Line line1 = new(); // временно но работает
+        Line line2 = new(); // временно но работает
+        private void RadioButtonsMouseMove(object sender, MouseEventArgs e) // передвижение при зажатии клавиши мыши на radioButtons
+        {
+            RadioButton element = (RadioButton)sender;
+            if (e.LeftButton == MouseButtonState.Pressed && isDragRadioButtons == true)
+            {
+                foreach(Line line in _lines)
+                {
+                    if (line.X2 == element.RenderTransform.Value.OffsetX + (element.Width / 2) &&
+                        line.Y2 == element.RenderTransform.Value.OffsetY + (element.Height / 2)) line1 = line;
+                    if (line.X1 == element.RenderTransform.Value.OffsetX + (element.Width / 2) &&
+                        line.Y1 == element.RenderTransform.Value.OffsetY + (element.Height / 2)) line2 = line;
+                }
+                TranslateTransform points = new TranslateTransform(e.GetPosition(myGridInImage).X - (element.Width / 2), e.GetPosition(myGridInImage).Y - (element.Height / 2));
+                element.RenderTransform = points;
+                line1.X2 = points.X + (element.Width / 2);
+                line1.Y2 = points.Y + (element.Height / 2);
+                line2.X1 = points.X + (element.Width / 2);
+                line2.Y1 = points.Y + (element.Height / 2);
+            }
+        }
+
+        private void CreateLinesForRadioButtons() // создание линий между radioButtons
         {
             if (_radioButtons.Count >= 2)
             {
@@ -156,6 +186,7 @@ namespace AppForImage
                 line.Stroke = Brushes.White;
                 line.StrokeThickness = 2;
                 Panel.SetZIndex(line, 2);
+                _lines.Add(line);
                 myGridInImage.Children.Add(line);
                 lastLine = line;
             }
