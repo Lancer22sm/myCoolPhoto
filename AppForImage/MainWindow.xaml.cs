@@ -19,6 +19,7 @@ namespace AppForImage
         private readonly List<RadioButton> _radioButtons = new();
         private readonly List<Line> _lines = new();
         private int indexRadioButton = 0;
+        private Line lastLine = new();
         Dictionary<Stack<double>, Slider> generalDictionary = new();
         public Stack<Stack<double>> stackChangiesHistory = new();
         bool isUseWidgetMask = true; // добавь кнопку типо включить режим выделения, создание точек настроенно
@@ -43,6 +44,10 @@ namespace AppForImage
                 if (_radioButtons.Count > 2)
                 {
                     Line line = new Line();
+                    myGridInImage.Children.Remove(_radioButtons[indexRadioButton]);
+                    myGridInImage.Children.Remove(lastLine);
+                    _radioButtons.Remove(_radioButtons[indexRadioButton]);
+                    indexRadioButton--;
                     RadioButton but1 = _radioButtons[indexRadioButton];
                     RadioButton but2 = _radioButtons[0];
                     line.X1 = but1.RenderTransform.Value.OffsetX + (but1.Width / 2);
@@ -183,6 +188,7 @@ namespace AppForImage
                 Panel.SetZIndex(line, 2);
                 _lines.Add(line);
                 myGridInImage.Children.Add(line);
+                lastLine = line;
             }
         }
     }
