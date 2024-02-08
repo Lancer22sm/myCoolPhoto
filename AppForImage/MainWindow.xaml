@@ -46,7 +46,7 @@
         <Canvas x:Name="myGeneralCanvas">
             <Viewbox Stretch="Uniform" Width="{Binding ElementName=myWindow, Path=ActualWidth}" Height="{Binding ElementName=myWindow, Path=ActualHeight}">
                 <Grid x:Name="myGridInImage" HorizontalAlignment="Left" VerticalAlignment="Top">
-                    <Image x:Name="myImageBackground" HorizontalAlignment="Left" VerticalAlignment="Top" PreviewMouseDown="myImageBackground_PreviewMouseDown_1"/>
+                    <Image x:Name="myImageBackground" HorizontalAlignment="Left" VerticalAlignment="Top" PreviewMouseDown="myImageBackground_PreviewMouseDown"/>
                 </Grid>
             </Viewbox>
         </Canvas>
